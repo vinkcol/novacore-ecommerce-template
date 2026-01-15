@@ -1,0 +1,61 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { Search, X } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+interface SearchBarProps {
+  value: string;
+  onChange: (value: string) => void;
+  placeholder?: string;
+  className?: string;
+  debounceMs?: number;
+}
+
+export function SearchBar({
+  value,
+  onChange,
+  placeholder = "Buscar productos...",
+  className,
+  debounceMs = 300,
+}: SearchBarProps) {
+  const [internalValue, setInternalValue] = useState(value);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onChange(internalValue);
+    }, debounceMs);
+
+    return () => clearTimeout(timer);
+  }, [internalValue, debounceMs, onChange]);
+
+  const handleClear = () => {
+    setInternalValue("");
+    onChange("");
+  };
+
+  return (
+    <div className={cn("relative", className)}>
+      <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+      <Input
+        type="text"
+        placeholder={placeholder}
+        value={internalValue}
+        onChange={(e) => setInternalValue(e.target.value)}
+        className="pl-9 pr-9"
+      />
+      {internalValue && (
+        <Button
+          variant="ghost"
+          size="icon"
+          className="absolute right-1 top-1/2 h-7 w-7 -translate-y-1/2"
+          onClick={handleClear}
+        >
+          <X className="h-4 w-4" />
+        </Button>
+      )}
+    </div>
+  );
+}

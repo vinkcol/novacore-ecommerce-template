@@ -1,0 +1,83 @@
+[
+  {
+    "id": 0,
+    "localidad": "Usaquén"
+  },
+  {
+    "id": 1,
+    "localidad": "Chapinero"
+  },
+  {
+    "id": 2,
+    "localidad": "Santa Fe"
+  },
+  {
+    "id": 3,
+    "localidad": "San Cristóbal"
+  },
+  {
+    "id": 4,
+    "localidad": "Usme"
+  },
+  {
+    "id": 5,
+    "localidad": "Tunjuelito"
+  },
+  {
+    "id": 6,
+    "localidad": "Bosa"
+  },
+  {
+    "id": 7,
+    "localidad": "Kennedy"
+  },
+  {
+    "id": 8,
+    "localidad": "Fontibón"
+  },
+  {
+    "id": 9,
+    "localidad": "Engativá"
+  },
+  {
+    "id": 10,
+    "localidad": "Suba"
+  },
+  {
+    "id": 11,
+    "localidad": "Barrios Unidos"
+  },
+  {
+    "id": 12,
+    "localidad": "Teusaquillo"
+  },
+  {
+    "id": 13,
+    "localidad": "Los Mártires"
+  },
+  {
+    "id": 14,
+    "localidad": "Antonio Nariño"
+  },
+  {
+    "id": 15,
+    "localidad": "Puente Aranda"
+  },
+  {
+    "id": 16,
+    "localidad": "La Candelaria"
+  },
+  {
+    "id": 17,
+    "localidad": "Rafael Uribe Uribe"
+  },
+  {
+    "id": 18,
+    "localidad": "Ciudad Bolívar"
+  },
+  {
+    "id": 19,
+    "localidad": "Sumapaz"
+  }
+]
+

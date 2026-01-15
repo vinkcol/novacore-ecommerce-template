@@ -1,0 +1,153 @@
+{
+  "site": {
+    "name": "Vink Shop",
+    "tagline": "Productos de Calidad, Entrega Rápida",
+    "description": "Tu tienda de productos premium a precios accesibles",
+    "logo": "/images/logo.svg",
+    "email": "contacto@vinkshop.com",
+    "phone": "+34 912 345 678",
+    "address": {
+      "street": "Calle Comercio 123",
+      "city": "Madrid",
+      "state": "Madrid",
+      "zip": "28001",
+      "country": "España"
+    },
+    "social": {
+      "facebook": "https://facebook.com/vinkshop",
+      "instagram": "https://instagram.com/vinkshop",
+      "twitter": "https://twitter.com/vinkshop",
+      "linkedin": "https://linkedin.com/company/vinkshop"
+    }
+  },
+  "homepage": {
+    "hero": {
+      "title": "Descubre Tu Estilo",
+      "subtitle": "Compra las últimas tendencias y clásicos atemporales",
+      "ctaText": "Comprar Ahora",
+      "ctaLink": "/products",
+      "backgroundImage": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1920"
+    },
+    "featuredCategories": [
+      {
+        "id": "cat-001",
+        "name": "Electrónica",
+        "image": "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=800",
+        "link": "/products?category=electronics"
+      },
+      {
+        "id": "cat-002",
+        "name": "Accesorios",
+        "image": "https://images.unsplash.com/photo-1556306535-0f09a537f0a3?w=800",
+        "link": "/products?category=accessories"
+      },
+      {
+        "id": "cat-003",
+        "name": "Ropa",
+        "image": "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=800",
+        "link": "/products?category=clothing"
+      }
+    ],
+    "benefits": [
+      {
+        "icon": "Truck",
+        "title": "Envío Gratis",
+        "description": "En pedidos mayores a $50"
+      },
+      {
+        "icon": "Shield",
+        "title": "Pago Seguro",
+        "description": "Transacciones 100% seguras"
+      },
+      {
+        "icon": "RotateCcw",
+        "title": "Devoluciones 30 Días",
+        "description": "Devoluciones y cambios fáciles"
+      },
+      {
+        "icon": "Headphones",
+        "title": "Soporte 24/7",
+        "description": "Atención al cliente dedicada"
+      }
+    ]
+  },
+  "footer": {
+    "about": "Vink Shop es tu destino para productos de calidad a precios competitivos. Nos enorgullecemos de nuestro excelente servicio al cliente y envíos rápidos.",
+    "links": {
+      "shop": [
+        { "label": "Todos los Productos", "href": "/products" },
+        { "label": "Nuevos Ingresos", "href": "/products?filter=new" },
+        { "label": "Ofertas", "href": "/products?filter=sale" },
+        { "label": "Categorías", "href": "/products" }
+      ],
+      "company": [
+        { "label": "Nosotros", "href": "/about" },
+        { "label": "Contacto", "href": "/contact" },
+        { "label": "Empleos", "href": "/careers" },
+        { "label": "Prensa", "href": "/press" }
+      ],
+      "support": [
+        { "label": "Centro de Ayuda", "href": "/help" },
+        { "label": "Información de Envío", "href": "/shipping" },
+        { "label": "Devoluciones", "href": "/returns" },
+        { "label": "Guía de Tallas", "href": "/size-guide" }
+      ],
+      "legal": [
+        { "label": "Política de Privacidad", "href": "/privacy" },
+        { "label": "Términos de Servicio", "href": "/terms" },
+        { "label": "Política de Cookies", "href": "/cookies" }
+      ]
+    },
+    "newsletter": {
+      "title": "Suscríbete a nuestro boletín",
+      "description": "Recibe las últimas novedades sobre nuevos productos y próximas ofertas",
+      "placeholder": "Ingresa tu correo electrónico"
+    },
+    "copyright": "© 2026 Vink Shop. Todos los derechos reservados."
+  },
+  "checkout": {
+    "steps": [
+      { "id": "shipping", "label": "Envío", "icon": "Truck" },
+      { "id": "payment", "label": "Pago", "icon": "CreditCard" },
+      { "id": "review", "label": "Revisar", "icon": "FileCheck" }
+    ],
+    "shippingMethods": [
+      {
+        "id": "standard",
+        "name": "Envío Estándar",
+        "description": "5-7 días hábiles",
+        "price": 5.99,
+        "estimatedDays": "5-7"
+      },
+      {
+        "id": "express",
+        "name": "Envío Express",
+        "description": "2-3 días hábiles",
+        "price": 12.99,
+        "estimatedDays": "2-3"
+      },
+      {
+        "id": "overnight",
+        "name": "Envío Nocturno",
+        "description": "Siguiente día hábil",
+        "price": 24.99,
+        "estimatedDays": "1"
+      }
+    ],
+    "paymentMethods": [
+      { "id": "credit_card", "name": "Tarjeta de Crédito", "icon": "CreditCard" },
+      { "id": "paypal", "name": "PayPal", "icon": "Wallet" },
+      { "id": "apple_pay", "name": "Apple Pay", "icon": "Apple" }
+    ]
+  },
+  "messages": {
+    "cartEmpty": "Tu carrito está vacío",
+    "cartEmptyDescription": "Empieza a comprar para agregar productos a tu carrito",
+    "productAdded": "Producto agregado al carrito",
+    "productRemoved": "Producto eliminado del carrito",
+    "checkoutSuccess": "¡Pedido realizado con éxito!",
+    "checkoutSuccessDescription": "Recibirás un correo de confirmación en breve",
+    "outOfStock": "Este producto está agotado actualmente",
+    "maxQuantityReached": "Cantidad máxima alcanzada"
+  }
+}

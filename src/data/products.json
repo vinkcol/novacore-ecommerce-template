@@ -1,0 +1,672 @@
+{
+  "products": [
+    {
+      "id": "prod-001",
+      "name": "Auriculares Inalámbricos Premium",
+      "slug": "auriculares-inalambricos-premium",
+      "price": 299.99,
+      "compareAtPrice": 349.99,
+      "description": "Experimenta un audio cristalino con nuestros auriculares inalámbricos premium con cancelación activa de ruido y 30 horas de batería.",
+      "longDescription": "Estos auriculares inalámbricos premium ofrecen una calidad de sonido excepcional con tecnología avanzada de cancelación activa de ruido. El cómodo diseño supraural asegura horas de placer auditivo, mientras que la batería de 30 horas te mantiene conectado todo el día. Incluye conectividad Bluetooth 5.0, controles táctiles y diseño plegable para fácil portabilidad.",
+      "images": [
+        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800",
+        "https://images.unsplash.com/photo-1484704849700-f032a568e944?w=800",
+        "https://images.unsplash.com/photo-1545127398-14699f92334b?w=800"
+      ],
+      "category": "Electrónica",
+      "subcategory": "Audio",
+      "categories": [
+        "Electrónica",
+        "Audio",
+        "Auriculares"
+      ],
+      "tags": [
+        "inalámbrico",
+        "cancelación-ruido",
+        "premium",
+        "bluetooth"
+      ],
+      "inStock": true,
+      "stockQuantity": 45,
+      "sku": "WH-1000XM5",
+      "brand": "AudioTech",
+      "rating": 4.8,
+      "reviewCount": 234,
+      "variants": [
+        {
+          "id": "var-001-black",
+          "name": "Negro",
+          "type": "color",
+          "value": "#000000",
+          "inStock": true,
+          "price": 299.99
+        },
+        {
+          "id": "var-001-silver",
+          "name": "Plata",
+          "type": "color",
+          "value": "#C0C0C0",
+          "inStock": true,
+          "price": 299.99
+        }
+      ],
+      "specifications": {
+        "Duración de Batería": "30 horas",
+        "Conectividad": "Bluetooth 5.0",
+        "Peso": "250g",
+        "Garantía": "2 años"
+      },
+      "features": [
+        "Cancelación Activa de Ruido",
+        "30 horas de batería",
+        "Bluetooth 5.0",
+        "Controles táctiles",
+        "Diseño plegable",
+        "Compatible con asistente de voz"
+      ],
+      "isNew": false,
+      "isFeatured": true,
+      "isSale": true,
+      "salePercentage": 14
+    },
+    {
+      "id": "prod-002",
+      "name": "Cartera de Cuero Minimalista",
+      "slug": "cartera-cuero-minimalista",
+      "price": 49.99,
+      "description": "Cartera de cuero genuino hecha a mano con protección RFID y diseño delgado.",
+      "longDescription": "Esta cartera de cuero minimalista combina estilo con funcionalidad. Fabricada con cuero de grano completo premium, cuenta con tecnología de bloqueo RFID para proteger tus tarjetas del robo electrónico. El diseño delgado cabe cómodamente en tu bolsillo mientras sostiene hasta 8 tarjetas y efectivo.",
+      "images": [
+        "https://images.unsplash.com/photo-1627123424574-724758594e93?w=800",
+        "https://images.unsplash.com/photo-1591337676887-a217a6970a8a?w=800"
+      ],
+      "category": "Accesorios",
+      "subcategory": "Carteras",
+      "categories": [
+        "Accesorios",
+        "Carteras",
+        "Artículos de Cuero"
+      ],
+      "tags": [
+        "cuero",
+        "minimalista",
+        "rfid",
+        "hecho-a-mano"
+      ],
+      "inStock": true,
+      "stockQuantity": 120,
+      "sku": "LW-MIN-001",
+      "brand": "LeatherCraft Co.",
+      "rating": 4.6,
+      "reviewCount": 89,
+      "variants": [
+        {
+          "id": "var-002-brown",
+          "name": "Marrón",
+          "type": "color",
+          "value": "#8B4513",
+          "inStock": true,
+          "price": 49.99
+        },
+        {
+          "id": "var-002-black",
+          "name": "Negro",
+          "type": "color",
+          "value": "#000000",
+          "inStock": true,
+          "price": 49.99
+        },
+        {
+          "id": "var-002-tan",
+          "name": "Canela",
+          "type": "color",
+          "value": "#D2B48C",
+          "inStock": false,
+          "price": 49.99
+        }
+      ],
+      "specifications": {
+        "Material": "Cuero de grano completo",
+        "Dimensiones": "10.8 x 7.6 x 1 cm",
+        "Capacidad de Tarjetas": "8 tarjetas",
+        "Protección RFID": "Sí"
+      },
+      "features": [
+        "Tecnología de bloqueo RFID",
+        "Cuero de grano completo",
+        "Capacidad para 8 tarjetas",
+        "Perfil delgado",
+        "Hecho a mano"
+      ],
+      "isNew": true,
+      "isFeatured": false,
+      "isSale": false
+    },
+    {
+      "id": "prod-003",
+      "name": "Reloj Inteligente Fitness",
+      "slug": "reloj-inteligente-fitness",
+      "price": 199.99,
+      "compareAtPrice": 249.99,
+      "description": "Rastrea tus metas de fitness con este smartwatch avanzado con monitoreo de frecuencia cardíaca y GPS.",
+      "longDescription": "Mantente conectado y en forma con nuestro Reloj Inteligente Fitness. Con monitoreo de salud avanzado, GPS integrado y 5 días de batería, es el compañero perfecto para tu estilo de vida activo. Resistente al agua hasta 50m y compatible con iOS y Android.",
+      "images": [
+        "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800",
+        "https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=800"
+      ],
+      "category": "Electrónica",
+      "subcategory": "Wearables",
+      "categories": [
+        "Electrónica",
+        "Wearables",
+        "Fitness"
+      ],
+      "tags": [
+        "smartwatch",
+        "fitness",
+        "gps",
+        "frecuencia-cardiaca"
+      ],
+      "inStock": true,
+      "stockQuantity": 67,
+      "sku": "SW-FIT-200",
+      "brand": "TechFit",
+      "rating": 4.5,
+      "reviewCount": 156,
+      "variants": [
+        {
+          "id": "var-003-black",
+          "name": "Negro",
+          "type": "color",
+          "value": "#000000",
+          "inStock": true,
+          "price": 199.99
+        },
+        {
+          "id": "var-003-blue",
+          "name": "Azul",
+          "type": "color",
+          "value": "#0066CC",
+          "inStock": true,
+          "price": 199.99
+        },
+        {
+          "id": "var-003-rose",
+          "name": "Oro Rosa",
+          "type": "color",
+          "value": "#B76E79",
+          "inStock": true,
+          "price": 209.99
+        }
+      ],
+      "specifications": {
+        "Duración de Batería": "5 días",
+        "Resistencia al Agua": "50m",
+        "Pantalla": "1.4\" AMOLED",
+        "Compatibilidad": "iOS y Android"
+      },
+      "features": [
+        "Monitoreo de frecuencia cardíaca",
+        "GPS integrado",
+        "Seguimiento del sueño",
+        "Resistente al agua 50m",
+        "5 días de batería",
+        "Carátulas personalizables"
+      ],
+      "isNew": false,
+      "isFeatured": true,
+      "isSale": true,
+      "salePercentage": 20
+    },
+    {
+      "id": "prod-004",
+      "name": "Camiseta de Algodón Orgánico",
+      "slug": "camiseta-algodon-organico",
+      "price": 29.99,
+      "description": "Camiseta suave y sostenible de algodón orgánico con corte clásico.",
+      "longDescription": "Nuestra camiseta de algodón orgánico está hecha con 100% algodón orgánico certificado para máxima comodidad y sostenibilidad. Presenta un corte clásico, costuras reforzadas y tela pre-encogida. Perfecta para uso diario.",
+      "images": [
+        "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800",
+        "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?w=800"
+      ],
+      "category": "Ropa",
+      "subcategory": "Camisetas",
+      "categories": [
+        "Ropa",
+        "Camisetas",
+        "Hombre"
+      ],
+      "tags": [
+        "orgánico",
+        "algodón",
+        "casual",
+        "sostenible"
+      ],
+      "inStock": true,
+      "stockQuantity": 200,
+      "sku": "TS-ORG-001",
+      "brand": "EcoWear",
+      "rating": 4.7,
+      "reviewCount": 312,
+      "variants": [
+        {
+          "id": "var-004-s-white",
+          "name": "Pequeña - Blanco",
+          "type": "size-color",
+          "value": "#FFFFFF",
+          "size": "S",
+          "color": "Blanco",
+          "inStock": true,
+          "price": 29.99
+        },
+        {
+          "id": "var-004-m-white",
+          "name": "Mediana - Blanco",
+          "type": "size-color",
+          "value": "#FFFFFF",
+          "size": "M",
+          "color": "Blanco",
+          "inStock": true,
+          "price": 29.99
+        },
+        {
+          "id": "var-004-l-white",
+          "name": "Grande - Blanco",
+          "type": "size-color",
+          "value": "#FFFFFF",
+          "size": "L",
+          "color": "Blanco",
+          "inStock": true,
+          "price": 29.99
+        },
+        {
+          "id": "var-004-s-black",
+          "name": "Pequeña - Negro",
+          "type": "size-color",
+          "value": "#000000",
+          "size": "S",
+          "color": "Negro",
+          "inStock": true,
+          "price": 29.99
+        },
+        {
+          "id": "var-004-m-black",
+          "name": "Mediana - Negro",
+          "type": "size-color",
+          "value": "#000000",
+          "size": "M",
+          "color": "Negro",
+          "inStock": true,
+          "price": 29.99
+        },
+        {
+          "id": "var-004-l-black",
+          "name": "Grande - Negro",
+          "type": "size-color",
+          "value": "#000000",
+          "size": "L",
+          "color": "Negro",
+          "inStock": false,
+          "price": 29.99
+        }
+      ],
+      "specifications": {
+        "Material": "100% Algodón Orgánico",
+        "Corte": "Clásico",
+        "Cuidado": "Lavable a máquina",
+        "Origen": "Hecho en Portugal"
+      },
+      "features": [
+        "100% algodón orgánico certificado",
+        "Tela pre-encogida",
+        "Costuras reforzadas",
+        "Producción sostenible",
+        "Suave y cómoda"
+      ],
+      "isNew": true,
+      "isFeatured": false,
+      "isSale": false
+    },
+    {
+      "id": "prod-005",
+      "name": "Altavoz Bluetooth Portátil",
+      "slug": "altavoz-bluetooth-portatil",
+      "price": 79.99,
+      "compareAtPrice": 99.99,
+      "description": "Altavoz portátil resistente al agua con sonido 360 grados y 12 horas de batería.",
+      "longDescription": "Lleva tu música a cualquier lugar con este resistente altavoz Bluetooth portátil. Cuenta con sonido 360 grados, clasificación IPX7 resistente al agua y batería de larga duración de 12 horas. Perfecto para aventuras al aire libre, fiestas en la piscina o escuchar en casa.",
+      "images": [
+        "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=800",
+        "https://images.unsplash.com/photo-1545286907-0f1f4e54e802?w=800"
+      ],
+      "category": "Electrónica",
+      "subcategory": "Audio",
+      "categories": [
+        "Electrónica",
+        "Audio",
+        "Altavoces"
+      ],
+      "tags": [
+        "bluetooth",
+        "resistente-agua",
+        "portátil",
+        "inalámbrico"
+      ],
+      "inStock": true,
+      "stockQuantity": 88,
+      "sku": "SPK-BT-350",
+      "brand": "SoundWave",
+      "rating": 4.4,
+      "reviewCount": 178,
+      "variants": [
+        {
+          "id": "var-005-blue",
+          "name": "Azul Océano",
+          "type": "color",
+          "value": "#0077BE",
+          "inStock": true,
+          "price": 79.99
+        },
+        {
+          "id": "var-005-green",
+          "name": "Verde Bosque",
+          "type": "color",
+          "value": "#228B22",
+          "inStock": true,
+          "price": 79.99
+        },
+        {
+          "id": "var-005-red",
+          "name": "Rojo Atardecer",
+          "type": "color",
+          "value": "#DC143C",
+          "inStock": true,
+          "price": 79.99
+        }
+      ],
+      "specifications": {
+        "Duración de Batería": "12 horas",
+        "Resistencia al Agua": "IPX7",
+        "Conectividad": "Bluetooth 5.0",
+        "Alcance": "10 metros"
+      },
+      "features": [
+        "Sonido 360 grados",
+        "IPX7 resistente al agua",
+        "12 horas de batería",
+        "Micrófono integrado",
+        "Ligero y portátil",
+        "Carga USB-C"
+      ],
+      "isNew": false,
+      "isFeatured": true,
+      "isSale": true,
+      "salePercentage": 20
+    },
+    {
+      "id": "prod-006",
+      "name": "Botella de Agua de Acero Inoxidable",
+      "slug": "botella-agua-acero-inoxidable",
+      "price": 34.99,
+      "description": "Botella de agua aislada que mantiene las bebidas frías por 24 horas o calientes por 12 horas.",
+      "longDescription": "Mantente hidratado con estilo con nuestra botella de agua de acero inoxidable premium. El aislamiento de doble pared al vacío mantiene tus bebidas a la temperatura perfecta todo el día. Diseño libre de BPA y a prueba de fugas con boca ancha para fácil limpieza y cubos de hielo.",
+      "images": [
+        "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=800",
+        "https://images.unsplash.com/photo-1607874118446-50eaf0f300db?w=800"
+      ],
+      "category": "Accesorios",
+      "subcategory": "Bebidas",
+      "categories": [
+        "Accesorios",
+        "Bebidas",
+        "Eco-Amigable"
+      ],
+      "tags": [
+        "botella-agua",
+        "aislada",
+        "eco-amigable",
+        "acero-inoxidable"
+      ],
+      "inStock": true,
+      "stockQuantity": 150,
+      "sku": "WB-SS-750",
+      "brand": "HydroLife",
+      "rating": 4.9,
+      "reviewCount": 421,
+      "variants": [
+        {
+          "id": "var-006-silver",
+          "name": "Plata",
+          "type": "color",
+          "value": "#C0C0C0",
+          "inStock": true,
+          "price": 34.99
+        },
+        {
+          "id": "var-006-mint",
+          "name": "Verde Menta",
+          "type": "color",
+          "value": "#98FF98",
+          "inStock": true,
+          "price": 34.99
+        },
+        {
+          "id": "var-006-coral",
+          "name": "Rosa Coral",
+          "type": "color",
+          "value": "#FF6F61",
+          "inStock": true,
+          "price": 34.99
+        },
+        {
+          "id": "var-006-navy",
+          "name": "Azul Marino",
+          "type": "color",
+          "value": "#000080",
+          "inStock": true,
+          "price": 34.99
+        }
+      ],
+      "specifications": {
+        "Capacidad": "750ml (25oz)",
+        "Material": "Acero Inoxidable 18/8",
+        "Aislamiento": "Doble pared al vacío",
+        "Altura": "26.7 cm"
+      },
+      "features": [
+        "Mantiene frío 24 horas",
+        "Mantiene caliente 12 horas",
+        "Libre de BPA",
+        "Tapa a prueba de fugas",
+        "Apertura de boca ancha",
+        "Apta para lavavajillas"
+      ],
+      "isNew": true,
+      "isFeatured": false,
+      "isSale": false,
+      "isCheckoutUpsell": true
+    },
+    {
+      "id": "prod-007",
+      "name": "Base de Carga Inalámbrica",
+      "slug": "base-carga-inalambrica",
+      "price": 39.99,
+      "description": "Base de carga inalámbrica rápida compatible con todos los dispositivos Qi.",
+      "longDescription": "Carga tus dispositivos sin esfuerzo con nuestra elegante base de carga inalámbrica. Cuenta con carga rápida de 10W, superficie antideslizante e indicador LED. Compatible con iPhone, Samsung y todos los smartphones y auriculares con Qi.",
+      "images": [
+        "https://images.unsplash.com/photo-1591290619762-f8be9c92a65c?w=800",
+        "https://images.unsplash.com/photo-1609091839311-d870229c1e55?w=800"
+      ],
+      "category": "Electrónica",
+      "subcategory": "Accesorios",
+      "categories": [
+        "Electrónica",
+        "Accesorios",
+        "Carga"
+      ],
+      "tags": [
+        "inalámbrico",
+        "carga",
+        "qi",
+        "carga-rápida"
+      ],
+      "inStock": true,
+      "stockQuantity": 95,
+      "sku": "CHG-WRL-100",
+      "brand": "PowerHub",
+      "rating": 4.3,
+      "reviewCount": 267,
+      "variants": [
+        {
+          "id": "var-007-black",
+          "name": "Negro",
+          "type": "color",
+          "value": "#000000",
+          "inStock": true,
+          "price": 39.99
+        },
+        {
+          "id": "var-007-white",
+          "name": "Blanco",
+          "type": "color",
+          "value": "#FFFFFF",
+          "inStock": true,
+          "price": 39.99
+        }
+      ],
+      "specifications": {
+        "Potencia de Salida": "Carga Rápida 10W",
+        "Compatibilidad": "Todos los dispositivos Qi",
+        "Entrada": "USB-C",
+        "Dimensiones": "10 x 10 x 1.3 cm"
+      },
+      "features": [
+        "Carga inalámbrica rápida 10W",
+        "Certificado Qi",
+        "Indicador LED de carga",
+        "Superficie antideslizante",
+        "Protección contra sobrecalentamiento",
+        "Compatible con fundas (hasta 5mm)"
+      ],
+      "isNew": false,
+      "isFeatured": false,
+      "isSale": false,
+      "isCheckoutUpsell": true
+    },
+    {
+      "id": "prod-008",
+      "name": "Mochila de Lona",
+      "slug": "mochila-lona",
+      "price": 69.99,
+      "description": "Mochila de lona duradera con compartimento para laptop y múltiples bolsillos.",
+      "longDescription": "Esta elegante mochila de lona combina estética vintage con funcionalidad moderna. Cuenta con compartimento acolchado para laptop (hasta 15.6\"), múltiples bolsillos organizadores y correas acolchadas cómodas. Perfecta para traslados diarios, escuela o aventuras de fin de semana.",
+      "images": [
+        "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800",
+        "https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?w=800"
+      ],
+      "category": "Accesorios",
+      "subcategory": "Bolsos",
+      "categories": [
+        "Accesorios",
+        "Bolsos",
+        "Mochilas"
+      ],
+      "tags": [
+        "mochila",
+        "lona",
+        "laptop",
+        "vintage"
+      ],
+      "inStock": true,
+      "stockQuantity": 72,
+      "sku": "BP-CVS-200",
+      "brand": "UrbanCarry",
+      "rating": 4.6,
+      "reviewCount": 193,
+      "variants": [
+        {
+          "id": "var-008-khaki",
+          "name": "Caqui",
+          "type": "color",
+          "value": "#C3B091",
+          "inStock": true,
+          "price": 69.99
+        },
+        {
+          "id": "var-008-navy",
+          "name": "Azul Marino",
+          "type": "color",
+          "value": "#000080",
+          "inStock": true,
+          "price": 69.99
+        },
+        {
+          "id": "var-008-olive",
+          "name": "Verde Oliva",
+          "type": "color",
+          "value": "#808000",
+          "inStock": true,
+          "price": 69.99
+        }
+      ],
+      "specifications": {
+        "Capacidad": "20L",
+        "Material": "Lona y Cuero",
+        "Tamaño de Laptop": "Hasta 15.6\"",
+        "Dimensiones": "43 x 30 x 15 cm"
+      },
+      "features": [
+        "Compartimento acolchado para laptop",
+        "Múltiples bolsillos",
+        "Correas acolchadas ajustables",
+        "Material de lona duradera",
+        "Acentos de cuero",
+        "Recubrimiento resistente al agua"
+      ],
+      "isNew": false,
+      "isFeatured": false,
+      "isSale": false
+    }
+  ],
+  "categories": [
+    {
+      "id": "cat-001",
+      "name": "Electrónica",
+      "slug": "electronics",
+      "description": "Tecnología y dispositivos electrónicos de última generación",
+      "image": "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=800",
+      "subcategories": [
+        "Audio",
+        "Wearables",
+        "Accesorios",
+        "Computadoras"
+      ]
+    },
+    {
+      "id": "cat-002",
+      "name": "Accesorios",
+      "slug": "accessories",
+      "description": "Accesorios de moda y estilo de vida",
+      "image": "https://images.unsplash.com/photo-1556306535-0f09a537f0a3?w=800",
+      "subcategories": [
+        "Carteras",
+        "Bolsos",
+        "Bebidas",
+        "Artículos de Cuero"
+      ]
+    },
+    {
+      "id": "cat-003",
+      "name": "Ropa",
+      "slug": "clothing",
+      "description": "Moda de tendencia para todos",
+      "image": "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=800",
+      "subcategories": [
+        "Camisetas",
+        "Hombre",
+        "Mujer",
+        "Sostenible"
+      ]
+    }
+  ]
+}
