@@ -1,7 +1,7 @@
 import { CheckoutFormValues } from "../checkout.schema";
 
 // Simulating API call
-export async function submitOrderApi(orderData: any) {
+export async function submitOrderApi(orderData: CheckoutFormValues) {
   // In a real scenario, this would be:
   // const response = await fetch('/api/orders', { ... })
   // return response.json()

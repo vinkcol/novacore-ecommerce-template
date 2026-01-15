@@ -55,7 +55,7 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     dispatch(setShippingMethod(shippingMethods[0]));
-  }, [dispatch]);
+  }, [dispatch, shippingMethods]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
