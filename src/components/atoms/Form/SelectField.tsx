@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect, useMemo } from "react";
 import { useField, useFormikContext } from "formik";
 import { FormFieldWrapper } from "./FormFieldWrapper";
 import { cn } from "@/lib/utils";
-import { ChevronDown, Search, Check, X } from "lucide-react";
+import { ChevronDown, Search, Check } from "lucide-react";
 
 interface SelectFieldOption {
     label: string;

@@ -22,7 +22,6 @@ import { useState } from "react";
 
 export function CartPanel() {
   const dispatch = useAppDispatch();
-  const router = useRouter();
   const isOpen = useAppSelector(selectIsCartOpen);
   const items = useAppSelector(selectCartItems);
   const totals = useAppSelector(selectCartTotals);
