@@ -4,13 +4,11 @@ import Image from "next/image";
 const Logo = () => {
   return (
     <div className="relative">
-      <Image
-        src="/identity/logo.svg"
-        alt="Logo"
-        width={100}
-        height={40}
-        className="h-auto w-auto"
-        priority
+      <img
+        src="/images/identity/logo.svg"
+        alt="Vink Logo"
+        style={{ width: '120px', height: '40px' }}
+        className="object-contain"
       />
     </div>
   );
