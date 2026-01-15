@@ -1,4 +1,9 @@
 import * as Yup from "yup";
+import locationData from "@/data/colombia.location.json";
+
+// Extract defaults programmatically to avoid typos and hardcoding
+const DEFAULT_DEPT_DATA = locationData.find(d => d.departamento.toLowerCase() === "cundinamarca");
+const DEFAULT_CITY = DEFAULT_DEPT_DATA?.ciudades.find(c => c.toLowerCase() === "bogotá" || c.toLowerCase() === "bogota");
 
 export const checkoutValidationSchema = Yup.object().shape({
     firstName: Yup.string()
@@ -21,6 +26,11 @@ export const checkoutValidationSchema = Yup.object().shape({
         .required("Seleccione un departamento"),
     city: Yup.string()
         .required("La ciudad es obligatoria"),
+    locality: Yup.string().when("city", {
+        is: (val: string) => val?.toLowerCase() === "bogota" || val?.toLowerCase() === "bogotá",
+        then: (schema) => schema.required("La localidad es obligatoria"),
+        otherwise: (schema) => schema.optional(),
+    }),
     landmark: Yup.string()
         .required("Un punto de referencia ayuda a la entrega"),
     email: Yup.string()
@@ -39,8 +49,9 @@ export const initialCheckoutValues: CheckoutFormValues = {
     whatsapp: "",
     backupPhone: "",
     address: "",
-    department: "",
-    city: "",
+    department: DEFAULT_DEPT_DATA?.departamento || "",
+    city: DEFAULT_CITY || "",
+    locality: "",
     landmark: "",
     email: "",
     commitment: false,

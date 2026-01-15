@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { submitOrderRequest } from "../redux/checkoutSaga";
 import locationData from "@/data/colombia.location.json";
 import shippingRules from "@/data/shipping-coverage.json";
+import bogotaLocalities from "@/data/bogota.localities.json";
 import { setShippingCost, setShippingLabel, setShippingPromise, setIsCODAvailable } from "../redux/checkoutSlice";
 import { Price } from "@/components/atoms/Price";
 
@@ -18,6 +19,12 @@ interface CheckoutFormProps {
 const departments = locationData.map(d => ({
     label: d.departamento,
     value: d.departamento
+})).sort((a, b) => a.label.localeCompare(b.label));
+
+// Bogota localities options
+const bogotaLocalitiesOptions = bogotaLocalities.map(l => ({
+    label: l.localidad,
+    value: l.localidad
 })).sort((a, b) => a.label.localeCompare(b.label));
 
 // Shipping Logic Handler Component
@@ -164,6 +171,11 @@ const ShippingDisplay = () => {
 const LocationFields = () => {
     const { values, setFieldValue } = useFormikContext<CheckoutFormValues>();
 
+    const isBogota = useMemo(() =>
+        values.city?.toLowerCase() === "bogota" || values.city?.toLowerCase() === "bogotá",
+        [values.city]
+    );
+
     // Filter cities based on selected department using React.useMemo
     const cityOptions = useMemo(() => {
         if (!values.department) return [];
@@ -183,6 +195,13 @@ const LocationFields = () => {
         }
     }, [values.department, values.city, setFieldValue]);
 
+    // Clear locality if city is no longer Bogota
+    useEffect(() => {
+        if (!isBogota && values.locality) {
+            setFieldValue('locality', '');
+        }
+    }, [isBogota, values.locality, setFieldValue]);
+
     return (
         <div className="space-y-4">
             <SelectField
@@ -201,6 +220,18 @@ const LocationFields = () => {
                 disabled={!values.department}
                 required
             />
+
+            {isBogota && (
+                <div className="animate-in fade-in slide-in-from-top-2 duration-300">
+                    <SelectField
+                        name="locality"
+                        label="Localidad"
+                        options={bogotaLocalitiesOptions}
+                        placeholder="Selecciona tu localidad..."
+                        required
+                    />
+                </div>
+            )}
         </div>
     );
 };
