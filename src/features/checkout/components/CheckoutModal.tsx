@@ -12,9 +12,10 @@ import { setOrderStatus } from "../redux/checkoutSlice";
 interface CheckoutModalProps {
     isOpen: boolean;
     onClose: () => void;
+    maxRecommendations?: number;
 }
 
-export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
+export function CheckoutModal({ isOpen, onClose, maxRecommendations = 1 }: CheckoutModalProps) {
     const dispatch = useAppDispatch();
     const orderStatus = useAppSelector((state) => state.checkout.orderStatus);
 
@@ -104,7 +105,7 @@ export function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
                         {/* Scrollable Content */}
                         <div className="flex-1 overflow-y-auto overscroll-contain px-6 py-4">
                             <div className="space-y-6 pb-6 h-full">
-                                <CheckoutSummary />
+                                <CheckoutSummary maxRecommendations={maxRecommendations} />
 
                                 <CheckoutForm onSubmitSuccess={() => { }} />
                             </div>
