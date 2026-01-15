@@ -11,7 +11,7 @@ import { setShippingCost, setShippingLabel, setShippingPromise, setIsCODAvailabl
 import { Price } from "@/components/atoms/Price";
 
 interface CheckoutFormProps {
-    onSubmitSuccess: () => void;
+    onSubmitSuccess?: () => void;
 }
 
 // Extract departments and sort them
@@ -161,7 +161,51 @@ const ShippingDisplay = () => {
     );
 };
 
-export function CheckoutForm({ onSubmitSuccess }: CheckoutFormProps) {
+const LocationFields = () => {
+    const { values, setFieldValue } = useFormikContext<CheckoutFormValues>();
+
+    // Filter cities based on selected department using React.useMemo
+    const cityOptions = useMemo(() => {
+        if (!values.department) return [];
+        const deptData = locationData.find(d => d.departamento === values.department);
+        return deptData
+            ? deptData.ciudades.map(c => ({ label: c, value: c })).sort((a, b) => a.label.localeCompare(b.label))
+            : [];
+    }, [values.department]);
+
+    // Effect to clear city when department changes
+    useEffect(() => {
+        if (values.department && values.city) {
+            const deptData = locationData.find(d => d.departamento === values.department);
+            if (deptData && !deptData.ciudades.includes(values.city)) {
+                setFieldValue('city', '');
+            }
+        }
+    }, [values.department, values.city, setFieldValue]);
+
+    return (
+        <div className="space-y-4">
+            <SelectField
+                name="department"
+                label="Departamento"
+                options={departments}
+                placeholder="Selecciona tu departamento..."
+                required
+            />
+
+            <SelectField
+                name="city"
+                label="Ciudad / Municipio"
+                options={cityOptions}
+                placeholder="Selecciona tu ciudad..."
+                disabled={!values.department}
+                required
+            />
+        </div>
+    );
+};
+
+export function CheckoutForm({ }: CheckoutFormProps) {
     const dispatch = useAppDispatch();
     const { isCODAvailable } = useAppSelector(state => state.checkout);
 
@@ -175,27 +219,7 @@ export function CheckoutForm({ onSubmitSuccess }: CheckoutFormProps) {
             validationSchema={checkoutValidationSchema}
             onSubmit={handleSubmit}
         >
-            {({ values, setFieldValue }) => {
-
-                // Filter cities based on selected department using React.useMemo
-                const cityOptions = useMemo(() => {
-                    if (!values.department) return [];
-                    const deptData = locationData.find(d => d.departamento === values.department);
-                    return deptData
-                        ? deptData.ciudades.map(c => ({ label: c, value: c })).sort((a, b) => a.label.localeCompare(b.label))
-                        : [];
-                }, [values.department]);
-
-                // Effect to clear city when department changes
-                useEffect(() => {
-                    if (values.department && values.city) {
-                        const deptData = locationData.find(d => d.departamento === values.department);
-                        if (deptData && !deptData.ciudades.includes(values.city)) {
-                            setFieldValue('city', '');
-                        }
-                    }
-                }, [values.department, values.city, setFieldValue]);
-
+            {({ values }) => {
                 return (
                     <Form id="checkout-form" className="space-y-6">
                         <ShippingLogicHandler />
@@ -245,24 +269,7 @@ export function CheckoutForm({ onSubmitSuccess }: CheckoutFormProps) {
                         <div className="space-y-4">
                             <h3 className="text-center text-sm font-bold uppercase tracking-wider text-muted-foreground">Dirección de entrega</h3>
 
-                            <div className="space-y-4">
-                                <SelectField
-                                    name="department"
-                                    label="Departamento"
-                                    options={departments}
-                                    placeholder="Selecciona tu departamento..."
-                                    required
-                                />
-
-                                <SelectField
-                                    name="city"
-                                    label="Ciudad / Municipio"
-                                    options={cityOptions}
-                                    placeholder="Selecciona tu ciudad..."
-                                    disabled={!values.department}
-                                    required
-                                />
-                            </div>
+                            <LocationFields />
 
                             <TextField
                                 name="address"
