@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ShoppingCart, Menu, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,8 +13,13 @@ import { MobileMenu } from "./MobileMenu";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const dispatch = useAppDispatch();
   const cartItemCount = useAppSelector(selectCartItemCount);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleCartClick = () => {
     dispatch(toggleCart());
@@ -61,7 +66,7 @@ export function Header() {
             onClick={handleCartClick}
           >
             <ShoppingCart className="h-5 w-5" />
-            {cartItemCount > 0 && (
+            {mounted && cartItemCount > 0 && (
               <Badge
                 variant="destructive"
                 className="absolute -right-1 -top-1 flex h-4 w-4 items-center justify-center rounded-full p-0 text-[10px]"
