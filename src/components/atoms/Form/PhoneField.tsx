@@ -4,7 +4,7 @@ import React from "react";
 import { Phone } from "lucide-react";
 import { TextField } from "./TextField";
 
-interface PhoneFieldProps extends React.ComponentProps<typeof TextField> { }
+type PhoneFieldProps = React.ComponentProps<typeof TextField>;
 
 export function PhoneField(props: PhoneFieldProps) {
     return (
