@@ -42,11 +42,11 @@ export function CartPanel() {
   };
 
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <>
-          {/* Backdrop */}
+    <>
+      <AnimatePresence>
+        {isOpen && (
           <motion.div
+            key="cart-backdrop"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -54,9 +54,11 @@ export function CartPanel() {
             className="fixed inset-0 z-50 bg-black/50"
             onClick={handleClose}
           />
+        )}
 
-          {/* Panel */}
+        {isOpen && (
           <motion.div
+            key="cart-panel"
             initial={{ x: "100%" }}
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
@@ -133,12 +135,13 @@ export function CartPanel() {
               )}
             </div>
           </motion.div>
-        </>
-      )}
+        )}
+      </AnimatePresence>
+
       <CheckoutModal
         isOpen={isCheckoutOpen}
         onClose={() => setIsCheckoutOpen(false)}
       />
-    </AnimatePresence>
+    </>
   );
 }
