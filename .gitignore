@@ -37,3 +37,7 @@ next-env.d.ts
 .vscode/*
 !.vscode/settings.json
 .idea
+
+# SSH Keys
+inbomarket-droplet
+inbomarket-droplet.pub

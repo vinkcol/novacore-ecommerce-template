@@ -1,23 +1,11 @@
-"use client";
-
-import { useEffect } from "react";
 import { ContentLayout } from "@/components/templates/ContentLayout";
 import { ProductGrid } from "@/components/organisms/ProductGrid";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
-import { fetchProducts } from "@/features/products/redux/productsThunks";
-import {
-  selectSortedProducts,
-  selectProductsLoading,
-} from "@/features/products/redux/productsSelectors";
+import { getProducts } from "@/features/products/api/products.server";
 
-export default function ProductsPage() {
-  const dispatch = useAppDispatch();
-  const products = useAppSelector(selectSortedProducts);
-  const loading = useAppSelector(selectProductsLoading);
+export const dynamic = "force-dynamic";
 
-  useEffect(() => {
-    dispatch(fetchProducts());
-  }, [dispatch]);
+export default async function ProductsPage() {
+  const products = await getProducts();
 
   return (
     <ContentLayout>
@@ -28,7 +16,7 @@ export default function ProductsPage() {
             Explora nuestra colección completa
           </p>
         </div>
-        <ProductGrid products={products} loading={loading === "pending"} />
+        <ProductGrid products={products} />
       </div>
     </ContentLayout>
   );

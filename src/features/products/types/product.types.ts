@@ -1,12 +1,17 @@
+export interface ProductAttribute {
+  name: string;
+  value: string;
+}
+
 export interface ProductVariant {
   id: string;
   name: string;
-  type: string;
-  value: string;
-  size?: string;
-  color?: string;
-  inStock: boolean;
-  price?: number;
+  sku: string;
+  price: number;
+  stockQuantity: number;
+  images: string[];
+  attributes: ProductAttribute[];
+  isActive: boolean;
 }
 
 export interface Product {
@@ -28,14 +33,18 @@ export interface Product {
   brand: string;
   rating?: number;
   reviewCount?: number;
-  variants: ProductVariant[];
+  variants?: ProductVariant[];
   specifications?: Record<string, string>;
   features?: string[];
+  hasVariants: boolean;
+  type: "simple" | "variable";
   isNew: boolean;
   isFeatured: boolean;
   isSale: boolean;
   salePercentage?: number;
   isCheckoutUpsell?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface Category {

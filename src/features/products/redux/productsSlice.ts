@@ -27,8 +27,12 @@ export const productsSlice = createSlice({
   initialState,
   reducers: {
     setProducts: (state, action: PayloadAction<Product[]>) => {
+      console.log("=== productsSlice.setProducts ===");
+      console.log("[Slice] Received products:", action.payload?.length || 0);
+      console.log("[Slice] Products data:", action.payload);
       state.products = action.payload;
       state.loading = "succeeded";
+      console.log("[Slice] State updated, loading:", state.loading);
     },
 
     setSelectedProduct: (state, action: PayloadAction<Product | null>) => {
@@ -69,6 +73,12 @@ export const productsSlice = createSlice({
       state.error = action.payload;
       state.loading = "failed";
     },
+    fetchProductsRequest: (state) => {
+      console.log("=== productsSlice.fetchProductsRequest ===");
+      console.log("[Slice] Setting loading to pending");
+      state.loading = "pending";
+      state.error = null;
+    },
   },
 });
 
@@ -82,6 +92,7 @@ export const {
   setSortBy,
   setLoading,
   setError,
+  fetchProductsRequest,
 } = productsSlice.actions;
 
 export default productsSlice.reducer;

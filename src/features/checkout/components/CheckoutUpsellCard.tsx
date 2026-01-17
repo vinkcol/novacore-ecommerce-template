@@ -18,7 +18,7 @@ export function CheckoutUpsellCard({ product }: CheckoutUpsellCardProps) {
     const dispatch = useAppDispatch();
 
     const handleAdd = () => {
-        const variant = product.variants[0];
+        const variant = product.variants && product.variants.length > 0 ? product.variants[0] : null;
         dispatch(addToCart({
             id: `${product.id}-${variant?.id || 'default'}`,
             productId: product.id,
@@ -29,7 +29,7 @@ export function CheckoutUpsellCard({ product }: CheckoutUpsellCardProps) {
             quantity: 1,
             maxQuantity: product.stockQuantity,
             variant: variant ? {
-                name: variant.type,
+                name: "Variante",
                 value: variant.name
             } : undefined
         }));

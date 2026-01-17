@@ -4,8 +4,8 @@
       "id": "prod-001",
       "name": "Auriculares Inalámbricos Premium",
       "slug": "auriculares-inalambricos-premium",
-      "price": 299.99,
-      "compareAtPrice": 349.99,
+      "price": 1199900,
+      "compareAtPrice": 1399900,
       "description": "Experimenta un audio cristalino con nuestros auriculares inalámbricos premium con cancelación activa de ruido y 30 horas de batería.",
       "longDescription": "Estos auriculares inalámbricos premium ofrecen una calidad de sonido excepcional con tecnología avanzada de cancelación activa de ruido. El cómodo diseño supraural asegura horas de placer auditivo, mientras que la batería de 30 horas te mantiene conectado todo el día. Incluye conectividad Bluetooth 5.0, controles táctiles y diseño plegable para fácil portabilidad.",
       "images": [
@@ -39,7 +39,7 @@
           "type": "color",
           "value": "#000000",
           "inStock": true,
-          "price": 299.99
+          "price": 1199900
         },
         {
           "id": "var-001-silver",
@@ -47,7 +47,7 @@
           "type": "color",
           "value": "#C0C0C0",
           "inStock": true,
-          "price": 299.99
+          "price": 1199900
         }
       ],
       "specifications": {
@@ -73,7 +73,7 @@
       "id": "prod-002",
       "name": "Cartera de Cuero Minimalista",
       "slug": "cartera-cuero-minimalista",
-      "price": 49.99,
+      "price": 199900,
       "description": "Cartera de cuero genuino hecha a mano con protección RFID y diseño delgado.",
       "longDescription": "Esta cartera de cuero minimalista combina estilo con funcionalidad. Fabricada con cuero de grano completo premium, cuenta con tecnología de bloqueo RFID para proteger tus tarjetas del robo electrónico. El diseño delgado cabe cómodamente en tu bolsillo mientras sostiene hasta 8 tarjetas y efectivo.",
       "images": [
@@ -106,7 +106,7 @@
           "type": "color",
           "value": "#8B4513",
           "inStock": true,
-          "price": 49.99
+          "price": 199900
         },
         {
           "id": "var-002-black",
@@ -114,7 +114,7 @@
           "type": "color",
           "value": "#000000",
           "inStock": true,
-          "price": 49.99
+          "price": 199900
         },
         {
           "id": "var-002-tan",
@@ -122,7 +122,7 @@
           "type": "color",
           "value": "#D2B48C",
           "inStock": false,
-          "price": 49.99
+          "price": 199900
         }
       ],
       "specifications": {
@@ -146,8 +146,8 @@
       "id": "prod-003",
       "name": "Reloj Inteligente Fitness",
       "slug": "reloj-inteligente-fitness",
-      "price": 199.99,
-      "compareAtPrice": 249.99,
+      "price": 799900,
+      "compareAtPrice": 999900,
       "description": "Rastrea tus metas de fitness con este smartwatch avanzado con monitoreo de frecuencia cardíaca y GPS.",
       "longDescription": "Mantente conectado y en forma con nuestro Reloj Inteligente Fitness. Con monitoreo de salud avanzado, GPS integrado y 5 días de batería, es el compañero perfecto para tu estilo de vida activo. Resistente al agua hasta 50m y compatible con iOS y Android.",
       "images": [
@@ -180,7 +180,7 @@
           "type": "color",
           "value": "#000000",
           "inStock": true,
-          "price": 199.99
+          "price": 799900
         },
         {
           "id": "var-003-blue",
@@ -188,7 +188,7 @@
           "type": "color",
           "value": "#0066CC",
           "inStock": true,
-          "price": 199.99
+          "price": 799900
         },
         {
           "id": "var-003-rose",
@@ -196,7 +196,7 @@
           "type": "color",
           "value": "#B76E79",
           "inStock": true,
-          "price": 209.99
+          "price": 849900
         }
       ],
       "specifications": {
@@ -222,7 +222,7 @@
       "id": "prod-004",
       "name": "Camiseta de Algodón Orgánico",
       "slug": "camiseta-algodon-organico",
-      "price": 29.99,
+      "price": 119900,
       "description": "Camiseta suave y sostenible de algodón orgánico con corte clásico.",
       "longDescription": "Nuestra camiseta de algodón orgánico está hecha con 100% algodón orgánico certificado para máxima comodidad y sostenibilidad. Presenta un corte clásico, costuras reforzadas y tela pre-encogida. Perfecta para uso diario.",
       "images": [
@@ -257,7 +257,7 @@
           "size": "S",
           "color": "Blanco",
           "inStock": true,
-          "price": 29.99
+          "price": 119900
         },
         {
           "id": "var-004-m-white",
@@ -267,7 +267,7 @@
           "size": "M",
           "color": "Blanco",
           "inStock": true,
-          "price": 29.99
+          "price": 119900
         },
         {
           "id": "var-004-l-white",
@@ -277,7 +277,7 @@
           "size": "L",
           "color": "Blanco",
           "inStock": true,
-          "price": 29.99
+          "price": 119900
         },
         {
           "id": "var-004-s-black",
@@ -287,7 +287,7 @@
           "size": "S",
           "color": "Negro",
           "inStock": true,
-          "price": 29.99
+          "price": 119900
         },
         {
           "id": "var-004-m-black",
@@ -297,7 +297,7 @@
           "size": "M",
           "color": "Negro",
           "inStock": true,
-          "price": 29.99
+          "price": 119900
         },
         {
           "id": "var-004-l-black",
@@ -307,7 +307,7 @@
           "size": "L",
           "color": "Negro",
           "inStock": false,
-          "price": 29.99
+          "price": 119900
         }
       ],
       "specifications": {
@@ -331,8 +331,8 @@
       "id": "prod-005",
       "name": "Altavoz Bluetooth Portátil",
       "slug": "altavoz-bluetooth-portatil",
-      "price": 79.99,
-      "compareAtPrice": 99.99,
+      "price": 319900,
+      "compareAtPrice": 399900,
       "description": "Altavoz portátil resistente al agua con sonido 360 grados y 12 horas de batería.",
       "longDescription": "Lleva tu música a cualquier lugar con este resistente altavoz Bluetooth portátil. Cuenta con sonido 360 grados, clasificación IPX7 resistente al agua y batería de larga duración de 12 horas. Perfecto para aventuras al aire libre, fiestas en la piscina o escuchar en casa.",
       "images": [
@@ -365,7 +365,7 @@
           "type": "color",
           "value": "#0077BE",
           "inStock": true,
-          "price": 79.99
+          "price": 319900
         },
         {
           "id": "var-005-green",
@@ -373,7 +373,7 @@
           "type": "color",
           "value": "#228B22",
           "inStock": true,
-          "price": 79.99
+          "price": 319900
         },
         {
           "id": "var-005-red",
@@ -381,7 +381,7 @@
           "type": "color",
           "value": "#DC143C",
           "inStock": true,
-          "price": 79.99
+          "price": 319900
         }
       ],
       "specifications": {
@@ -407,7 +407,7 @@
       "id": "prod-006",
       "name": "Botella de Agua de Acero Inoxidable",
       "slug": "botella-agua-acero-inoxidable",
-      "price": 34.99,
+      "price": 139900,
       "description": "Botella de agua aislada que mantiene las bebidas frías por 24 horas o calientes por 12 horas.",
       "longDescription": "Mantente hidratado con estilo con nuestra botella de agua de acero inoxidable premium. El aislamiento de doble pared al vacío mantiene tus bebidas a la temperatura perfecta todo el día. Diseño libre de BPA y a prueba de fugas con boca ancha para fácil limpieza y cubos de hielo.",
       "images": [
@@ -440,7 +440,7 @@
           "type": "color",
           "value": "#C0C0C0",
           "inStock": true,
-          "price": 34.99
+          "price": 139900
         },
         {
           "id": "var-006-mint",
@@ -448,7 +448,7 @@
           "type": "color",
           "value": "#98FF98",
           "inStock": true,
-          "price": 34.99
+          "price": 139900
         },
         {
           "id": "var-006-coral",
@@ -456,7 +456,7 @@
           "type": "color",
           "value": "#FF6F61",
           "inStock": true,
-          "price": 34.99
+          "price": 139900
         },
         {
           "id": "var-006-navy",
@@ -464,7 +464,7 @@
           "type": "color",
           "value": "#000080",
           "inStock": true,
-          "price": 34.99
+          "price": 139900
         }
       ],
       "specifications": {
@@ -490,7 +490,7 @@
       "id": "prod-007",
       "name": "Base de Carga Inalámbrica",
       "slug": "base-carga-inalambrica",
-      "price": 39.99,
+      "price": 159900,
       "description": "Base de carga inalámbrica rápida compatible con todos los dispositivos Qi.",
       "longDescription": "Carga tus dispositivos sin esfuerzo con nuestra elegante base de carga inalámbrica. Cuenta con carga rápida de 10W, superficie antideslizante e indicador LED. Compatible con iPhone, Samsung y todos los smartphones y auriculares con Qi.",
       "images": [
@@ -523,7 +523,7 @@
           "type": "color",
           "value": "#000000",
           "inStock": true,
-          "price": 39.99
+          "price": 159900
         },
         {
           "id": "var-007-white",
@@ -531,7 +531,7 @@
           "type": "color",
           "value": "#FFFFFF",
           "inStock": true,
-          "price": 39.99
+          "price": 159900
         }
       ],
       "specifications": {
@@ -557,7 +557,7 @@
       "id": "prod-008",
       "name": "Mochila de Lona",
       "slug": "mochila-lona",
-      "price": 69.99,
+      "price": 279900,
       "description": "Mochila de lona duradera con compartimento para laptop y múltiples bolsillos.",
       "longDescription": "Esta elegante mochila de lona combina estética vintage con funcionalidad moderna. Cuenta con compartimento acolchado para laptop (hasta 15.6\"), múltiples bolsillos organizadores y correas acolchadas cómodas. Perfecta para traslados diarios, escuela o aventuras de fin de semana.",
       "images": [
@@ -590,7 +590,7 @@
           "type": "color",
           "value": "#C3B091",
           "inStock": true,
-          "price": 69.99
+          "price": 279900
         },
         {
           "id": "var-008-navy",
@@ -598,7 +598,7 @@
           "type": "color",
           "value": "#000080",
           "inStock": true,
-          "price": 69.99
+          "price": 279900
         },
         {
           "id": "var-008-olive",
@@ -606,7 +606,7 @@
           "type": "color",
           "value": "#808000",
           "inStock": true,
-          "price": 69.99
+          "price": 279900
         }
       ],
       "specifications": {

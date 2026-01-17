@@ -15,7 +15,7 @@ export function ProductGrid({ products, loading = false }: ProductGridProps) {
   const dispatch = useAppDispatch();
 
   const handleAddToCart = (product: Product) => {
-    const defaultVariant = product.variants[0];
+    const defaultVariant = product.variants ? product.variants[0] : undefined;
 
     dispatch(
       addToCart({
@@ -24,13 +24,13 @@ export function ProductGrid({ products, loading = false }: ProductGridProps) {
         variantId: defaultVariant?.id,
         name: product.name,
         price: product.price,
-        image: product.images[0],
+        image: product.images && product.images.length > 0 ? product.images[0] : "/placeholder-product.png",
         quantity: 1,
         variant: defaultVariant
           ? {
-              name: defaultVariant.name,
-              value: defaultVariant.value,
-            }
+            name: "Opción",
+            value: defaultVariant.name,
+          }
           : undefined,
         maxQuantity: product.stockQuantity,
       })

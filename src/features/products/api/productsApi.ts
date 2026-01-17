@@ -1,42 +1,61 @@
-import productsData from "@/data/products.json";
-import type { Product, ProductsData } from "../types";
-
-const data = productsData as unknown as ProductsData;
+import { db } from "@/lib/firebase/config";
+import { doc, getDoc } from "firebase/firestore";
+import type { Product } from "../types";
 
 export const productsApi = {
   async getAll(): Promise<Product[]> {
-    // Simulate API delay
-    await new Promise((resolve) => setTimeout(resolve, 100));
-    return data.products;
+    console.log("=== productsApi.getAll() START ===");
+    try {
+      console.log("[productsApi] Fetching /api/products...");
+      const response = await fetch("/api/products");
+      console.log("[productsApi] Response status:", response.status, response.statusText);
+
+      if (!response.ok) {
+        console.error("[productsApi] Response not OK:", response.status);
+        throw new Error("Error al obtener productos");
+      }
+
+      const data = await response.json();
+      console.log("[productsApi] Response data:", data);
+      console.log("[productsApi] Products count:", data.products?.length || 0);
+      console.log("=== productsApi.getAll() END ===");
+      return data.products as Product[];
+    } catch (error) {
+      console.error("=== productsApi.getAll() ERROR ===", error);
+      throw error;
+    }
   },
 
   async getById(id: string): Promise<Product | null> {
-    await new Promise((resolve) => setTimeout(resolve, 100));
-    const product = data.products.find(
-      (p) => p.id === id || p.slug === id
-    );
-    return product || null;
-  },
+    try {
+      const docRef = doc(db, "products", id);
+      const docSnap = await getDoc(docRef);
 
-  async getByCategory(category: string): Promise<Product[]> {
-    await new Promise((resolve) => setTimeout(resolve, 100));
-    return data.products.filter((p) =>
-      p.categories.some((c) => c.toLowerCase() === category.toLowerCase())
-    );
+      if (docSnap.exists()) {
+        return {
+          id: docSnap.id,
+          ...docSnap.data()
+        } as unknown as Product;
+      }
+      return null;
+    } catch (error) {
+      console.error("SHOP API: Error fetching product by ID", error);
+      throw error;
+    }
   },
 
   async getFeatured(): Promise<Product[]> {
-    await new Promise((resolve) => setTimeout(resolve, 100));
-    return data.products.filter((p) => p.isFeatured);
-  },
-
-  async getNew(): Promise<Product[]> {
-    await new Promise((resolve) => setTimeout(resolve, 100));
-    return data.products.filter((p) => p.isNew);
-  },
-
-  async getOnSale(): Promise<Product[]> {
-    await new Promise((resolve) => setTimeout(resolve, 100));
-    return data.products.filter((p) => p.isSale);
-  },
+    console.log("SHOP API: Fetching featured products via API route");
+    try {
+      const response = await fetch("/api/products?featured=true");
+      if (!response.ok) {
+        throw new Error("Error al obtener productos destacados");
+      }
+      const data = await response.json();
+      return data.products as Product[];
+    } catch (error) {
+      console.error("SHOP API: Error fetching featured products", error);
+      throw error;
+    }
+  }
 };

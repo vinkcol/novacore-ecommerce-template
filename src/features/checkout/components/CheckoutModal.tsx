@@ -2,12 +2,15 @@
 
 import React, { useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Truck, CreditCard, MessageCircle, ShoppingCart, Loader2 } from "lucide-react";
+import { X, Truck, CreditCard, ShoppingCart, Loader2 } from "lucide-react";
+import { FaWhatsapp } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { useAppSelector, useAppDispatch } from "@/redux/hooks";
 import { CheckoutForm } from "./CheckoutForm";
 import { CheckoutSummary } from "./CheckoutSummary";
 import { setOrderStatus } from "../redux/checkoutSlice";
+
+import { shopConfig } from "@/data/shop-config";
 
 interface CheckoutModalProps {
     isOpen: boolean;
@@ -18,6 +21,12 @@ interface CheckoutModalProps {
 export function CheckoutModal({ isOpen, onClose, maxRecommendations = 1 }: CheckoutModalProps) {
     const dispatch = useAppDispatch();
     const orderStatus = useAppSelector((state) => state.checkout.orderStatus);
+
+    const handleWhatsAppRedirect = () => {
+        const message = "Hola, necesito ayuda con mi pedido en contraentrega.";
+        const url = `https://wa.me/${shopConfig.whatsapp.number}?text=${encodeURIComponent(message)}`;
+        window.open(url, "_blank");
+    };
 
     // Reset status and manage body scroll
     useEffect(() => {
@@ -133,15 +142,20 @@ export function CheckoutModal({ isOpen, onClose, maxRecommendations = 1 }: Check
                                 )}
                             </Button>
 
-                            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                                <Button variant="outline" size="lg" className="h-12 rounded-xl border-2 bg-black text-white hover:bg-gray-900">
+                            <div className="grid grid-cols-1 gap-2">
+                                {/* <Button variant="outline" size="lg" className="h-12 rounded-xl border-2 bg-black text-white hover:bg-gray-900">
                                     <CreditCard className="mr-2 h-4 w-4" />
                                     <span className="text-xs font-bold">Pagar anticipado (10% OFF)</span>
-                                </Button>
+                                </Button> */}
 
-                                <Button variant="outline" size="lg" className="h-12 rounded-xl border-2 border-green-500 text-green-600 hover:bg-green-50">
-                                    <MessageCircle className="mr-2 h-4 w-4" />
-                                    <span className="text-xs font-bold">WhatsApp</span>
+                                <Button
+                                    variant="outline"
+                                    size="lg"
+                                    className="h-12 rounded-xl border-2 border-green-500 text-green-600 hover:bg-green-50"
+                                    onClick={handleWhatsAppRedirect}
+                                >
+                                    <FaWhatsapp className="mr-2 h-5 w-5" />
+                                    <span className="text-xs font-bold uppercase">PEDIR POR WHATSAPP</span>
                                 </Button>
                             </div>
                         </div>

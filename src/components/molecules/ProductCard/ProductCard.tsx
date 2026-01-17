@@ -39,7 +39,7 @@ export function ProductCard({
       >
         <div className="relative aspect-square overflow-hidden">
           <Image
-            src={product.images[0]}
+            src={product.images && product.images.length > 0 ? product.images[0] : "/placeholder-product.png"}
             alt={product.name}
             fill
             className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -76,15 +76,25 @@ export function ProductCard({
         </CardContent>
 
         <CardFooter className="p-4 pt-0">
-          <Button
-            onClick={handleAddToCart}
-            disabled={!product.inStock}
-            className="w-full"
-            size="sm"
-          >
-            <ShoppingCart className="mr-2 h-4 w-4" />
-            Agregar al Carrito
-          </Button>
+          {product.hasVariants ? (
+            <Button
+              variant="secondary"
+              className="w-full"
+              size="sm"
+            >
+              Ver Opciones
+            </Button>
+          ) : (
+            <Button
+              onClick={handleAddToCart}
+              disabled={!product.inStock}
+              className="w-full"
+              size="sm"
+            >
+              <ShoppingCart className="mr-2 h-4 w-4" />
+              Agregar al Carrito
+            </Button>
+          )}
         </CardFooter>
       </Card>
     </Link>

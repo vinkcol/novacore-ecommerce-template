@@ -30,7 +30,11 @@ export default function ProductDetailPage() {
 
   useEffect(() => {
     if (product && !selectedVariant) {
-      setSelectedVariant(product.variants[0] || null);
+      if (product.variants && product.variants.length > 0) {
+        setSelectedVariant(product.variants[0]);
+      } else {
+        setSelectedVariant(null);
+      }
     }
   }, [product, selectedVariant]);
 
@@ -48,9 +52,9 @@ export default function ProductDetailPage() {
         quantity: 1,
         variant: selectedVariant
           ? {
-              name: selectedVariant.name,
-              value: selectedVariant.value,
-            }
+            name: selectedVariant.name,
+            value: selectedVariant.name,
+          }
           : undefined,
         maxQuantity: product.stockQuantity,
       })
@@ -90,11 +94,10 @@ export default function ProductDetailPage() {
                   <button
                     key={index}
                     onClick={() => setSelectedImageIndex(index)}
-                    className={`relative aspect-square overflow-hidden rounded-md border-2 ${
-                      selectedImageIndex === index
-                        ? "border-primary"
-                        : "border-transparent"
-                    }`}
+                    className={`relative aspect-square overflow-hidden rounded-md border-2 ${selectedImageIndex === index
+                      ? "border-primary"
+                      : "border-transparent"
+                      }`}
                   >
                     <Image src={image} alt={`${product.name} ${index + 1}`} fill />
                   </button>
@@ -123,29 +126,23 @@ export default function ProductDetailPage() {
             <p className="text-muted-foreground">{product.longDescription || product.description}</p>
 
             {/* Variants */}
-            {product.variants.length > 0 && (
+            {product.variants && product.variants.length > 0 && (
               <div>
                 <h3 className="mb-3 font-semibold">
-                  Seleccionar {product.variants[0].type === "color" ? "Color" : "Opción"}
+                  Seleccionar Variante
                 </h3>
                 <div className="flex flex-wrap gap-2">
                   {product.variants.map((variant) => (
                     <button
                       key={variant.id}
                       onClick={() => setSelectedVariant(variant)}
-                      disabled={!variant.inStock}
-                      className={`flex items-center gap-2 rounded-md border-2 px-4 py-2 transition-colors ${
-                        selectedVariant?.id === variant.id
+                      disabled={variant.stockQuantity <= 0}
+                      className={`flex items-center gap-2 rounded-md border-2 px-4 py-2 transition-colors ${selectedVariant?.id === variant.id
                           ? "border-primary bg-primary/10"
                           : "border-gray-200 hover:border-primary"
-                      } ${!variant.inStock && "cursor-not-allowed opacity-50"}`}
+                        } ${variant.stockQuantity <= 0 && "cursor-not-allowed opacity-50"}`}
                     >
-                      {variant.type === "color" && (
-                        <div
-                          className="h-4 w-4 rounded-full border"
-                          style={{ backgroundColor: variant.value }}
-                        />
-                      )}
+
                       <span className="text-sm">{variant.name}</span>
                       {selectedVariant?.id === variant.id && (
                         <Check className="h-4 w-4" />
