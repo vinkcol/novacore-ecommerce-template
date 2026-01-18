@@ -13,6 +13,7 @@ import { ShippingRule } from "@/features/shipping/types/shipping.types";
 import { v4 as uuidv4 } from "uuid";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/useToast";
+import { ConfirmationModal } from "@/components/molecules/ConfirmationModal";
 
 export default function ShippingPage() {
     const dispatch = useDispatch();
@@ -83,15 +84,21 @@ export default function ShippingPage() {
         setEditingRule(null);
     };
 
-    const handleDeleteRule = (ruleId: string) => {
-        if (!config) return;
-        if (!confirm("¿Estás seguro de eliminar esta regla?")) return;
+    const [deleteRuleId, setDeleteRuleId] = useState<string | null>(null);
 
-        const updatedRules = config.rules.filter(r => r.id !== ruleId);
+    const handleDeleteRule = (ruleId: string) => {
+        setDeleteRuleId(ruleId);
+    };
+
+    const confirmDeleteRule = () => {
+        if (!config || !deleteRuleId) return;
+
+        const updatedRules = config.rules.filter(r => r.id !== deleteRuleId);
         dispatch(updateShippingConfigStart({
             ...config,
             rules: updatedRules
         }));
+        setDeleteRuleId(null);
     };
 
     const filteredRules = config?.rules.filter(rule =>
@@ -149,6 +156,16 @@ export default function ShippingPage() {
                     isEditing={!!editingRule}
                     initialValues={editingRule || undefined}
                     unavailableLocations={config?.rules.map(r => ({ type: r.type, value: r.value })) || []}
+                />
+
+                <ConfirmationModal
+                    isOpen={!!deleteRuleId}
+                    onClose={() => setDeleteRuleId(null)}
+                    onConfirm={confirmDeleteRule}
+                    title="¿Eliminar regla de envío?"
+                    description="Esta acción eliminará permanentemente esta regla de envío. No se puede deshacer."
+                    confirmText="Eliminar Regla"
+                    variant="destructive"
                 />
             </div>
         </AdminLayout>

@@ -65,19 +65,19 @@ export const adminRooms: AdminRoom[] = [
         allowedRoles: ['super_admin'],
     },
     {
-        id: 'configuration',
-        label: 'Configuración',
-        path: '/admin/configuration',
-        hasNavItem: true,
-        icon: Settings,
-        allowedRoles: ['super_admin'],
-    },
-    {
         id: 'shipping',
         label: 'Envíos',
         path: '/admin/shipping',
         hasNavItem: true,
         icon: Truck,
+        allowedRoles: ['super_admin'],
+    },
+    {
+        id: 'configuration',
+        label: 'Configuración',
+        path: '/admin/configuration',
+        hasNavItem: true,
+        icon: Settings,
         allowedRoles: ['super_admin'],
     }
 ];
