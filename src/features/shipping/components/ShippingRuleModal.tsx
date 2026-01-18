@@ -43,7 +43,7 @@ export function ShippingRuleModal({
     }));
 
     return (
-        <Dialog open={isOpen} onOpenChange={onClose}>
+        <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
             <DialogContent className="max-w-md rounded-3xl">
                 <DialogHeader>
                     <DialogTitle>{isEditing ? "Editar Regla" : "Nueva Regla de Envío"}</DialogTitle>
