@@ -36,33 +36,43 @@ export default function ShippingPage() {
         }
     }, [updateSuccess, dispatch, toast]);
 
-    const handleCreateRule = (values: Partial<ShippingRule>) => {
+    const handleCreateRule = (rules: Partial<ShippingRule>[]) => {
         if (!config) return;
 
-        const newRule: ShippingRule = {
+        const newRules: ShippingRule[] = rules.map(val => ({
             id: uuidv4(),
-            type: values.type || 'city',
-            value: values.value || '',
-            cost: Number(values.cost),
-            deliveryDays: values.deliveryDays || { min: 2, max: 5 },
-            allowCOD: values.allowCOD !== undefined ? values.allowCOD : true,
+            type: val.type || 'city',
+            value: val.value || '',
+            cost: Number(val.cost),
+            deliveryDays: val.deliveryDays || { min: 2, max: 5 },
+            allowCOD: val.allowCOD !== undefined ? val.allowCOD : true,
             isActive: true
-        };
+        }));
+
+        // Filter out duplicates based on value if desired, or just append.
+        // For now, we append. Backend should handle validation if needed.
 
         const updatedConfig = {
             ...config,
-            rules: [...config.rules, newRule]
+            rules: [...config.rules, ...newRules]
         };
 
         dispatch(updateShippingConfigStart(updatedConfig));
     };
 
-    const handleUpdateRule = (values: Partial<ShippingRule>) => {
-        if (!config || !editingRule) return;
+    const handleUpdateRule = (rules: Partial<ShippingRule>[]) => {
+        if (!config || !editingRule || rules.length === 0) return;
+        // In edit mode we technically only edit one rule at a time via the list,
+        // but the modal now returns an array.
+        // If we are editing a single rule, rules[0] contains the data.
+        // However, if the user selected multiple locations in Edit mode (if logic allowed), we'd have issues.
+        // Assuming we force "Single Edit" logic:
+
+        const updatedValues = rules[0];
 
         const updatedRules = config.rules.map(rule =>
             rule.id === editingRule.id
-                ? { ...rule, ...values } as ShippingRule
+                ? { ...rule, ...updatedValues, id: rule.id } as ShippingRule
                 : rule
         );
 

@@ -1,26 +1,24 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import { TextField, NumberField, SelectField, CheckboxField } from "@/components/atoms/Form";
+import { NumberField, CheckboxField } from "@/components/atoms/Form";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ShippingRule } from "../types/shipping.types";
-import colombiaData from "@/data/colombia.location.json";
-import { Loader2, Save } from "lucide-react";
+import { LocationTreeSelector, SelectedLocation } from "./LocationTreeSelector";
 
 interface ShippingRuleModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onSubmit: (values: Partial<ShippingRule>) => void;
+    onSubmit: (values: Partial<ShippingRule>[]) => void;
     initialValues?: Partial<ShippingRule>;
     isEditing: boolean;
 }
 
 const ruleSchema = Yup.object().shape({
-    type: Yup.string().required("Tipo es requerido").oneOf(['city', 'department']),
-    value: Yup.string().required("Ubicación es requerida"),
+    locations: Yup.array().min(1, "Debes seleccionar al menos una ubicación"),
     cost: Yup.number().min(0).required("Costo es requerido"),
     deliveryDays: Yup.object({
         min: Yup.number().min(0).required(),
@@ -36,23 +34,16 @@ export function ShippingRuleModal({
     initialValues,
     isEditing
 }: ShippingRuleModalProps) {
-    // Determine departments options
-    const departmentOptions = colombiaData.map(dep => ({
-        label: dep.departamento,
-        value: dep.departamento
-    }));
-
     return (
         <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-            <DialogContent className="max-w-md rounded-3xl">
-                <DialogHeader>
+            <DialogContent className="max-w-2xl rounded-3xl h-[80vh] flex flex-col p-0 gap-0 overflow-hidden">
+                <DialogHeader className="p-6 border-b">
                     <DialogTitle>{isEditing ? "Editar Regla" : "Nueva Regla de Envío"}</DialogTitle>
                 </DialogHeader>
 
                 <Formik
                     initialValues={{
-                        type: initialValues?.type || 'city', // Default to City usually
-                        value: initialValues?.value || '',
+                        locations: initialValues ? [{ type: initialValues.type!, value: initialValues.value! } as SelectedLocation] : [],
                         cost: initialValues?.cost || 0,
                         deliveryDays: {
                             min: initialValues?.deliveryDays?.min || 2,
@@ -62,135 +53,84 @@ export function ShippingRuleModal({
                     }}
                     validationSchema={ruleSchema}
                     onSubmit={(values) => {
-                        onSubmit(values as unknown as Partial<ShippingRule>);
+                        const rules: Partial<ShippingRule>[] = values.locations.map(loc => ({
+                            type: loc.type,
+                            value: loc.value,
+                            cost: values.cost,
+                            deliveryDays: values.deliveryDays,
+                            allowCOD: values.allowCOD
+                        }));
+                        onSubmit(rules);
                         onClose();
                     }}
                     enableReinitialize
                 >
-                    {({ values, setFieldValue }) => {
-                        // Cascading logic for Cities
-                        const selectedDep = colombiaData.find(d =>
-                            values.type === 'city' && d.ciudades.includes(values.value)
-                        ) || (values.type === 'city' ? colombiaData[0] : null); // Fallback or handle better?
-
-                        // Actually, better UI: Select Dep FIRST, then City.
-                        // But data structure is plain: type + value.
-
-                        // Refined UI Logic:
-                        // If Type == Department: Show Department Select.
-                        // If Type == City: Show Department Select (filtered out from payload?) AND City Select? OR just City Select with Grouped options?
-                        // Let's go with Department + City selectors helper state.
-
-                        return (
-                            <Form className="space-y-4">
-                                <div className="grid grid-cols-2 gap-4">
-                                    <SelectField
-                                        name="type"
-                                        label="Tipo de Regla"
-                                        options={[
-                                            { label: "Departamento", value: "department" },
-                                            { label: "Ciudad", value: "city" }
-                                        ]}
-                                    />
-
-                                    <NumberField
-                                        name="cost"
-                                        label="Costo de Envío"
-                                    />
-                                </div>
-
-                                {/* Dynamic Location Selector */}
-                                {values.type === 'department' ? (
-                                    <SelectField
-                                        name="value"
-                                        label="Departamento"
-                                        placeholder="Selecciona departamento"
-                                        options={departmentOptions}
-
-                                    />
-                                ) : (
-                                    // For City, usually we want to filter by Department first for UX
-                                    <CitySelector
-                                        value={values.value}
-                                        onChange={(val) => setFieldValue('value', val)}
-                                    />
-                                )}
-
-                                <div className="grid grid-cols-2 gap-4">
-                                    <NumberField
-                                        name="deliveryDays.min"
-                                        label="Días Mínimos"
-                                    />
-                                    <NumberField
-                                        name="deliveryDays.max"
-                                        label="Días Máximos"
-                                    />
-                                </div>
-
-                                <CheckboxField
-                                    name="allowCOD"
-                                    label="Permitir Pago Contraentrega"
+                    {({ values, setFieldValue, errors, touched }) => (
+                        <Form className="flex-1 flex flex-col md:flex-row overflow-hidden">
+                            {/* Left: Location Tree (Scrollable) */}
+                            <div className="flex-1 border-r bg-muted/10 p-4 overflow-y-auto">
+                                <label className="text-sm font-semibold mb-2 block">
+                                    Seleccionar Ubicaciones
+                                    {touched.locations && errors.locations && (
+                                        <span className="text-xs text-destructive ml-2 font-normal animate-pulse">
+                                            {String(errors.locations)}
+                                        </span>
+                                    )}
+                                </label>
+                                <LocationTreeSelector
+                                    selected={values.locations}
+                                    onChange={(selected) => setFieldValue("locations", selected)}
                                 />
+                            </div>
 
-                                <DialogFooter>
-                                    <Button type="button" variant="outline" onClick={onClose} className="rounded-xl">
-                                        Cancelar
-                                    </Button>
-                                    <Button type="submit" className="rounded-xl">
-                                        {isEditing ? "Guardar Cambios" : "Crear Regla"}
-                                    </Button>
-                                </DialogFooter>
-                            </Form>
-                        );
-                    }}
+                            {/* Right: Settings (Fixed) */}
+                            <div className="w-full md:w-80 p-6 flex flex-col gap-6 bg-background overflow-y-auto">
+                                <div>
+                                    <h3 className="text-sm font-semibold mb-4 text-muted-foreground uppercase tracking-wide">Configuración de Envío</h3>
+
+                                    <div className="space-y-4">
+                                        <NumberField
+                                            name="cost"
+                                            label="Costo de Envío"
+                                            placeholder="0"
+                                            className="text-lg font-bold"
+                                        />
+
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <NumberField
+                                                name="deliveryDays.min"
+                                                label="Mínimo de Días"
+                                            />
+                                            <NumberField
+                                                name="deliveryDays.max"
+                                                label="Máximo de Días"
+                                            />
+                                        </div>
+
+                                        <div className="pt-2 border-t">
+                                            <CheckboxField
+                                                name="allowCOD"
+                                                label="Habilitar Pago Contraentrega"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="mt-auto pt-6">
+                                    <div className="flex gap-3">
+                                        <Button type="button" variant="outline" onClick={onClose} className="flex-1 rounded-xl">
+                                            Cancelar
+                                        </Button>
+                                        <Button type="submit" className="flex-1 rounded-xl">
+                                            {isEditing ? "Guardar" : "Crear Reglas"}
+                                        </Button>
+                                    </div>
+                                </div>
+                            </div>
+                        </Form>
+                    )}
                 </Formik>
             </DialogContent>
         </Dialog>
-    );
-}
-
-// Helper component for City selection with Department filter
-function CitySelector({ value, onChange }: { value: string, onChange: (val: string) => void }) {
-    const [selectedDep, setSelectedDep] = useState<string>("");
-
-    // Initialize department based on existing city value
-    useEffect(() => {
-        if (value && !selectedDep) {
-            const foundDep = colombiaData.find(d => d.ciudades.includes(value));
-            if (foundDep) setSelectedDep(foundDep.departamento);
-        }
-    }, [value, selectedDep]);
-
-    const depOptions = colombiaData.map(d => ({ label: d.departamento, value: d.departamento }));
-    const cityOptions = selectedDep
-        ? (colombiaData.find(d => d.departamento === selectedDep)?.ciudades.map(c => ({ label: c, value: c })) || [])
-        : [];
-
-    return (
-        <div className="space-y-3 p-3 bg-muted/20 rounded-xl border border-dashed">
-            <div className="text-xs font-semibold uppercase text-muted-foreground">Ubicación</div>
-            <select
-                className="w-full rounded-xl border border-input bg-background px-3 py-2 text-sm"
-                value={selectedDep}
-                onChange={(e) => {
-                    setSelectedDep(e.target.value);
-                    onChange(""); // Reset city when dep changes
-                }}
-            >
-                <option value="">Selecciona Departamento...</option>
-                {depOptions.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
-            </select>
-
-            <select
-                className="w-full rounded-xl border border-input bg-background px-3 py-2 text-sm"
-                value={value}
-                onChange={(e) => onChange(e.target.value)}
-                disabled={!selectedDep}
-            >
-                <option value="">Selecciona Ciudad...</option>
-                {cityOptions.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
-            </select>
-            {/* Note: In a real app we would use our custom SelectField, but standard select is fine for this composite logic for speed. */}
-        </div>
     );
 }
