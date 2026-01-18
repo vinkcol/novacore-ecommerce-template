@@ -148,6 +148,7 @@ export default function ShippingPage() {
                     onSubmit={editingRule ? handleUpdateRule : handleCreateRule}
                     isEditing={!!editingRule}
                     initialValues={editingRule || undefined}
+                    unavailableLocations={config?.rules.map(r => ({ type: r.type, value: r.value })) || []}
                 />
             </div>
         </AdminLayout>

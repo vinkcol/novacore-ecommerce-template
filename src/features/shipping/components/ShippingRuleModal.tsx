@@ -15,6 +15,7 @@ interface ShippingRuleModalProps {
     onSubmit: (values: Partial<ShippingRule>[]) => void;
     initialValues?: Partial<ShippingRule>;
     isEditing: boolean;
+    unavailableLocations?: SelectedLocation[];
 }
 
 const ruleSchema = Yup.object().shape({
@@ -32,7 +33,8 @@ export function ShippingRuleModal({
     onClose,
     onSubmit,
     initialValues,
-    isEditing
+    isEditing,
+    unavailableLocations = []
 }: ShippingRuleModalProps) {
     return (
         <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
@@ -80,6 +82,7 @@ export function ShippingRuleModal({
                                 <LocationTreeSelector
                                     selected={values.locations}
                                     onChange={(selected) => setFieldValue("locations", selected)}
+                                    unavailableLocations={unavailableLocations}
                                 />
                             </div>
 

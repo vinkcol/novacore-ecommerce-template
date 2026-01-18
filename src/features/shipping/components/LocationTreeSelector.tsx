@@ -14,9 +14,11 @@ export interface SelectedLocation {
 interface LocationTreeSelectorProps {
     selected: SelectedLocation[];
     onChange: (selected: SelectedLocation[]) => void;
+    unavailableLocations?: SelectedLocation[];
 }
 
-export function LocationTreeSelector({ selected, onChange }: LocationTreeSelectorProps) {
+export function LocationTreeSelector({ selected, onChange, unavailableLocations = [] }: LocationTreeSelectorProps) {
+
     const [searchQuery, setSearchQuery] = useState("");
     const [expandedDeps, setExpandedDeps] = useState<string[]>([]);
 
@@ -26,7 +28,13 @@ export function LocationTreeSelector({ selected, onChange }: LocationTreeSelecto
         );
     };
 
+    const isUnavailable = (type: 'city' | 'department', value: string) => {
+        return unavailableLocations.some(u => u.type === type && u.value === value);
+    };
+
     const handleSelect = (type: 'city' | 'department', value: string) => {
+        if (isUnavailable(type, value)) return;
+
         const exists = selected.find(s => s.type === type && s.value === value);
         if (exists) {
             onChange(selected.filter(s => !(s.type === type && s.value === value)));
@@ -77,56 +85,64 @@ export function LocationTreeSelector({ selected, onChange }: LocationTreeSelecto
             </div>
 
             <div className="border rounded-xl h-[300px] overflow-y-auto bg-card p-2 space-y-1">
-                {filteredData.map((dep) => (
-                    <div key={dep.departamento} className="select-none">
-                        {/* Department Header */}
-                        <div className="flex items-center gap-2 p-1.5 hover:bg-muted/50 rounded-lg group">
-                            <button
-                                type="button"
-                                onClick={() => toggleDepartment(dep.departamento)}
-                                className="p-0.5 hover:bg-muted rounded text-muted-foreground"
-                            >
-                                {expandedDeps.includes(dep.departamento) ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
-                            </button>
+                {filteredData.map((dep) => {
+                    const deptUnavailable = isUnavailable('department', dep.departamento);
 
-                            <div
-                                className={`flex items-center justify-center h-4 w-4 rounded border ${isSelected('department', dep.departamento) ? 'bg-primary border-primary text-primary-foreground' : 'border-muted-foreground/30'} cursor-pointer transition-colors`}
-                                onClick={() => handleSelect('department', dep.departamento)}
-                            >
-                                {isSelected('department', dep.departamento) && <Check size={10} strokeWidth={4} />}
+                    return (
+                        <div key={dep.departamento} className="select-none">
+                            {/* Department Header */}
+                            <div className={`flex items-center gap-2 p-1.5 rounded-lg group ${deptUnavailable ? 'opacity-50 pointer-events-none' : 'hover:bg-muted/50'}`}>
+                                <button
+                                    type="button"
+                                    onClick={() => !deptUnavailable && toggleDepartment(dep.departamento)}
+                                    className="p-0.5 hover:bg-muted rounded text-muted-foreground"
+                                >
+                                    {expandedDeps.includes(dep.departamento) ? <ChevronDown size={14} /> : <ChevronRight size={14} />}
+                                </button>
+
+                                <div
+                                    className={`flex items-center justify-center h-4 w-4 rounded border ${isSelected('department', dep.departamento) ? 'bg-primary border-primary text-primary-foreground' : 'border-muted-foreground/30'} cursor-pointer transition-colors ${deptUnavailable ? 'bg-muted border-muted-foreground/20 cursor-not-allowed' : ''}`}
+                                    onClick={() => handleSelect('department', dep.departamento)}
+                                >
+                                    {isSelected('department', dep.departamento) && <Check size={10} strokeWidth={4} />}
+                                </div>
+
+                                <span
+                                    className="text-sm font-medium flex-1 cursor-pointer"
+                                    onClick={() => !deptUnavailable && toggleDepartment(dep.departamento)}
+                                >
+                                    {dep.departamento}
+                                    {deptUnavailable && <span className="ml-2 text-[10px] text-muted-foreground bg-muted px-1 rounded">(Asignado)</span>}
+                                </span>
                             </div>
 
-                            <span
-                                className="text-sm font-medium flex-1 cursor-pointer"
-                                onClick={() => toggleDepartment(dep.departamento)}
-                            >
-                                {dep.departamento}
-                            </span>
+                            {/* Cities List */}
+                            {expandedDeps.includes(dep.departamento) && (
+                                <div className="ml-7 grid grid-cols-1 gap-0.5 border-l px-2 py-1">
+                                    {dep.ciudades.map(city => {
+                                        const cityUnavailable = isUnavailable('city', city);
+                                        return (
+                                            <div key={city} className={`flex items-center gap-2 p-1 rounded-lg ${cityUnavailable ? 'opacity-50 pointer-events-none' : 'hover:bg-muted/50'}`}>
+                                                <div
+                                                    className={`flex items-center justify-center h-4 w-4 rounded border ${isSelected('city', city) ? 'bg-primary border-primary text-primary-foreground' : 'border-muted-foreground/30'} cursor-pointer transition-colors ${cityUnavailable ? 'bg-muted border-muted-foreground/20 cursor-not-allowed' : ''}`}
+                                                    onClick={() => handleSelect('city', city)}
+                                                >
+                                                    {isSelected('city', city) && <Check size={10} strokeWidth={4} />}
+                                                </div>
+                                                <span
+                                                    className="text-sm text-muted-foreground cursor-pointer hover:text-foreground"
+                                                    onClick={() => handleSelect('city', city)}
+                                                >
+                                                    {city}
+                                                </span>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            )}
                         </div>
-
-                        {/* Cities List */}
-                        {expandedDeps.includes(dep.departamento) && (
-                            <div className="ml-7 grid grid-cols-1 gap-0.5 border-l px-2 py-1">
-                                {dep.ciudades.map(city => (
-                                    <div key={city} className="flex items-center gap-2 p-1 hover:bg-muted/50 rounded-lg">
-                                        <div
-                                            className={`flex items-center justify-center h-4 w-4 rounded border ${isSelected('city', city) ? 'bg-primary border-primary text-primary-foreground' : 'border-muted-foreground/30'} cursor-pointer transition-colors`}
-                                            onClick={() => handleSelect('city', city)}
-                                        >
-                                            {isSelected('city', city) && <Check size={10} strokeWidth={4} />}
-                                        </div>
-                                        <span
-                                            className="text-sm text-muted-foreground cursor-pointer hover:text-foreground"
-                                            onClick={() => handleSelect('city', city)}
-                                        >
-                                            {city}
-                                        </span>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-                    </div>
-                ))}
+                    );
+                })}
 
                 {filteredData.length === 0 && (
                     <div className="p-4 text-center text-xs text-muted-foreground">
