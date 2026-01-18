@@ -6,6 +6,7 @@ import { watchCategories } from "@/features/categories/redux/categoriesSaga";
 import { watchCollections } from "@/features/collections/redux/collectionsSaga";
 import { watchAdminCollections } from "@/features/collections/redux/adminCollectionsSaga";
 import { configurationSaga } from "@/features/configuration/redux/configurationSaga";
+import { shippingSaga } from "@/features/shipping/redux/shippingSaga";
 
 export default function* rootSaga() {
     yield all([
@@ -16,5 +17,6 @@ export default function* rootSaga() {
         fork(watchCollections),
         fork(watchAdminCollections),
         fork(configurationSaga),
+        fork(shippingSaga),
     ]);
 }

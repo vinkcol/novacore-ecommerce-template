@@ -7,6 +7,7 @@ import adminCollectionsReducer from "@/features/collections/redux/adminCollectio
 import cartReducer from "@/features/cart/redux/cartSlice";
 import checkoutReducer from "@/features/checkout/redux/checkoutSlice";
 import configurationReducer from "@/features/configuration/redux/configurationSlice";
+import { shippingReducer } from "@/features/shipping/redux/shippingSlice";
 
 export const rootReducer = combineReducers({
   products: productsReducer,
@@ -17,4 +18,5 @@ export const rootReducer = combineReducers({
   cart: cartReducer,
   checkout: checkoutReducer,
   configuration: configurationReducer,
+  shipping: shippingReducer,
 });
