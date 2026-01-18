@@ -12,6 +12,7 @@ interface FormFieldWrapperProps {
     children: React.ReactNode;
     className?: string;
     id?: string;
+    description?: string;
 }
 
 export function FormFieldWrapper({
@@ -22,6 +23,7 @@ export function FormFieldWrapper({
     children,
     className,
     id,
+    description
 }: FormFieldWrapperProps) {
     return (
         <div className={cn("space-y-1.5", className)}>
@@ -36,6 +38,11 @@ export function FormFieldWrapper({
             <div className="relative">
                 {children}
             </div>
+            {description && (
+                <p className="text-[11px] text-muted-foreground ml-1">
+                    {description}
+                </p>
+            )}
             {touched && error && (
                 <p className="text-[11px] font-medium text-destructive ml-1 animate-in fade-in slide-in-from-top-1">
                     {error}

@@ -3,7 +3,7 @@
 import React, { useEffect } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import { TextField, NumberField, SelectField, CheckboxField, TextAreaField } from "@/components/atoms/Form";
+import { TextField, NumberField, SelectField, CheckboxField, TextAreaField, RichTextField } from "@/components/atoms/Form";
 import { ArrowLeft, Save, Package, Loader2, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -215,10 +215,10 @@ export function ProductForm({ initialProduct }: ProductFormProps) {
                                     required
                                 />
 
-                                <TextAreaField
+                                <RichTextField
                                     name="longDescription"
                                     label="Descripción Larga"
-                                    placeholder="Detalla todas las características del producto..."
+                                    placeholder="Describe detalladamente tu producto..."
                                 />
 
                                 <div className="pt-4">

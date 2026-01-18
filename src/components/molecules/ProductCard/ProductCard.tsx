@@ -30,7 +30,7 @@ export function ProductCard({
   };
 
   return (
-    <Link href={`/products/${product.slug}`}>
+    <Link href={`/products/${product.id}`}>
       <Card
         className={cn(
           "group overflow-hidden transition-all hover:shadow-lg",

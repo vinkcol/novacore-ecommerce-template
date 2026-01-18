@@ -123,7 +123,14 @@ export default function ProductDetailPage() {
               />
             </div>
 
-            <p className="text-muted-foreground">{product.longDescription || product.description}</p>
+            {product.longDescription ? (
+              <div
+                className="prose prose-sm max-w-none text-muted-foreground dark:prose-invert"
+                dangerouslySetInnerHTML={{ __html: product.longDescription }}
+              />
+            ) : (
+              <p className="text-muted-foreground">{product.description}</p>
+            )}
 
             {/* Variants */}
             {product.variants && product.variants.length > 0 && (
@@ -138,8 +145,8 @@ export default function ProductDetailPage() {
                       onClick={() => setSelectedVariant(variant)}
                       disabled={variant.stockQuantity <= 0}
                       className={`flex items-center gap-2 rounded-md border-2 px-4 py-2 transition-colors ${selectedVariant?.id === variant.id
-                          ? "border-primary bg-primary/10"
-                          : "border-gray-200 hover:border-primary"
+                        ? "border-primary bg-primary/10"
+                        : "border-gray-200 hover:border-primary"
                         } ${variant.stockQuantity <= 0 && "cursor-not-allowed opacity-50"}`}
                     >
 
