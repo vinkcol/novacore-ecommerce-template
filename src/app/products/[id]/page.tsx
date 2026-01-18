@@ -80,26 +80,35 @@ export default function ProductDetailPage() {
       <div className="container mx-auto px-4 py-8">
         <div className="grid gap-8 lg:grid-cols-2">
           {/* Images */}
-          <div className="space-y-4">
-            <div className="relative aspect-square overflow-hidden rounded-lg">
+          {/* Images */}
+          <div className="flex flex-col gap-6">
+            <div className="relative aspect-square w-full overflow-hidden rounded-2xl border bg-card shadow-sm">
               <Image
                 src={product.images[selectedImageIndex]}
                 alt={product.name}
                 fill
+                className="object-cover transition-transform duration-500 hover:scale-105"
+                priority
               />
             </div>
+
             {product.images.length > 1 && (
-              <div className="grid grid-cols-4 gap-4">
+              <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide snap-x px-1">
                 {product.images.map((image, index) => (
                   <button
                     key={index}
                     onClick={() => setSelectedImageIndex(index)}
-                    className={`relative aspect-square overflow-hidden rounded-md border-2 ${selectedImageIndex === index
-                      ? "border-primary"
-                      : "border-transparent"
+                    className={`relative flex-shrink-0 aspect-square w-20 overflow-hidden rounded-xl border-2 transition-all duration-300 snap-start ${selectedImageIndex === index
+                      ? "border-primary ring-4 ring-primary/10 scale-105 opacity-100 shadow-md z-10"
+                      : "border-transparent opacity-60 hover:opacity-100 hover:border-gray-200"
                       }`}
                   >
-                    <Image src={image} alt={`${product.name} ${index + 1}`} fill />
+                    <Image
+                      src={image}
+                      alt={`${product.name} ${index + 1}`}
+                      fill
+                      className="object-cover"
+                    />
                   </button>
                 ))}
               </div>
