@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { Upload, ImageIcon, X, Trash2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { Image } from "@/components/atoms/Image";
 
 interface EditableLogoProps {
     currentLogoUrl: string | null;
@@ -79,11 +80,13 @@ export const EditableLogo = ({
                 onClick={handleClick}
             >
                 {currentLogoUrl ? (
-                    <img
+                    <Image
                         src={currentLogoUrl}
                         alt="Logo Preview"
+                        fill
+                        unoptimized={currentLogoUrl.includes("firebase") || currentLogoUrl.includes("storage")}
                         className={cn(
-                            "w-full h-full object-contain p-2",
+                            "object-contain p-2",
                             isEditing && "group-hover:opacity-40 transition-opacity"
                         )}
                     />

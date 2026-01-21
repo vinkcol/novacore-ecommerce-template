@@ -6,6 +6,8 @@ import { Collection } from "../../types/collection.types";
 import { Badge } from "@/components/ui/badge";
 import { useSelector } from "react-redux";
 import { selectAdminProducts } from "@/features/products/redux/adminProductsSelectors";
+import { Image } from "@/components/atoms/Image";
+import { LucideIcon } from "lucide-react";
 
 interface CollectionDetailModalProps {
     isOpen: boolean;
@@ -104,10 +106,12 @@ export function CollectionDetailModal({ isOpen, onClose, collection }: Collectio
                                         className="group bg-card border rounded-[28px] p-4 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 hover:-translate-y-1"
                                     >
                                         <div className="aspect-square rounded-2xl overflow-hidden bg-muted mb-4 relative">
-                                            <img
+                                            <Image
                                                 src={product.images[0]}
                                                 alt={product.name}
-                                                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                                fill
+                                                unoptimized={product.images[0].includes("firebase") || product.images[0].includes("storage")}
+                                                className="object-cover transition-transform duration-500 group-hover:scale-110"
                                             />
                                             {!product.inStock && (
                                                 <div className="absolute inset-0 bg-background/60 backdrop-blur-[2px] flex items-center justify-center">
@@ -148,7 +152,7 @@ export function CollectionDetailModal({ isOpen, onClose, collection }: Collectio
     );
 }
 
-function StatCard({ icon: Icon, label, value }: { icon: any, label: string, value: string }) {
+function StatCard({ icon: Icon, label, value }: { icon: LucideIcon, label: string, value: string }) {
     return (
         <div className="bg-muted/30 border border-muted p-4 rounded-3xl">
             <div className="flex items-center gap-2 text-muted-foreground mb-1">

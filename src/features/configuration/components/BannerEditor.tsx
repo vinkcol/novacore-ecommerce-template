@@ -8,6 +8,7 @@ import { updateConfigurationStart } from "@/features/configuration/redux/configu
 import { uploadImage } from "@/lib/cloudinary/upload";
 import { useToast } from "@/hooks/useToast";
 import { Input } from "@/components/ui/input";
+import { Image } from "@/components/atoms/Image";
 
 const DEFAULT_BANNERS = [
     "https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=2070&auto=format&fit=crop",
@@ -156,10 +157,12 @@ export const BannerEditor = () => {
                 onClick={() => isEditing && fileInputRef.current?.click()}
             >
                 {previewUrl ? (
-                    <img
+                    <Image
                         src={previewUrl}
                         alt="Store Banner"
-                        className={cn("w-full h-full object-cover transition-transform duration-700", isEditing && "hover:scale-105 opacity-80")}
+                        fill
+                        unoptimized={previewUrl.includes("firebase") || previewUrl.includes("storage") || previewUrl.startsWith("blob:")}
+                        className={cn("object-cover transition-transform duration-700", isEditing && "hover:scale-105 opacity-80")}
                     />
                 ) : (
                     <div className="w-full h-full bg-muted flex items-center justify-center text-muted-foreground">
@@ -224,7 +227,12 @@ export const BannerEditor = () => {
                                         previewUrl === url ? "border-primary ring-2 ring-primary/20" : "border-transparent opacity-70 hover:opacity-100"
                                     )}
                                 >
-                                    <img src={url} alt={`Banner Option ${idx + 1}`} className="w-full h-full object-cover" />
+                                    <Image
+                                        src={url}
+                                        alt={`Banner Option ${idx + 1}`}
+                                        fill
+                                        className="object-cover"
+                                    />
                                 </button>
                             ))}
                         </div>

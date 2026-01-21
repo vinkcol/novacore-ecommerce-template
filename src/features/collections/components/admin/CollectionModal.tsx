@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import { Formik, Form, FieldArray } from "formik";
 import * as Yup from "yup";
 import { TextField, TextAreaField, CheckboxField } from "@/components/atoms/Form";
+import { Image } from "@/components/atoms/Image";
 import { X, Loader2, Library, Package } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { Collection } from "../../types/collection.types";
@@ -182,8 +183,14 @@ export function CollectionModal({ isOpen, onClose, collectionItem }: CollectionM
                                                                     className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
                                                                 />
                                                             </div>
-                                                            <div className="h-10 w-10 rounded-lg overflow-hidden border bg-background flex-shrink-0">
-                                                                <img src={product.images[0]} alt={product.name} className="h-full w-full object-cover" />
+                                                            <div className="h-10 w-10 rounded-lg overflow-hidden border bg-background flex-shrink-0 relative">
+                                                                <Image
+                                                                    src={product.images[0]}
+                                                                    alt={product.name}
+                                                                    fill
+                                                                    unoptimized={product.images[0].includes("firebase") || product.images[0].includes("storage")}
+                                                                    className="object-cover"
+                                                                />
                                                             </div>
                                                             <div className="flex flex-col min-w-0">
                                                                 <span className="text-sm font-bold truncate">{product.name}</span>

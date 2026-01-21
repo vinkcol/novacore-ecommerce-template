@@ -9,6 +9,7 @@ import { addToCart } from "@/features/cart/redux/cartSlice";
 import { Plus, Sparkles } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { motion } from "framer-motion";
+import { Image } from "@/components/atoms/Image";
 
 interface CheckoutUpsellCardProps {
     product: Product;
@@ -43,11 +44,13 @@ export function CheckoutUpsellCard({ product }: CheckoutUpsellCardProps) {
         >
             <div className="flex items-center gap-4 relative z-10">
                 {/* Product Image */}
-                <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-white p-2 shadow-sm">
-                    <img
+                <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-xl bg-white p-2 shadow-sm relative">
+                    <Image
                         src={product.images[0]}
                         alt={product.name}
-                        className="h-full w-full object-contain transition-transform group-hover:scale-110"
+                        fill
+                        unoptimized={product.images[0].includes("firebase") || product.images[0].includes("storage")}
+                        className="object-contain transition-transform group-hover:scale-110"
                     />
                 </div>
 
