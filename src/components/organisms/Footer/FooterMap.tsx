@@ -27,6 +27,7 @@ export default function FooterMap({ lat, lng }: FooterMapProps) {
     // Leaflet icons fix for client side
     useEffect(() => {
         if (typeof window !== "undefined") {
+            // eslint-disable-next-line @typescript-eslint/no-require-imports
             const L = require("leaflet");
             delete (L.Icon.Default.prototype as any)._getIconUrl;
             L.Icon.Default.mergeOptions({

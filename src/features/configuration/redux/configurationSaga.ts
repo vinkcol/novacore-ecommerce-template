@@ -39,9 +39,10 @@ function* fetchConfigurationSaga(): SagaIterator {
         }
 
         yield put(fetchConfigurationSuccess(config));
-    } catch (error: any) {
-        console.error("[ConfigSaga] fetchConfiguration error:", error);
-        yield put(fetchConfigurationFailure(error.message || "Error fetching configuration"));
+    } catch (error: unknown) {
+        const err = error as any;
+        console.error("[ConfigSaga] fetchConfiguration error:", err);
+        yield put(fetchConfigurationFailure(err.message || "Error fetching configuration"));
     }
 }
 
@@ -57,9 +58,10 @@ function* updateConfigurationSaga(action: PayloadAction<CommerceConfig>): SagaIt
         }
 
         yield put(updateConfigurationSuccess(config));
-    } catch (error: any) {
-        console.error("[ConfigSaga] updateConfiguration error:", error);
-        yield put(updateConfigurationFailure(error.message || "Error updating configuration"));
+    } catch (error: unknown) {
+        const err = error as any;
+        console.error("[ConfigSaga] updateConfiguration error:", err);
+        yield put(updateConfigurationFailure(err.message || "Error updating configuration"));
     }
 }
 
