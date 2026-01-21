@@ -16,7 +16,6 @@ const Marker = dynamic(
     { ssr: false }
 );
 
-import L from "leaflet";
 import { useEffect } from "react";
 
 interface FooterMapProps {
@@ -28,6 +27,7 @@ export default function FooterMap({ lat, lng }: FooterMapProps) {
     // Leaflet icons fix for client side
     useEffect(() => {
         if (typeof window !== "undefined") {
+            const L = require("leaflet");
             delete (L.Icon.Default.prototype as any)._getIconUrl;
             L.Icon.Default.mergeOptions({
                 iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",

@@ -19,10 +19,11 @@ function* fetchConfigurationSaga(): SagaIterator {
 
     // Load from cache first for immediate UI update
     try {
-        const cachedConfig = localStorage.getItem(CONFIG_CACHE_KEY);
-        if (cachedConfig) {
-
-            yield put(fetchConfigurationSuccess(JSON.parse(cachedConfig)));
+        if (typeof window !== "undefined") {
+            const cachedConfig = localStorage.getItem(CONFIG_CACHE_KEY);
+            if (cachedConfig) {
+                yield put(fetchConfigurationSuccess(JSON.parse(cachedConfig)));
+            }
         }
     } catch (e) {
         console.warn("[ConfigSaga] Failed to load from cache", e);
@@ -33,7 +34,9 @@ function* fetchConfigurationSaga(): SagaIterator {
 
 
         // Update cache
-        localStorage.setItem(CONFIG_CACHE_KEY, JSON.stringify(config));
+        if (typeof window !== "undefined") {
+            localStorage.setItem(CONFIG_CACHE_KEY, JSON.stringify(config));
+        }
 
         yield put(fetchConfigurationSuccess(config));
     } catch (error: any) {
@@ -49,7 +52,9 @@ function* updateConfigurationSaga(action: PayloadAction<CommerceConfig>): SagaIt
 
 
         // Update cache on success
-        localStorage.setItem(CONFIG_CACHE_KEY, JSON.stringify(config));
+        if (typeof window !== "undefined") {
+            localStorage.setItem(CONFIG_CACHE_KEY, JSON.stringify(config));
+        }
 
         yield put(updateConfigurationSuccess(config));
     } catch (error: any) {
@@ -76,7 +81,9 @@ function* watchConfigurationUpdates(): SagaIterator {
             yield put(fetchConfigurationSuccess(config));
 
             // Update cache
-            localStorage.setItem(CONFIG_CACHE_KEY, JSON.stringify(config));
+            if (typeof window !== "undefined") {
+                localStorage.setItem(CONFIG_CACHE_KEY, JSON.stringify(config));
+            }
         }
     } finally {
         if (yield cancelled()) {
