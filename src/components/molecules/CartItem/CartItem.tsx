@@ -32,7 +32,7 @@ export function CartItem({ item, onQuantityChange, onRemove }: CartItemProps) {
             )}
             {item.notes && (
               <p className="text-[10px] text-muted-foreground italic leading-tight mt-1 line-clamp-2">
-                "{item.notes}"
+                &quot;{item.notes}&quot;
               </p>
             )}
           </div>

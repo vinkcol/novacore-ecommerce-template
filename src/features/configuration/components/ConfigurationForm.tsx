@@ -152,7 +152,7 @@ export function ConfigurationForm() {
 
 
     const handleSubmit = async (values: CommerceConfig) => {
-        let finalValues = { ...values };
+        const finalValues = { ...values };
 
         if (logoFile) {
             try {

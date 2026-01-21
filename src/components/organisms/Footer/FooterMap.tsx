@@ -16,6 +16,9 @@ const Marker = dynamic(
     { ssr: false }
 );
 
+import L from "leaflet";
+import { useEffect } from "react";
+
 interface FooterMapProps {
     lat: number;
     lng: number;
@@ -23,15 +26,16 @@ interface FooterMapProps {
 
 export default function FooterMap({ lat, lng }: FooterMapProps) {
     // Leaflet icons fix for client side
-    if (typeof window !== "undefined") {
-        const L = require("leaflet");
-        delete L.Icon.Default.prototype._getIconUrl;
-        L.Icon.Default.mergeOptions({
-            iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
-            iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
-            shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
-        });
-    }
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            delete (L.Icon.Default.prototype as any)._getIconUrl;
+            L.Icon.Default.mergeOptions({
+                iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
+                iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
+                shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
+            });
+        }
+    }, []);
 
     return (
         <div className="h-full w-full overflow-hidden rounded-xl border border-border shadow-sm grayscale-[0.5] hover:grayscale-0 transition-all duration-500">

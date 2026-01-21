@@ -22,11 +22,7 @@ import {
   selectCollections,
   selectCollectionsLoading
 } from "@/features/collections/redux/collectionsSelectors";
-import {
-  selectCategories as selectCategoriesList,
-  selectCategoriesLoading
-} from "@/features/categories/redux/categoriesSelectors";
-import { fetchCategoriesStart } from "@/features/categories/redux/categoriesSlice";
+
 import shopContent from "@/data/shop-content.json";
 import { useCommerceConfig } from "@/hooks/useCommerceConfig";
 
@@ -45,7 +41,7 @@ export default function HomePage() {
   useEffect(() => {
     dispatch(fetchProductsRequest());
     dispatch(fetchCollectionsRequest());
-    dispatch(fetchCategoriesStart());
+
 
     const handleScroll = () => {
       if (window.scrollY > 300) {
