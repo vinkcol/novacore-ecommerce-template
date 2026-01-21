@@ -18,6 +18,9 @@ import {
     deleteProductStart,
     deleteProductSuccess,
     deleteProductFailure,
+    bulkCreateProductsStart,
+    bulkCreateProductsSuccess,
+    bulkCreateProductsFailure,
 } from "./adminProductsSlice";
 import { Product } from "../types/product.types";
 import { PayloadAction } from "@reduxjs/toolkit";
@@ -62,9 +65,26 @@ function* handleDeleteProduct(action: PayloadAction<string>): Generator<any, voi
     }
 }
 
+function* handleBulkCreateProducts(action: PayloadAction<Partial<Product>[]>): Generator<any, void, any> {
+    try {
+        const productsToCreate = action.payload;
+        const createdProducts: Product[] = [];
+
+        for (const productData of productsToCreate) {
+            const newProduct: Product = yield call(createAdminProductApi, productData);
+            createdProducts.push(newProduct);
+        }
+
+        yield put(bulkCreateProductsSuccess(createdProducts));
+    } catch (error: any) {
+        yield put(bulkCreateProductsFailure(error.message || "Error en la carga masiva"));
+    }
+}
+
 export function* watchAdminProducts() {
     yield takeLatest(fetchProductsStart.type, handleFetchProducts);
     yield takeLatest(createProductStart.type, handleCreateProduct);
     yield takeLatest(updateProductStart.type, handleUpdateProduct);
     yield takeLatest(deleteProductStart.type, handleDeleteProduct);
+    yield takeLatest(bulkCreateProductsStart.type, handleBulkCreateProducts);
 }

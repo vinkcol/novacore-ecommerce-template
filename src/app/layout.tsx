@@ -6,8 +6,11 @@ import { ReduxProvider } from "@/redux/provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Vink Shop - Quality Products, Delivered Fast",
-  description: "Your one-stop shop for premium products at affordable prices",
+  title: "Foodie - Delicias a tu puerta",
+  description: "Tu menú digital favorito con pedidos directos por WhatsApp",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 import { Toaster } from "sonner";
@@ -38,6 +41,8 @@ const themeScript = `
 })();
 `;
 
+import { AuthProvider } from "@/features/auth/context/AuthContext";
+
 export default function RootLayout({
   children,
 }: {
@@ -50,25 +55,27 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <ReduxProvider>
-          <ThemeApplicator>
-            {children}
-            <Toaster
-              position="top-right"
-              richColors
-              expand={false}
-              toastOptions={{
-                style: {
-                  background: 'rgba(255, 255, 255, 0.8)',
-                  backdropFilter: 'blur(8px)',
-                  border: '1px solid rgba(255, 255, 255, 0.2)',
-                  borderRadius: '20px',
-                  boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
-                },
-                className: 'font-sans font-medium',
-              }}
-            />
-            <FloatingWhatsApp />
-          </ThemeApplicator>
+          <AuthProvider>
+            <ThemeApplicator>
+              {children}
+              <Toaster
+                position="top-right"
+                richColors
+                expand={false}
+                toastOptions={{
+                  style: {
+                    background: 'rgba(255, 255, 255, 0.8)',
+                    backdropFilter: 'blur(8px)',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    borderRadius: '20px',
+                    boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
+                  },
+                  className: 'font-sans font-medium',
+                }}
+              />
+              <FloatingWhatsApp />
+            </ThemeApplicator>
+          </AuthProvider>
         </ReduxProvider>
       </body>
     </html>

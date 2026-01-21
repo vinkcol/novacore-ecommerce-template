@@ -19,3 +19,7 @@ export const selectAdminProductsDeleteSuccess = (state: RootState) => state.admi
 export const selectAdminProductsDeleteError = (state: RootState) => state.adminProducts.deleteError;
 
 export const selectAdminSelectedProduct = (state: RootState) => state.adminProducts.selectedProduct;
+
+export const selectAdminProductsBulkCreating = (state: RootState) => state.adminProducts.bulkCreating;
+export const selectAdminProductsBulkCreateSuccess = (state: RootState) => state.adminProducts.bulkCreateSuccess;
+export const selectAdminProductsBulkCreateError = (state: RootState) => state.adminProducts.bulkCreateError;

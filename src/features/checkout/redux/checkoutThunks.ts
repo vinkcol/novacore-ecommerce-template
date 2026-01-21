@@ -4,8 +4,9 @@ import { setOrderStatus, setOrder, setError } from "./checkoutSlice";
 import { clearCart } from "@/features/cart/redux/cartSlice";
 import { v4 as uuidv4 } from "uuid";
 import type { Order } from "../types";
-import { calculateTax, calculateShipping } from "@/lib/utils";
-import { TAX_RATE, FREE_SHIPPING_THRESHOLD } from "@/lib/constants";
+import { calculateTax } from "@/lib/utils";
+import { TAX_RATE } from "@/lib/constants";
+
 
 export const submitOrder = createAsyncThunk(
   "checkout/submitOrder",
@@ -14,18 +15,17 @@ export const submitOrder = createAsyncThunk(
       dispatch(setOrderStatus("submitting"));
 
       const state = getState() as RootState;
-      const { shippingInfo, paymentInfo, selectedShippingMethod } =
-        state.checkout;
+      const { shippingInfo, paymentInfo } = state.checkout;
       const { items } = state.cart;
 
       // Calculate totals
       const subtotal = items.reduce((total, item) => total + item.price * item.quantity, 0);
       const tax = calculateTax(subtotal, TAX_RATE);
-      const shipping = selectedShippingMethod?.price || calculateShipping(subtotal, FREE_SHIPPING_THRESHOLD);
+      const shipping = 0; // Calculated shipping removed
       const total = subtotal + tax + shipping;
 
       // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       // Create order
       const order: Order = {
@@ -39,14 +39,14 @@ export const submitOrder = createAsyncThunk(
         })),
         shipping: shippingInfo as Order["shipping"],
         payment: paymentInfo as Order["payment"],
-        shippingMethod: selectedShippingMethod!,
         subtotal,
         tax,
         shippingCost: shipping,
         total,
         createdAt: new Date().toISOString(),
-        status: "completed",
-      };
+        status: "processing",
+      } as Order;
+
 
       dispatch(setOrder(order));
       dispatch(setOrderStatus("success"));

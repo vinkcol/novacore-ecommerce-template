@@ -3,8 +3,8 @@
 import React, { useEffect } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
-import { TextField, NumberField, SelectField, CheckboxField, TextAreaField, RichTextField } from "@/components/atoms/Form";
-import { ArrowLeft, Save, Package, Loader2, Sparkles } from "lucide-react";
+import { TextField, NumberField, SelectField, CheckboxField, TextAreaField, RichTextField, ImageUploadField, CurrencyField } from "@/components/atoms/Form";
+import { ArrowLeft, Save, Package, Loader2, Sparkles, Image as ImageIcon } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/useToast";
@@ -29,20 +29,28 @@ import { VariantManager } from "./variants/VariantManager";
 
 const productValidationSchema = Yup.object().shape({
     name: Yup.string().required("El nombre es obligatorio"),
-    sku: Yup.string().required("El SKU es obligatorio"),
-    price: Yup.number().positive("El precio debe ser positivo").required("El precio es obligatorio"),
+    // sku: Yup.string().required("El SKU es obligatorio"), // Removed for restaurant
+    price: Yup.number().required("El precio es obligatorio").min(0, "El precio no puede ser negativo"),
     compareAtPrice: Yup.number().positive("El precio debe ser positivo").nullable(),
     category: Yup.string().required("La categoría es obligatoria"),
-    stockQuantity: Yup.number().min(0, "Mínimo 0").required("El stock es obligatorio"),
+    stockQuantity: Yup.number().min(0, "Mínimo 0"),
     description: Yup.string().required("La descripción corta es obligatoria"),
     longDescription: Yup.string().required("La descripción larga es obligatoria"),
     inStock: Yup.boolean(),
     hasVariants: Yup.boolean(),
     variants: Yup.array().when("hasVariants", {
         is: true,
-        then: () => Yup.array().min(1, "Debe haber al menos una variante").required(),
-        otherwise: () => Yup.array().optional()
-    })
+        then: () => Yup.array().required("Debes añadir al menos una variante"),
+        otherwise: () => Yup.array().notRequired()
+    }),
+    images: Yup.array().min(1, "Al menos una imagen es obligatoria").max(5, "Máximo 5 imágenes").required("Las imágenes son obligatorias"),
+    prepTimeMinutes: Yup.number().min(0, "El tiempo no puede ser negativo"),
+    extras: Yup.array().of(
+        Yup.object().shape({
+            name: Yup.string().required("Nombre requerido"),
+            price: Yup.number().min(0, "Precio no negativo").required("Precio requerido")
+        })
+    )
 });
 
 interface ProductFormProps {
@@ -77,7 +85,13 @@ export function ProductForm({ initialProduct }: ProductFormProps) {
         longDescription: initialProduct?.longDescription || "",
         inStock: initialProduct?.inStock !== undefined ? initialProduct.inStock : true,
         hasVariants: initialProduct?.hasVariants || false,
-        variants: initialProduct?.variants || []
+        variants: initialProduct?.variants || [],
+        images: initialProduct?.images || [],
+        prepTimeMinutes: initialProduct?.prepTimeMinutes || "",
+        spicyLevel: initialProduct?.spicyLevel || "none",
+        allowNotes: initialProduct?.allowNotes ?? true,
+        extras: initialProduct?.extras || [],
+        isFeatured: initialProduct?.isFeatured || false,
     };
 
     useEffect(() => {
@@ -139,11 +153,7 @@ export function ProductForm({ initialProduct }: ProductFormProps) {
             price: Number(values.price) || 0,
             compareAtPrice: values.compareAtPrice ? Number(values.compareAtPrice) : null,
             stockQuantity: Number(values.stockQuantity) || 0,
-            images: initialProduct?.images || (
-                values.hasVariants && values.variants?.[0]?.images?.length > 0
-                    ? [values.variants[0].images[0]]
-                    : ["https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800"]
-            ),
+            images: values.images,
             variants: values.hasVariants ? values.variants : [],
             type: values.hasVariants ? "variable" : "simple"
         };
@@ -173,7 +183,7 @@ export function ProductForm({ initialProduct }: ProductFormProps) {
                 validationSchema={productValidationSchema}
                 onSubmit={handleSubmit}
             >
-                {({ values }) => (
+                {({ values, setFieldValue }) => (
                     <Form className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                         {/* Main Info */}
                         <div className="lg:col-span-2 space-y-6">
@@ -187,18 +197,131 @@ export function ProductForm({ initialProduct }: ProductFormProps) {
 
                                 <TextField
                                     name="name"
-                                    label="Nombre del Producto"
-                                    placeholder="Ej: Auriculares Bluetooth Pro"
+                                    label="Nombre del Plato"
+                                    placeholder="Ej: Hamburguesa Doble con Queso"
                                     required
                                 />
 
+                                {/* Restaurant Specific Section */}
+                                <div className="space-y-4">
+                                    <h3 className="text-lg font-medium text-gray-900 border-b pb-2">Opciones del Plato</h3>
+
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        {/* Prep Time */}
+                                        <div className="col-span-1">
+                                            <TextField
+                                                label="Tiempo de Preparación (minutos)"
+                                                name="prepTimeMinutes"
+                                                type="number"
+                                                placeholder="Ej: 15"
+                                            />
+                                        </div>
+
+                                        {/* Spicy Level */}
+                                        <div className="col-span-1">
+                                            <SelectField
+                                                label="Nivel de Picante"
+                                                name="spicyLevel"
+                                                options={[
+                                                    { value: "none", label: "🚫 Sin picante" },
+                                                    { value: "mild", label: "🌶️ Bajo" },
+                                                    { value: "medium", label: "🌶️🌶️ Medio" },
+                                                    { value: "hot", label: "🔥 Picante" }
+                                                ]}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="flex flex-col gap-4 pt-2">
+                                        <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                            <CheckboxField
+                                                name="inStock"
+                                                label="Disponible Hoy"
+                                            // description="¿El plato se puede pedir ahora mismo?"
+                                            />
+                                        </div>
+
+                                        <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                            <CheckboxField
+                                                name="allowNotes"
+                                                label="Permitir Notas"
+                                            // description="El cliente puede escribir 'sin cebolla', etc."
+                                            />
+                                        </div>
+
+                                        <div className="p-4 bg-gray-50 rounded-lg border border-gray-200">
+                                            <CheckboxField
+                                                name="isFeatured"
+                                                label="Recomendado del Chef"
+                                            // description="Aparecerá en la sección de destacados."
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Extras Section using FieldArray would be better, but implementing simple UI for MVP */}
+                                <div className="space-y-4">
+                                    <div className="flex items-center justify-between border-b pb-2">
+                                        <h3 className="text-lg font-medium text-gray-900">Adicionales / Extras</h3>
+                                        <button
+                                            type="button"
+                                            onClick={() => {
+                                                const currentExtras = values.extras || [];
+                                                setFieldValue("extras", [...currentExtras, { name: "", price: 0 }]);
+                                            }}
+                                            className="text-sm text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                                            </svg>
+                                            Añadir Extra
+                                        </button>
+                                    </div>
+
+                                    {(values.extras || []).map((extra: any, index: number) => (
+                                        <div key={index} className="flex gap-4 items-start bg-gray-50 p-3 rounded-md">
+                                            <div className="flex-grow">
+                                                <TextField
+                                                    // label="Nombre"
+                                                    name={`extras.${index}.name`}
+                                                    placeholder="Ej: Tocineta Crocante"
+                                                />
+                                            </div>
+                                            <div className="w-32">
+                                                <CurrencyField
+                                                    // label="Precio"
+                                                    name={`extras.${index}.price`}
+                                                    placeholder="2.000"
+                                                />
+                                            </div>
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    const newExtras = [...(values.extras || [])];
+                                                    newExtras.splice(index, 1);
+                                                    setFieldValue("extras", newExtras);
+                                                }}
+                                                className="mt-2 text-red-500 hover:text-red-700 p-2"
+                                            >
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    ))}
+                                    {(!values.extras || values.extras.length === 0) && (
+                                        <p className="text-sm text-gray-500 italic">No hay extras configurados.</p>
+                                    )}
+                                </div>
+
+
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <TextField
+                                    {/* <TextField
                                         name="sku"
                                         label="SKU / Referencia"
                                         placeholder="Escribre el código del producto..."
                                         required
-                                    />
+                                    /> */}
                                     <SelectField
                                         name="category"
                                         label="Categoría"
@@ -210,22 +333,39 @@ export function ProductForm({ initialProduct }: ProductFormProps) {
 
                                 <TextField
                                     name="description"
-                                    label="Descripción Corta"
-                                    placeholder="Un breve resumen que aparezca en los listados..."
+                                    label="Descripción Corta del Menú"
+                                    placeholder="Ej: 200g de carne, queso cheddar, lechuga y tomate."
                                     required
                                 />
 
                                 <RichTextField
                                     name="longDescription"
-                                    label="Descripción Larga"
-                                    placeholder="Describe detalladamente tu producto..."
+                                    label="Descripción Detallada (Ingredientes)"
+                                    placeholder="Detalla los ingredientes, alérgenos y la historia del plato..."
                                 />
 
-                                <div className="pt-4">
-                                    <CheckboxField
-                                        name="hasVariants"
-                                        label="Este producto tiene variantes (Talla, Color, etc.)"
+
+
+                                <div className="pt-6 border-t border-dashed mt-6 space-y-4">
+                                    <div className="flex items-center gap-3 mb-2">
+                                        <div className="p-2 bg-primary/10 rounded-xl text-primary">
+                                            <ImageIcon size={20} />
+                                        </div>
+                                        <h2 className="text-xl font-bold tracking-tight">Imágenes del Producto</h2>
+                                    </div>
+                                    <ImageUploadField
+                                        name="images"
+                                        label="Fotos del Producto"
+                                        maxImages={5}
+                                        required
                                     />
+
+                                    <div className="pt-4 p-4 bg-primary/5 rounded-2xl border border-primary/10 mt-4">
+                                        <CheckboxField
+                                            name="hasVariants"
+                                            label="Este plato tiene múltiples opciones (Tamaños, Términos de carne, etc.)"
+                                        />
+                                    </div>
                                 </div>
 
                                 {values.hasVariants && (
@@ -240,47 +380,32 @@ export function ProductForm({ initialProduct }: ProductFormProps) {
                         <div className="space-y-6">
                             {/* Pricing & Stock */}
                             <div className="rounded-[32px] border bg-card p-8 shadow-sm space-y-6">
-                                <h3 className="text-lg font-bold tracking-tight">Precios y Stock</h3>
+                                <h3 className="text-lg font-bold tracking-tight">Precios y Disponibilidad</h3>
 
-                                {!values.hasVariants ? (
-                                    <>
-                                        <NumberField
-                                            name="price"
-                                            label="Precio de Venta (COP)"
-                                            placeholder="0"
-                                            required
-                                        />
+                                <CurrencyField
+                                    name="price"
+                                    label={values.hasVariants ? "Precio Base (COP)" : "Precio de Venta (COP)"}
+                                    placeholder="Ej: 2.000.000"
+                                    required
+                                />
 
-                                        <NumberField
-                                            name="compareAtPrice"
-                                            label="Precio anterior (Opcional)"
-                                            placeholder="0"
-                                        />
-
-                                        <hr className="border-dashed" />
-
-                                        <NumberField
-                                            name="stockQuantity"
-                                            label="Cantidad en Stock"
-                                            placeholder="0"
-                                            required
-                                        />
-                                    </>
-                                ) : (
-                                    <div className="p-4 rounded-2xl bg-primary/5 border border-primary/20 flex flex-col items-center text-center gap-3">
+                                {values.hasVariants && (
+                                    <div className="p-4 rounded-2xl bg-primary/5 border border-primary/20 flex flex-col items-center text-center gap-3 mt-2">
                                         <div className="p-2 bg-primary/10 rounded-full text-primary">
                                             <Sparkles size={16} />
                                         </div>
-                                        <p className="text-xs font-bold text-primary italic">
-                                            Precios y stock gestionados por variantes
+                                        <p className="text-[10px] font-bold text-primary italic leading-tight">
+                                            Este precio se usa como base para las nuevas variantes. Cada variante puede tener su propio precio.
                                         </p>
                                     </div>
                                 )}
 
-                                <CheckboxField
-                                    name="inStock"
-                                    label="Producto disponible para la venta"
-                                />
+                                <div className="pt-2">
+                                    <CheckboxField
+                                        name="inStock"
+                                        label="¿Disponible hoy?"
+                                    />
+                                </div>
                             </div>
 
                             {/* Actions */}

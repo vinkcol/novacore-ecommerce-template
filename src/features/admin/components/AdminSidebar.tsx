@@ -13,9 +13,8 @@ export function AdminSidebar() {
     return (
         <aside className="fixed left-0 top-0 z-40 h-screen w-64 border-r bg-card transition-transform">
             <div className="flex h-full flex-col px-3 py-4">
-                <div className="mb-10 px-4 flex items-center gap-3">
+                <div className="mb-10 px-4 flex items-center justify-center gap-3">
                     <Logo />
-                    <span className="text-[10px] bg-primary/10 text-primary font-bold px-2 py-0.5 rounded-full tracking-wider mt-1">ADMIN</span>
                 </div>
 
                 <nav className="flex-1 space-y-1">
@@ -48,7 +47,7 @@ export function AdminSidebar() {
                         <div className="h-9 w-9 rounded-full bg-muted border-2 border-primary/10" />
                         <div className="flex flex-col">
                             <span className="text-sm font-bold leading-none">Super Admin</span>
-                            <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider mt-1">vink_portal</span>
+                            <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider mt-1">foodie_portal</span>
                         </div>
                     </div>
                 </div>

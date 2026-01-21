@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaWhatsapp, FaRegPaperPlane } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
 import { motion, AnimatePresence } from "framer-motion";
@@ -14,6 +14,24 @@ export function FloatingWhatsApp() {
     const pathname = usePathname();
     const [isOpen, setIsOpen] = useState(false);
     const [message, setMessage] = useState("");
+    const [isVisible, setIsVisible] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => {
+            // Show floating button after scrolling down 400 pixels
+            if (window.scrollY > 400) {
+                setIsVisible(true);
+            } else {
+                setIsVisible(false);
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        // Initial check
+        handleScroll();
+
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
 
     // No mostrar en rutas de administrador
     if (pathname?.startsWith("/admin")) {
@@ -100,16 +118,24 @@ export function FloatingWhatsApp() {
                 )}
             </AnimatePresence>
 
-            {/* Floating Button */}
-            <motion.button
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => setIsOpen(!isOpen)}
-                className={`flex h-16 w-16 items-center justify-center rounded-full shadow-2xl transition-all duration-300 ${isOpen ? 'bg-gray-100 text-gray-600 rotate-90' : 'bg-[#25D366] text-white'
-                    }`}
-            >
-                {isOpen ? <IoClose className="h-8 w-8" /> : <FaWhatsapp className="h-9 w-9" />}
-            </motion.button>
+            {/* Floating Button wrapped in AnimatePresence for entry/exit */}
+            <AnimatePresence>
+                {isVisible && (
+                    <motion.button
+                        key="whatsapp-fab"
+                        initial={{ opacity: 0, y: 50, scale: 0.5 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: 50, scale: 0.5 }}
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={() => setIsOpen(!isOpen)}
+                        className={`flex h-16 w-16 items-center justify-center rounded-full shadow-2xl transition-all duration-300 ${isOpen ? 'bg-gray-100 text-gray-600 rotate-90' : 'bg-[#25D366] text-white'
+                            }`}
+                    >
+                        {isOpen ? <IoClose className="h-8 w-8" /> : <FaWhatsapp className="h-9 w-9" />}
+                    </motion.button>
+                )}
+            </AnimatePresence>
         </div>
     );
 }

@@ -10,6 +10,7 @@ import { selectCartItemCount } from "@/features/cart/redux/cartSelectors";
 import { toggleCart } from "@/features/cart/redux/cartSlice";
 import Logo from "@/components/atoms/Logo/Logo";
 import { MobileMenu } from "./MobileMenu";
+import { navLinks } from "@/config/navigation";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -24,12 +25,6 @@ export function Header() {
   const handleCartClick = () => {
     dispatch(toggleCart());
   };
-
-  const navLinks = [
-    { href: "/products", label: "Productos" },
-    { href: "/products?filter=new", label: "Nuevos" },
-    { href: "/products?filter=sale", label: "Ofertas" },
-  ];
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background">
@@ -57,13 +52,14 @@ export function Header() {
           </Link>
         </div>
 
-        {/* Lado Derecho: Carrito */}
-        <div className="ml-auto flex items-center">
+        {/* Lado Derecho: Carrito (Solo Mobile) */}
+        <div className="ml-auto flex items-center md:hidden">
           <Button
             variant="ghost"
             size="icon"
             className="relative"
             onClick={handleCartClick}
+            title="Tu pedido"
           >
             <ShoppingCart className="h-5 w-5" />
             {mounted && cartItemCount > 0 && (

@@ -6,11 +6,56 @@ export interface CommerceConfig {
     address: string;
     city: string;
     logoUrl?: string; // URL of the uploaded logo
+    bannerUrl?: string; // URL of the store banner
+    heroTitle?: string;
+    heroSubtitle?: string;
+    social?: {
+        facebook?: string;
+        instagram?: string;
+        twitter?: string;
+        linkedin?: string;
+    };
     theme: {
         primaryColor: string;
         primaryForeground: string;
         radius: string;
     };
+    isOpen?: boolean;
+    currency?: string;
+    timezone?: string;
+    location?: {
+        department?: string;
+        city?: string;
+        locality?: string; // For Bogota
+        neighborhood?: string; // Barrio
+        lat?: number;
+        lng?: number;
+    };
+    schedule?: ScheduleConfig;
+    orderRules?: OrderRulesConfig;
+    paymentMethods?: PaymentMethodsConfig;
+}
+
+export interface ScheduleConfig {
+    days: {
+        [key: string]: { // mon, tue, wed, thu, fri, sat, sun
+            isOpen: boolean;
+            openTime: string; // HH:mm
+            closeTime: string; // HH:mm
+        };
+    };
+}
+
+export interface OrderRulesConfig {
+    minOrderAmount: number;
+    minOrderMessage: string;
+}
+
+export interface PaymentMethodsConfig {
+    nequi: boolean;
+    daviplata: boolean;
+    cash: boolean; // Efectivo
+    dataphone: boolean; // Datafono
 }
 
 export interface ConfigurationState {

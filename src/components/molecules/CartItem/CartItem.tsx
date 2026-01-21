@@ -17,8 +17,9 @@ export function CartItem({ item, onQuantityChange, onRemove }: CartItemProps) {
   return (
     <div className="flex gap-4 border-b pb-4 last:border-0">
       <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-md">
-        <Image src={item.image} alt={item.name} fill />
+        <Image src={item.image || "/placeholder-product.png"} alt={item.name} fill />
       </div>
+
 
       <div className="flex flex-1 flex-col justify-between">
         <div className="flex items-start justify-between">
@@ -27,6 +28,11 @@ export function CartItem({ item, onQuantityChange, onRemove }: CartItemProps) {
             {item.variant && (
               <p className="text-xs text-muted-foreground">
                 {item.variant.name}
+              </p>
+            )}
+            {item.notes && (
+              <p className="text-[10px] text-muted-foreground italic leading-tight mt-1 line-clamp-2">
+                "{item.notes}"
               </p>
             )}
           </div>
@@ -40,13 +46,14 @@ export function CartItem({ item, onQuantityChange, onRemove }: CartItemProps) {
           </Button>
         </div>
 
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col items-start gap-1">
           <QuantitySelector
             quantity={item.quantity}
             onQuantityChange={(qty) => onQuantityChange(item.id, qty)}
             max={item.maxQuantity}
+            size="sm"
           />
-          <Price amount={item.price * item.quantity} className="text-sm" />
+          <Price amount={item.price * item.quantity} className="text-sm font-bold" />
         </div>
       </div>
     </div>

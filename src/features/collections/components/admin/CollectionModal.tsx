@@ -123,13 +123,13 @@ export function CollectionModal({ isOpen, onClose, collectionItem }: CollectionM
                                         <TextField
                                             name="name"
                                             label="Nombre de la Colección"
-                                            placeholder="Ej: Temporada 2026"
+                                            placeholder="Ej: Combos del Almuerzo"
                                             required
                                         />
                                         <TextField
                                             name="slug"
                                             label="Slug (URL)"
-                                            placeholder="ej-temporada-2026"
+                                            placeholder="ej-combos-almuerzo"
                                             required
                                         />
                                         <TextAreaField

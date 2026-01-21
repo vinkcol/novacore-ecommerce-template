@@ -12,15 +12,12 @@ const initialState: CheckoutState = {
   currentStep: "shipping",
   shippingInfo: {},
   paymentInfo: {},
-  selectedShippingMethod: null,
-  shippingCost: null,
-  shippingLabel: null,
-  shippingPromise: null,
-  isCODAvailable: true, // Default to true until calculated
+
   orderStatus: "idle",
   order: null,
   error: null,
 };
+
 
 export const checkoutSlice = createSlice({
   name: "checkout",
@@ -44,25 +41,9 @@ export const checkoutSlice = createSlice({
       };
     },
 
-    setShippingMethod: (state, action: PayloadAction<ShippingMethod>) => {
-      state.selectedShippingMethod = action.payload;
-    },
 
-    setShippingCost: (state, action: PayloadAction<number | null>) => {
-      state.shippingCost = action.payload;
-    },
 
-    setShippingLabel: (state, action: PayloadAction<string | null>) => {
-      state.shippingLabel = action.payload;
-    },
 
-    setShippingPromise: (state, action: PayloadAction<{ min: number; max: number } | null>) => {
-      state.shippingPromise = action.payload;
-    },
-
-    setIsCODAvailable: (state, action: PayloadAction<boolean>) => {
-      state.isCODAvailable = action.payload;
-    },
 
     setOrderStatus: (
       state,
@@ -87,12 +68,9 @@ export const {
   setCurrentStep,
   setShippingInfo,
   setPaymentInfo,
-  setShippingMethod,
-  setShippingCost,
-  setShippingLabel,
-  setShippingPromise,
-  setIsCODAvailable,
+
   setOrderStatus,
+
   setOrder,
   setError,
   resetCheckout,

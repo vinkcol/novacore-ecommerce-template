@@ -11,6 +11,7 @@ interface QuantitySelectorProps {
   min?: number;
   max?: number;
   className?: string;
+  size?: "default" | "sm";
 }
 
 export function QuantitySelector({
@@ -19,6 +20,7 @@ export function QuantitySelector({
   min = 1,
   max = 99,
   className,
+  size = "default",
 }: QuantitySelectorProps) {
   const handleIncrement = () => {
     if (quantity < max) {
@@ -40,32 +42,35 @@ export function QuantitySelector({
   };
 
   return (
-    <div className={cn("flex items-center gap-2", className)}>
+    <div className={cn("flex items-center gap-1", className)}>
       <Button
         variant="outline"
         size="icon"
-        className="h-8 w-8"
+        className={cn(size === "sm" ? "h-6 w-6" : "h-8 w-8")}
         onClick={handleDecrement}
         disabled={quantity <= min}
       >
-        <Minus className="h-3 w-3" />
+        <Minus className={cn(size === "sm" ? "h-2 w-2" : "h-3 w-3")} />
       </Button>
       <Input
         type="number"
         value={quantity}
         onChange={handleInputChange}
-        className="h-8 w-14 text-center"
+        className={cn(
+          "text-center p-0",
+          size === "sm" ? "h-6 w-10 text-xs" : "h-8 w-14"
+        )}
         min={min}
         max={max}
       />
       <Button
         variant="outline"
         size="icon"
-        className="h-8 w-8"
+        className={cn(size === "sm" ? "h-6 w-6" : "h-8 w-8")}
         onClick={handleIncrement}
         disabled={quantity >= max}
       >
-        <Plus className="h-3 w-3" />
+        <Plus className={cn(size === "sm" ? "h-2 w-2" : "h-3 w-3")} />
       </Button>
     </div>
   );

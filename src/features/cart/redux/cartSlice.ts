@@ -37,7 +37,8 @@ export const cartSlice = createSlice({
       const existingItem = state.items.find(
         (item) =>
           item.productId === action.payload.productId &&
-          item.variantId === action.payload.variantId
+          item.variantId === action.payload.variantId &&
+          item.notes === action.payload.notes
       );
 
       if (existingItem) {

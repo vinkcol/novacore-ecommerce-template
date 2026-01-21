@@ -7,6 +7,8 @@ import { useAppDispatch } from "@/redux/hooks";
 import { updateQuantity, removeFromCart } from "@/features/cart/redux/cartSlice";
 import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Image } from "@/components/atoms/Image";
+
 
 interface CheckoutItemProps {
     item: {
@@ -32,9 +34,16 @@ export function CheckoutItem({ item }: CheckoutItemProps) {
 
     return (
         <div className="flex items-center gap-3 py-2">
-            <div className="h-16 w-16 overflow-hidden rounded-xl bg-white p-1 flex-shrink-0 border shadow-sm">
-                <img src={item.image} alt={item.name} className="h-full w-full object-contain" />
+            <div className="h-16 w-16 overflow-hidden rounded-xl bg-white p-1 flex-shrink-0 border shadow-sm relative">
+                <Image
+                    src={item.image}
+                    alt={item.name}
+                    className="object-contain"
+                    fill
+                    sizes="64px"
+                />
             </div>
+
 
             <div className="flex-1 min-w-0 space-y-1">
                 <div className="flex items-start justify-between gap-2">

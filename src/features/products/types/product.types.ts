@@ -45,6 +45,14 @@ export interface Product {
   isCheckoutUpsell?: boolean;
   createdAt?: string;
   updatedAt?: string;
+  // Restaurant specific fields
+  prepTimeMinutes?: number;
+  spicyLevel?: "none" | "mild" | "medium" | "hot";
+  allowNotes?: boolean;
+  extras?: {
+    name: string;
+    price: number;
+  }[];
 }
 
 export interface Category {

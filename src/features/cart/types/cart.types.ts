@@ -10,6 +10,7 @@ export interface CartItem {
     name: string;
     value: string;
   };
+  notes?: string;
   maxQuantity: number;
 }
 

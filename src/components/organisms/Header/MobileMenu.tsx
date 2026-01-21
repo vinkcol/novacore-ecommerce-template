@@ -4,18 +4,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { navLinks } from "@/config/navigation";
 
 interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
 }
-
-const navLinks = [
-  { href: "/products", label: "Productos" },
-  { href: "/products?filter=new", label: "Nuevos" },
-  { href: "/products?filter=sale", label: "Ofertas" },
-];
-
 export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
   return (
     <AnimatePresence>

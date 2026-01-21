@@ -15,6 +15,8 @@ import { addToCart } from "@/features/cart/redux/cartSlice";
 import { toast } from "sonner";
 import type { ProductVariant } from "@/features/products/types";
 
+import { Breadcrumb } from "@/components/molecules/Breadcrumb";
+
 export default function ProductDetailPage() {
   const params = useParams();
   const dispatch = useAppDispatch();
@@ -48,8 +50,9 @@ export default function ProductDetailPage() {
         variantId: selectedVariant?.id,
         name: product.name,
         price: selectedVariant?.price || product.price,
-        image: product.images[0],
+        image: product.images && product.images.length > 0 ? product.images[0] : "/placeholder-product.png",
         quantity: 1,
+
         variant: selectedVariant
           ? {
             name: selectedVariant.name,
@@ -60,7 +63,7 @@ export default function ProductDetailPage() {
       })
     );
 
-    toast.success("Agregado al carrito", {
+    toast.success("Agregado al pedido", {
       description: product.name,
     });
   };
@@ -78,8 +81,13 @@ export default function ProductDetailPage() {
   return (
     <ContentLayout>
       <div className="container mx-auto px-4 py-8">
+        <Breadcrumb
+          items={[
+            { label: "Menú", href: "/" },
+            { label: product.name },
+          ]}
+        />
         <div className="grid gap-8 lg:grid-cols-2">
-          {/* Images */}
           {/* Images */}
           <div className="flex flex-col gap-6">
             <div className="relative aspect-square w-full overflow-hidden rounded-2xl border bg-card shadow-sm">
@@ -134,7 +142,7 @@ export default function ProductDetailPage() {
 
             {product.longDescription ? (
               <div
-                className="prose prose-sm max-w-none text-muted-foreground dark:prose-invert"
+                className="prose prose-sm prose-p:my-2 prose-headings:my-3 prose-ul:my-2 prose-li:my-0.5 max-w-none text-muted-foreground dark:prose-invert"
                 dangerouslySetInnerHTML={{ __html: product.longDescription }}
               />
             ) : (
@@ -176,7 +184,7 @@ export default function ProductDetailPage() {
               className="w-full"
             >
               <ShoppingCart className="mr-2 h-5 w-5" />
-              {product.inStock ? "Agregar al Carrito" : "Agotado"}
+              {product.inStock ? "Agregar al pedido" : "Agotado"}
             </Button>
 
             {/* Features */}

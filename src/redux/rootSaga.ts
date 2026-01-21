@@ -6,7 +6,9 @@ import { watchCategories } from "@/features/categories/redux/categoriesSaga";
 import { watchCollections } from "@/features/collections/redux/collectionsSaga";
 import { watchAdminCollections } from "@/features/collections/redux/adminCollectionsSaga";
 import { configurationSaga } from "@/features/configuration/redux/configurationSaga";
-import { shippingSaga } from "@/features/shipping/redux/shippingSaga";
+import { watchWhatsAppTemplates } from "@/features/configuration/redux/whatsappTemplatesSaga";
+
+import { watchOrders } from "@/features/orders/redux/ordersSaga";
 
 export default function* rootSaga() {
     yield all([
@@ -17,6 +19,8 @@ export default function* rootSaga() {
         fork(watchCollections),
         fork(watchAdminCollections),
         fork(configurationSaga),
-        fork(shippingSaga),
+        fork(watchWhatsAppTemplates),
+
+        fork(watchOrders),
     ]);
 }

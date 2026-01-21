@@ -57,9 +57,8 @@ export function ProductDetailModal({ isOpen, onClose, product }: ProductDetailMo
 
                 <div className="p-8 sm:p-10 space-y-8">
                     {/* Price and Stock Stats */}
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <StatCard icon={Tag} label="Precio" value={`$${product.price.toLocaleString('es-CO')}`} />
-                        <StatCard icon={Database} label="Stock" value={`${product.stockQuantity} uds`} />
                         <StatCard icon={Layers} label="Categoría" value={product.category} />
                         <StatCard icon={Calendar} label="Actualizado" value={new Date(product.updatedAt || "").toLocaleDateString()} />
                     </div>
@@ -74,9 +73,10 @@ export function ProductDetailModal({ isOpen, onClose, product }: ProductDetailMo
                             <p className="text-sm font-bold text-foreground leading-relaxed">
                                 {product.description}
                             </p>
-                            <div className="text-sm text-muted-foreground leading-relaxed max-h-32 overflow-y-auto pr-2 custom-scrollbar">
-                                {product.longDescription}
-                            </div>
+                            <div
+                                className="text-sm text-muted-foreground leading-relaxed max-h-32 overflow-y-auto pr-2 custom-scrollbar prose prose-sm prose-p:my-1 prose-headings:my-2 prose-ul:my-1 prose-li:my-0 max-w-none dark:prose-invert"
+                                dangerouslySetInnerHTML={{ __html: product.longDescription || "" }}
+                            />
                         </div>
                     </div>
 

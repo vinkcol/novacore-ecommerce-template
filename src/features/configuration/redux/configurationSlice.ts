@@ -26,7 +26,7 @@ const configurationSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
-        updateConfigurationStart: (state, action: PayloadAction<CommerceConfig>) => {
+        updateConfigurationStart: (state, action: PayloadAction<Partial<CommerceConfig>>) => {
             state.updating = true;
             state.updateSuccess = false;
             state.updateError = null;

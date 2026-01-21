@@ -3,13 +3,13 @@
 import React, { useState, useEffect } from "react";
 import { useFormikContext, FieldArray } from "formik";
 import { Plus, Trash2, Camera, ChevronRight, Settings2, Sparkles } from "lucide-react";
-import { TextField, NumberField } from "@/components/atoms/Form";
+import { TextField, NumberField, CurrencyField } from "@/components/atoms/Form";
 import { Product, ProductVariant, ProductAttribute } from "../../../types/product.types";
 import { Button } from "@/components/ui/button";
 
 export function VariantManager() {
     const { values, setFieldValue } = useFormikContext<Product>();
-    const [attributes, setAttributes] = useState<{ name: string; values: string[] }[]>([]);
+    const [attributes, setAttributes] = useState<{ name: string; values: string[]; rawValue: string }[]>([]);
 
     // Hydrate attributes from existing variants if they exist
     useEffect(() => {
@@ -25,10 +25,14 @@ export function VariantManager() {
                 });
             });
 
-            const initialAttrs = Object.entries(recovered).map(([name, valSet]) => ({
-                name,
-                values: Array.from(valSet)
-            }));
+            const initialAttrs = Object.entries(recovered).map(([name, valSet]) => {
+                const vals = Array.from(valSet);
+                return {
+                    name,
+                    values: vals,
+                    rawValue: vals.join(", ")
+                };
+            });
 
             if (initialAttrs.length > 0) {
                 setAttributes(initialAttrs);
@@ -63,8 +67,8 @@ export function VariantManager() {
             return {
                 id: existing?.id || `new-${index}-${Date.now()}`,
                 name,
-                sku: existing?.sku || `${values.sku || "REF"}-${name.replace(/\s+\/\s+/g, "-")}`,
-                price: existing?.price || Number(values.price) || 0,
+                sku: existing?.sku || `${values.sku || "COD"}-${name.replace(/\s+\/\s+/g, "-")}`,
+                price: (existing?.price !== undefined && existing?.price !== 0) ? existing.price : Number(values.price) || 0,
                 stockQuantity: existing?.stockQuantity || 0,
                 images: existing?.images || [],
                 attributes: combo,
@@ -76,7 +80,7 @@ export function VariantManager() {
     };
 
     const addAttribute = () => {
-        setAttributes([...attributes, { name: "", values: [] }]);
+        setAttributes([...attributes, { name: "", values: [], rawValue: "" }]);
     };
 
     const removeAttribute = (index: number) => {
@@ -92,6 +96,7 @@ export function VariantManager() {
 
     const updateAttributeValues = (index: number, valueStr: string) => {
         const newAttrs = [...attributes];
+        newAttrs[index].rawValue = valueStr;
         newAttrs[index].values = valueStr.split(",").map(v => v.trim()).filter(v => v !== "");
         setAttributes(newAttrs);
     };
@@ -105,7 +110,7 @@ export function VariantManager() {
                         <div className="p-2 bg-purple-500/10 rounded-xl text-purple-600">
                             <Settings2 size={20} />
                         </div>
-                        <h2 className="text-xl font-bold tracking-tight">Opciones del Producto</h2>
+                        <h2 className="text-xl font-bold tracking-tight">Opciones de Preparación / Tamaño</h2>
                     </div>
                     <Button
                         type="button"
@@ -119,7 +124,7 @@ export function VariantManager() {
                 </div>
 
                 <p className="text-sm text-muted-foreground font-medium">
-                    Define las opciones de tu producto (ej: Color, Talla) y sus valores separados por comas.
+                    Define las opciones de tu plato (ej: Término de carne, Tamaño, Porción) y sus valores separados por comas.
                 </p>
 
                 <div className="space-y-4">
@@ -129,9 +134,9 @@ export function VariantManager() {
                                 <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1">Nombre de la Opción</label>
                                 <input
                                     type="text"
-                                    value={attr.name}
+                                    value={attr.name || ""}
                                     onChange={(e) => updateAttributeName(index, e.target.value)}
-                                    placeholder="Ej: Color"
+                                    placeholder="Ej: Término de carne"
                                     className="w-full bg-background border-2 rounded-xl px-4 py-2 font-medium focus:ring-2 focus:ring-primary/20 outline-none"
                                 />
                             </div>
@@ -139,9 +144,9 @@ export function VariantManager() {
                                 <label className="text-xs font-bold uppercase tracking-wider text-muted-foreground ml-1">Valores (separados por coma)</label>
                                 <input
                                     type="text"
-                                    value={attr.values.join(", ")}
+                                    value={attr.rawValue || ""}
                                     onChange={(e) => updateAttributeValues(index, e.target.value)}
-                                    placeholder="Ej: Rojo, Azul, Verde"
+                                    placeholder="Ej: Azul, Término medio, Tres cuartos, Bien asado"
                                     className="w-full bg-background border-2 rounded-xl px-4 py-2 font-medium focus:ring-2 focus:ring-primary/20 outline-none"
                                 />
                             </div>
@@ -183,9 +188,8 @@ export function VariantManager() {
                             <tr className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60">
                                 <th className="px-4 pb-2 w-16">Foto</th>
                                 <th className="px-4 pb-2">Variante</th>
-                                <th className="px-4 pb-2">Ref / SKU</th>
-                                <th className="px-4 pb-2">Precio Adic.</th>
-                                <th className="px-4 pb-2 min-w-[120px]">Stock</th>
+                                <th className="px-4 pb-2">Código</th>
+                                <th className="px-4 pb-2">Precio</th>
                                 <th className="px-4 pb-2"></th>
                             </tr>
                         </thead>
@@ -246,31 +250,17 @@ export function VariantManager() {
                                             <td className="px-4 py-4 min-w-[160px]">
                                                 <input
                                                     type="text"
-                                                    value={values.variants?.[index].sku}
-                                                    placeholder="REF-XXXX"
+                                                    value={values.variants?.[index]?.sku || ""}
+                                                    placeholder="COD-XXXX"
                                                     onChange={(e) => setFieldValue(`variants.${index}.sku`, e.target.value)}
                                                     className="w-full h-11 bg-background border-2 border-transparent rounded-xl px-4 text-xs font-bold focus:border-primary/20 focus:ring-4 focus:ring-primary/5 outline-none transition-all shadow-sm group-hover:bg-background"
                                                 />
                                             </td>
 
                                             <td className="px-4 py-4 min-w-[140px]">
-                                                <div className="relative">
-                                                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[10px] font-bold text-muted-foreground/60">$</span>
-                                                    <input
-                                                        type="number"
-                                                        value={values.variants?.[index].price}
-                                                        onChange={(e) => setFieldValue(`variants.${index}.price`, Number(e.target.value))}
-                                                        className="w-full h-11 bg-background border-2 border-transparent rounded-xl pl-8 pr-4 text-xs font-black focus:border-primary/20 focus:ring-4 focus:ring-primary/5 outline-none transition-all shadow-sm group-hover:bg-background"
-                                                    />
-                                                </div>
-                                            </td>
-
-                                            <td className="px-4 py-4 min-w-[120px]">
-                                                <input
-                                                    type="number"
-                                                    value={values.variants?.[index].stockQuantity}
-                                                    onChange={(e) => setFieldValue(`variants.${index}.stockQuantity`, Number(e.target.value))}
-                                                    className="w-full h-11 bg-background border-2 border-transparent rounded-xl px-4 text-xs font-black focus:border-primary/20 focus:ring-4 focus:ring-primary/5 outline-none transition-all shadow-sm text-center group-hover:bg-background"
+                                                <CurrencyField
+                                                    name={`variants.${index}.price`}
+                                                    className="w-full text-xs font-black"
                                                 />
                                             </td>
 

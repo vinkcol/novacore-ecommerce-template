@@ -1,15 +1,21 @@
 import { CheckoutFormValues } from "../checkout.schema";
+import { createOrderApi } from "@/features/orders/api/ordersApi";
+import { Order } from "@/features/orders/types";
 
 // Simulating API call
-export async function submitOrderApi(orderData: CheckoutFormValues) {
-  // In a real scenario, this would be:
-  // const response = await fetch('/api/orders', { ... })
-  // return response.json()
-
-  await new Promise((resolve) => setTimeout(resolve, 2000));
-  return {
-    success: true,
-    orderId: Math.random().toString(36).substr(2, 9).toUpperCase(),
-    data: orderData
-  };
+// Delegate to orders API
+export async function submitOrderApi(orderData: Omit<Order, "id" | "createdAt" | "updatedAt">) {
+  try {
+    const order = await createOrderApi(orderData);
+    return {
+      success: true,
+      orderId: order.id,
+      data: order
+    };
+  } catch (error: any) {
+    return {
+      success: false,
+      message: error.message
+    };
+  }
 }

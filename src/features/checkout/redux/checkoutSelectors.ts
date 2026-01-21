@@ -18,10 +18,7 @@ export const selectPaymentInfo = createSelector(
   (state) => state.paymentInfo
 );
 
-export const selectSelectedShippingMethod = createSelector(
-  [selectCheckoutState],
-  (state) => state.selectedShippingMethod
-);
+
 
 export const selectOrderStatus = createSelector(
   [selectCheckoutState],

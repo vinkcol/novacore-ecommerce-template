@@ -1,4 +1,4 @@
-import { LayoutDashboard, ShoppingBag, Package, Settings, Truck } from "lucide-react";
+import { LayoutDashboard, ShoppingBag, Package, Settings, Truck, BarChart3, Clock, Store } from "lucide-react";
 
 export type AdminRole = 'super_admin';
 
@@ -65,11 +65,19 @@ export const adminRooms: AdminRoom[] = [
         allowedRoles: ['super_admin'],
     },
     {
-        id: 'shipping',
-        label: 'Envíos',
-        path: '/admin/shipping',
+        id: 'schedule',
+        label: 'Tienda',
+        path: '/admin/schedule',
         hasNavItem: true,
-        icon: Truck,
+        icon: Store,
+        allowedRoles: ['super_admin'],
+    },
+    {
+        id: 'reports',
+        label: 'Reportes',
+        path: '/admin/reports',
+        hasNavItem: true,
+        icon: BarChart3,
         allowedRoles: ['super_admin'],
     },
     {

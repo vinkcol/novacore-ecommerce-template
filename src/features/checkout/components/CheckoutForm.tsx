@@ -1,15 +1,20 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+
 import { Formik, Form, useFormikContext } from "formik";
-import { User, MapPin, Mail, MessageCircle, Truck, AlertCircle } from "lucide-react";
-import { TextField, PhoneField, SelectField, CheckboxField } from "@/components/atoms/Form";
+import { User, MapPin, Mail, MessageCircle, AlertCircle, DollarSign } from "lucide-react";
+
+import { TextField, PhoneField, SelectField, CurrencyField } from "@/components/atoms/Form";
+
 import { checkoutValidationSchema, initialCheckoutValues, CheckoutFormValues } from "../checkout.schema";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { submitOrderRequest } from "../redux/checkoutSaga";
 import locationData from "@/data/colombia.location.json";
-import shippingRules from "@/data/shipping-coverage.json";
 import bogotaLocalities from "@/data/bogota.localities.json";
-import { setShippingCost, setShippingLabel, setShippingPromise, setIsCODAvailable } from "../redux/checkoutSlice";
+import { selectConfiguration } from "@/features/configuration/redux/configurationSelectors";
+import { selectCartTotals } from "@/features/cart/redux/cartSelectors";
 import { Price } from "@/components/atoms/Price";
+
+
 
 interface CheckoutFormProps {
     onSubmitSuccess?: () => void;
@@ -27,146 +32,139 @@ const bogotaLocalitiesOptions = bogotaLocalities.map(l => ({
     value: l.localidad
 })).sort((a, b) => a.label.localeCompare(b.label));
 
-// Shipping Logic Handler Component
-const ShippingLogicHandler = () => {
-    const { values, setFieldValue } = useFormikContext<CheckoutFormValues>();
-    const dispatch = useAppDispatch();
 
+
+// Payment Method Selector Component
+const PaymentMethodSelector = () => {
+    const config = useAppSelector(selectConfiguration);
+    const totals = useAppSelector(selectCartTotals);
+    const { values, setFieldValue, setFieldError } = useFormikContext<CheckoutFormValues>();
+
+    const isAmountInsufficient = useMemo(() => {
+        if (values.paymentMethod === 'cash' && values.cashAmount) {
+            return Number(values.cashAmount) < totals.total;
+        }
+        return false;
+    }, [values.paymentMethod, values.cashAmount, totals.total]);
+
+    // Update Formik error if insufficient
     useEffect(() => {
-        // Clear shipping cost if location is incomplete
-        if (!values.city || !values.department) {
-            dispatch(setShippingCost(null));
-            dispatch(setShippingLabel(null));
-            dispatch(setShippingPromise(null));
-            dispatch(setIsCODAvailable(true)); // Reset to true
-            return;
+        if (isAmountInsufficient) {
+            setFieldError('cashAmount', `El monto debe ser al menos ${new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP' }).format(totals.total)}`);
         }
+    }, [isAmountInsufficient, setFieldError, totals.total]);
 
-        // Calculate Shipping Cost & COD Availability
-        let cost = shippingRules.default.cost;
-        let label = shippingRules.default.label;
-        let promise = shippingRules.default.deliveryDays;
-        let allowCOD = shippingRules.default.allowCOD;
 
-        // Check rules
-        console.log("DEBUG: Checking location:", values.city, values.department);
-        console.log("DEBUG: Default allowCOD:", shippingRules.default.allowCOD);
+    const availableMethods = useMemo(() => {
+        const methods = [];
+        if (config?.paymentMethods?.nequi) methods.push({ id: 'nequi', label: 'Nequi', icon: '💳', color: 'bg-purple-100 text-purple-700' });
+        if (config?.paymentMethods?.daviplata) methods.push({ id: 'daviplata', label: 'Daviplata', icon: '💳', color: 'bg-red-100 text-red-700' });
+        if (config?.paymentMethods?.cash) methods.push({ id: 'cash', label: 'Efectivo', icon: '💵', color: 'bg-green-100 text-green-700' });
+        if (config?.paymentMethods?.dataphone) methods.push({ id: 'dataphone', label: 'Datafono', icon: '💳', color: 'bg-blue-100 text-blue-700' });
+        return methods;
+    }, [config]);
 
-        for (const rule of shippingRules.rules) {
-            // Rule 1: Specific City
-            if (rule.type === "city" && rule.values.includes(values.city)) {
-                console.log("DEBUG: Matched City Rule:", rule);
-                cost = rule.cost;
-                label = rule.label;
-                if (rule.deliveryDays) promise = rule.deliveryDays;
-                if (rule.allowCOD !== undefined) allowCOD = rule.allowCOD;
-                break;
+    if (availableMethods.length === 0) {
+        return (
+            <div className="text-center text-sm text-muted-foreground p-4 bg-muted/30 rounded-xl">
+                No hay métodos de pago disponibles. Contacta al administrador.
+            </div>
+        );
+    }
+
+    return (
+        <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
+            <h3 className="text-center text-sm font-bold uppercase tracking-wider text-muted-foreground">Método de Pago</h3>
+            <div className="grid grid-cols-2 gap-3">
+                {availableMethods.map(method => (
+                    <button
+                        key={method.id}
+                        type="button"
+                        onClick={() => setFieldValue('paymentMethod', method.id)}
+                        className={`
+                            flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all
+                            ${values.paymentMethod === method.id
+                                ? "border-primary bg-primary/5 shadow-sm"
+                                : "border-muted hover:border-primary/30"
+                            }
+                        `}
+                    >
+                        <div className={`p-2 rounded-lg ${method.color}`}>
+                            <span className="text-xl">{method.icon}</span>
+                        </div>
+                        <span className="text-sm font-semibold">{method.label}</span>
+                        <div className={`
+                            h-4 w-4 rounded-full border-2 flex items-center justify-center transition-all
+                            ${values.paymentMethod === method.id ? "border-primary bg-primary" : "border-muted"}
+                        `}>
+                            {values.paymentMethod === method.id && (
+                                <div className="h-2 w-2 rounded-full bg-white" />
+                            )}
+                        </div>
+                    </button>
+                ))}
+            </div>
+
+            {values.paymentMethod === 'cash' && (
+                <div className="pt-2 animate-in fade-in slide-in-from-top-2 duration-300">
+                    <CurrencyField
+                        name="cashAmount"
+                        label="¿Con cuánto vas a pagar?"
+                        placeholder="Ej: 50.000"
+                        icon={DollarSign}
+                        required
+                    />
+                    {isAmountInsufficient ? (
+                        <p className="text-[10px] text-destructive font-semibold mt-1 px-1">
+                            El valor ingresado es menor al total del pedido ({new Intl.NumberFormat('es-CO', { style: 'currency', currency: 'COP', maximumFractionDigits: 0 }).format(totals.total)}).
+                        </p>
+                    ) : (
+                        <p className="text-[10px] text-muted-foreground mt-1 px-1">
+                            Ingresa el valor para prepararte el cambio.
+                        </p>
+                    )}
+                </div>
+            )}
+
+        </div>
+
+    );
+};
+
+
+// Form Persistence Component
+const FormPersistence = () => {
+    const { values, setValues } = useFormikContext<CheckoutFormValues>();
+    const [isLoaded, setIsLoaded] = useState(false);
+
+    // Load from LocalStorage on mount
+    useEffect(() => {
+        const savedData = localStorage.getItem("checkout_form_data");
+        if (savedData) {
+            try {
+                const parsedData = JSON.parse(savedData);
+                // Merge saved data with initial structure to ensure new fields (like cashAmount) are handled correctly
+                // We exclude paymentMethod and cashAmount from persistence if desired, or keep them.
+                // User said "datos de envio" mostly, but preserving payment info is usually fine too.
+                // Let's preserve everything except maybe transient states if any.
+                setValues((prev) => ({ ...prev, ...parsedData }));
+            } catch (e) {
+                console.error("Failed to load checkout data", e);
             }
-            // Rule 2: Department (excluding specific cities)
-            if (rule.type === "department" &&
-                values.department &&
-                rule.values.includes(values.department) &&
-                (!rule.excludeCities || !rule.excludeCities.includes(values.city))
-            ) {
-                console.log("DEBUG: Matched Dept Rule:", rule);
-                cost = rule.cost;
-                label = rule.label;
-                if (rule.deliveryDays) promise = rule.deliveryDays;
-                if (rule.allowCOD !== undefined) allowCOD = rule.allowCOD;
-                break;
-            }
         }
+        setIsLoaded(true);
+    }, [setValues]);
 
-        console.log("DEBUG: Final allowCOD Result:", allowCOD);
-
-        dispatch(setShippingCost(cost));
-        dispatch(setShippingLabel(label));
-        dispatch(setShippingPromise(promise));
-        dispatch(setIsCODAvailable(allowCOD ?? false));
-
-        // If COD is not allowed, uncheck the commitment checkbox
-        if (!allowCOD) {
-            setFieldValue("commitment", false);
+    // Save to LocalStorage on change (debounced could be better but simple stringify is fast enough for this size)
+    useEffect(() => {
+        if (isLoaded) {
+            localStorage.setItem("checkout_form_data", JSON.stringify(values));
         }
-
-    }, [values.city, values.department, dispatch, setFieldValue]);
+    }, [values, isLoaded]);
 
     return null;
 };
 
-// Utility to calculate delivery date text
-const getDeliveryPromiseText = (min: number, max: number) => {
-    const options: Intl.DateTimeFormatOptions = {
-        weekday: 'long',
-        day: 'numeric',
-        month: 'long',
-        timeZone: 'America/Bogota'
-    };
-
-    // Helper to add days
-    const addDays = (days: number) => {
-        const date = new Date();
-        date.setDate(date.getDate() + days);
-        return date;
-    };
-
-    const minDate = addDays(min);
-    const maxDate = addDays(max);
-    const formatter = new Intl.DateTimeFormat('es-CO', options);
-
-    // Capitalize first letter helper
-    const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1);
-
-    if (min === 1 && max === 1) {
-        return `Llega mañana, ${capitalize(formatter.format(minDate))}`;
-    }
-
-    if (min === max) {
-        return `Llega el ${capitalize(formatter.format(minDate))}`;
-    }
-
-    // Range
-    return `Llega entre el ${capitalize(formatter.format(minDate))} y el ${capitalize(formatter.format(maxDate))}`;
-};
-
-// Shipping Display Component
-const ShippingDisplay = () => {
-    const { shippingCost, shippingLabel, shippingPromise, isCODAvailable } = useAppSelector(state => state.checkout);
-
-    if (shippingCost === null) return null;
-
-    return (
-        <div className="space-y-4 animate-in fade-in slide-in-from-top-2 duration-300">
-            <h3 className="text-center text-sm font-bold uppercase tracking-wider text-muted-foreground">Método de envío calculado</h3>
-            <div className="flex items-center justify-between rounded-xl border-2 border-primary bg-primary/5 p-4 transition-all">
-                <div className="flex items-center gap-3">
-                    <div className="flex h-5 w-5 items-center justify-center rounded-full border-2 border-primary">
-                        <div className="h-2.5 w-2.5 rounded-full bg-primary" />
-                    </div>
-                    <div className="flex flex-col">
-                        <span className="font-semibold text-sm leading-tight">{shippingLabel}</span>
-
-                        {shippingPromise && (
-                            <span className="text-xs font-medium text-green-600 flex items-center gap-1 mt-0.5">
-                                <Truck className="h-3 w-3" />
-                                {getDeliveryPromiseText(shippingPromise.min, shippingPromise.max)}
-                            </span>
-                        )}
-
-                        <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-tighter mt-1">
-                            {isCODAvailable ? "Contraentrega disponible" : "Solo pago anticipado"}
-                        </span>
-                    </div>
-                </div>
-                {shippingCost === 0 ? (
-                    <span className="text-sm font-bold uppercase tracking-tighter text-green-600">Gratis</span>
-                ) : (
-                    <Price amount={shippingCost} className="text-sm font-bold text-primary" />
-                )}
-            </div>
-        </div>
-    );
-};
 
 const LocationFields = () => {
     const { values, setFieldValue } = useFormikContext<CheckoutFormValues>();
@@ -238,9 +236,10 @@ const LocationFields = () => {
 
 export function CheckoutForm({ }: CheckoutFormProps) {
     const dispatch = useAppDispatch();
-    const { isCODAvailable } = useAppSelector(state => state.checkout);
+
 
     const handleSubmit = (values: CheckoutFormValues) => {
+
         dispatch(submitOrderRequest(values));
     };
 
@@ -253,7 +252,9 @@ export function CheckoutForm({ }: CheckoutFormProps) {
             {({ values }) => {
                 return (
                     <Form id="checkout-form" className="space-y-6">
-                        <ShippingLogicHandler />
+                        <FormPersistence />
+
+
 
                         <div className="space-y-4">
                             <h3 className="text-center text-sm font-bold uppercase tracking-wider text-muted-foreground">Datos personales</h3>
@@ -319,39 +320,10 @@ export function CheckoutForm({ }: CheckoutFormProps) {
                             />
                         </div>
 
-                        <ShippingDisplay />
+                        <PaymentMethodSelector />
 
-                        <div className="space-y-3">
-                            {isCODAvailable ? (
-                                <CheckboxField
-                                    name="commitment"
-                                    label="Me comprometo a pagar al recibir el pedido cuando llegue a casa"
-                                    required
-                                />
-                            ) : (
-                                <div className="rounded-xl border border-yellow-200 bg-yellow-50 p-4 flex gap-3 text-yellow-900">
-                                    <AlertCircle className="h-5 w-5 shrink-0" />
-                                    <div className="text-sm">
-                                        <p className="font-semibold">Pago contraentrega no disponible</p>
-                                        <p className="mt-1 text-yellow-800/80">
-                                            Lo sentimos, para la ubicación seleccionada ({values.city}) solo aceptamos pagos anticipados. Por favor contacta soporte para continuar.
-                                        </p>
-                                    </div>
-                                </div>
-                            )}
-
-                            <div className="rounded-xl border border-blue-200 bg-blue-50/50 p-3">
-                                <CheckboxField
-                                    name="priorityShipping"
-                                    label={
-                                        <span className="text-sm font-medium text-blue-900">
-                                            Agrega envío prioritario ✅ por solo $3.99
-                                        </span>
-                                    }
-                                />
-                            </div>
-                        </div>
                     </Form>
+
                 )
             }}
         </Formik>

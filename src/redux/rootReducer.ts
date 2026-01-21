@@ -7,7 +7,9 @@ import adminCollectionsReducer from "@/features/collections/redux/adminCollectio
 import cartReducer from "@/features/cart/redux/cartSlice";
 import checkoutReducer from "@/features/checkout/redux/checkoutSlice";
 import configurationReducer from "@/features/configuration/redux/configurationSlice";
-import { shippingReducer } from "@/features/shipping/redux/shippingSlice";
+
+import ordersReducer from "@/features/orders/redux/ordersSlice";
+import whatsappTemplatesReducer from "@/features/configuration/redux/whatsappTemplatesSlice";
 
 export const rootReducer = combineReducers({
   products: productsReducer,
@@ -18,5 +20,7 @@ export const rootReducer = combineReducers({
   cart: cartReducer,
   checkout: checkoutReducer,
   configuration: configurationReducer,
-  shipping: shippingReducer,
+  whatsappTemplates: whatsappTemplatesReducer,
+
+  orders: ordersReducer,
 });

@@ -1,16 +1,19 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { Plus, Search, MoreHorizontal, Edit, Trash2, Eye, Loader2, Tag, Library } from "lucide-react";
+import { Plus, Search, MoreHorizontal, Edit, Trash2, Eye, Loader2, Tag, Library, RefreshCw, Upload } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { useToast } from "@/hooks/useToast";
 import { ProductDetailModal } from "./ProductDetailModal";
 import { DeleteConfirmModal } from "./DeleteConfirmModal";
+import { BulkUploadModal } from "./BulkUploadModal";
 import { Product } from "../../types/product.types";
+import { Image as ProductImage } from "@/components/atoms/Image";
 import {
     fetchProductsStart,
+    updateProductStart,
     deleteProductStart,
     setSelectedProduct,
     resetCreateStatus
@@ -28,19 +31,26 @@ const ProductRow = React.memo(({
     product,
     onView,
     onEdit,
-    onDelete
+    onDelete,
+    onToggleStatus
 }: {
     product: Product;
     onView: (p: Product) => void;
     onEdit: (p: Product) => void;
     onDelete: (p: Product) => void;
+    onToggleStatus: (p: Product) => void;
 }) => {
     return (
         <tr className="hover:bg-muted/20 transition-colors group">
             <td className="px-6 py-4">
                 <div className="flex items-center gap-4">
-                    <div className="h-12 w-12 rounded-2xl bg-muted overflow-hidden border shadow-sm group-hover:scale-105 transition-transform">
-                        <img src={product.images[0]} alt={product.name} className="h-full w-full object-cover" />
+                    <div className="relative h-12 w-12 rounded-2xl bg-muted overflow-hidden border shadow-sm group-hover:scale-105 transition-transform">
+                        <ProductImage
+                            src={product.images?.[0] || "/placeholder-product.png"}
+                            alt={product.name}
+                            fill
+                            className="object-cover"
+                        />
                     </div>
                     <div className="flex flex-col">
                         <span className="font-bold text-foreground leading-none mb-1">{product.name}</span>
@@ -63,7 +73,7 @@ const ProductRow = React.memo(({
             <td className="px-6 py-4 font-extrabold text-base">
                 ${product.price ? product.price.toLocaleString('es-CO') : '0'}
             </td>
-            <td className="px-6 py-4 font-bold text-muted-foreground">{product.stockQuantity} uds</td>
+
             <td className="px-6 py-4">
                 <Badge
                     variant={product.inStock ? "outline" : "destructive"}
@@ -77,18 +87,28 @@ const ProductRow = React.memo(({
                     <button
                         onClick={() => onView(product)}
                         className="p-2 hover:bg-muted rounded-xl transition-colors text-muted-foreground hover:text-primary"
+                        title="Ver detalle"
                     >
                         <Eye size={18} />
                     </button>
                     <button
+                        onClick={() => onToggleStatus(product)}
+                        className="p-2 hover:bg-muted rounded-xl transition-colors text-muted-foreground hover:text-amber-600"
+                        title="Cambiar disponibilidad"
+                    >
+                        <RefreshCw size={18} />
+                    </button>
+                    <button
                         onClick={() => onEdit(product)}
                         className="p-2 hover:bg-muted rounded-xl transition-colors text-muted-foreground hover:text-blue-600"
+                        title="Editar"
                     >
                         <Edit size={18} />
                     </button>
                     <button
                         onClick={() => onDelete(product)}
                         className="p-2 hover:bg-muted rounded-xl transition-colors text-muted-foreground hover:text-destructive"
+                        title="Eliminar"
                     >
                         <Trash2 size={18} />
                     </button>
@@ -117,6 +137,7 @@ export function ProductList() {
     const [selectedProduct, setLocalSelectedProduct] = React.useState<Product | null>(null);
     const [isDetailOpen, setIsDetailOpen] = React.useState(false);
     const [isDeleteOpen, setIsDeleteOpen] = React.useState(false);
+    const [isBulkUploadOpen, setIsBulkUploadOpen] = React.useState(false);
 
     useEffect(() => {
         dispatch(fetchProductsStart());
@@ -148,6 +169,16 @@ export function ProductList() {
         setIsDeleteOpen(true);
     };
 
+    const handleToggleStatus = (product: Product) => {
+        dispatch(updateProductStart({
+            id: product.id,
+            data: { inStock: !product.inStock }
+        }));
+        toast.vink("Estado actualizado", {
+            description: `El producto ahora está ${!product.inStock ? 'Activo' : 'Agotado'}.`
+        });
+    };
+
     const confirmDelete = () => {
         if (selectedProduct?.id) {
             dispatch(deleteProductStart(selectedProduct.id));
@@ -158,7 +189,7 @@ export function ProductList() {
         if ((loading && products.length === 0) || (!lastUpdated && !error)) {
             return (
                 <tr>
-                    <td colSpan={7} className="px-6 py-20 text-center">
+                    <td colSpan={6} className="px-6 py-20 text-center">
                         <div className="flex flex-col items-center gap-3">
                             <Loader2 className="h-8 w-8 animate-spin text-primary" />
                             <span className="text-sm font-bold text-muted-foreground animate-pulse">Cargando inventario...</span>
@@ -171,7 +202,7 @@ export function ProductList() {
         if (error) {
             return (
                 <tr>
-                    <td colSpan={7} className="px-6 py-10 text-center">
+                    <td colSpan={6} className="px-6 py-10 text-center">
                         <p className="font-bold text-destructive">{error}</p>
                         <button
                             onClick={() => dispatch(fetchProductsStart())}
@@ -187,7 +218,7 @@ export function ProductList() {
         if (products.length === 0) {
             return (
                 <tr>
-                    <td colSpan={7} className="px-6 py-10 text-center text-muted-foreground font-medium">
+                    <td colSpan={6} className="px-6 py-10 text-center text-muted-foreground font-medium">
                         No se encontraron productos en el inventario.
                     </td>
                 </tr>
@@ -201,6 +232,7 @@ export function ProductList() {
                 onView={handleView}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
+                onToggleStatus={handleToggleStatus}
             />
         ));
     }, [products, loading, error, lastUpdated, dispatch]);
@@ -231,6 +263,13 @@ export function ProductList() {
                         Colecciones
                     </button>
                     <button
+                        onClick={() => setIsBulkUploadOpen(true)}
+                        className="w-full sm:w-auto flex items-center justify-center gap-2 bg-amber-50 text-amber-700 border border-amber-200 px-6 py-2.5 rounded-2xl text-sm font-bold hover:bg-amber-100 transition-all"
+                    >
+                        <Upload size={18} />
+                        Carga Masiva
+                    </button>
+                    <button
                         onClick={() => router.push("/admin/products/new")}
                         className="w-full sm:w-auto flex items-center justify-center gap-2 bg-primary text-primary-foreground px-6 py-2.5 rounded-2xl text-sm font-bold shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all"
                     >
@@ -255,7 +294,7 @@ export function ProductList() {
                             <th className="px-6 py-5">Categoría</th>
                             <th className="px-6 py-5">Tipo</th>
                             <th className="px-6 py-5">Precio</th>
-                            <th className="px-6 py-5">Stock</th>
+
                             <th className="px-6 py-5">Estado</th>
                             <th className="px-6 py-5 text-right">Acciones</th>
                         </tr>
@@ -279,6 +318,11 @@ export function ProductList() {
                 onConfirm={confirmDelete}
                 productName={selectedProduct?.name || ""}
                 isDeleting={deleting}
+            />
+
+            <BulkUploadModal
+                isOpen={isBulkUploadOpen}
+                onClose={() => setIsBulkUploadOpen(false)}
             />
         </div>
     );

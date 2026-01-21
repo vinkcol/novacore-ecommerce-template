@@ -22,11 +22,12 @@
   },
   "homepage": {
     "hero": {
-      "title": "Descubre Tu Estilo",
-      "subtitle": "Compra las últimas tendencias y clásicos atemporales",
-      "ctaText": "Comprar Ahora",
+      "title": "🍔 Pide directo de nuestra carta digital",
+      "subtitle": "Sin llamadas, sin confusión. Arma tu pedido y envíalo por WhatsApp.",
+      "ctaText": "📋 Ver menú",
       "ctaLink": "/products",
-      "backgroundImage": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1920"
+      "backgroundImage": "https://images.unsplash.com/photo-1544148103-0773bf10d330?q=80&w=2940&auto=format&fit=crop",
+      "whatsappNumber": "573000000000"
     },
     "featuredCategories": [
       {
@@ -50,9 +51,9 @@
     ],
     "benefits": [
       {
-        "icon": "Truck",
-        "title": "Envío Gratis",
-        "description": "En pedidos mayores a $50"
+        "icon": "Package",
+        "title": "Calidad Garantizada",
+        "description": "Solo los mejores ingredientes"
       },
       {
         "icon": "Shield",
@@ -72,30 +73,71 @@
     ]
   },
   "footer": {
-    "about": "Vink Shop es tu destino para productos de calidad a precios competitivos. Nos enorgullecemos de nuestro excelente servicio al cliente y envíos rápidos.",
+    "about": "Tu carta digital siempre disponible para tus clientes",
     "links": {
       "shop": [
-        { "label": "Todos los Productos", "href": "/products" },
-        { "label": "Nuevos Ingresos", "href": "/products?filter=new" },
-        { "label": "Ofertas", "href": "/products?filter=sale" },
-        { "label": "Categorías", "href": "/products" }
+        {
+          "label": "Menú Completo",
+          "href": "/products"
+        },
+        {
+          "label": "Nuevos Platos",
+          "href": "/products?filter=new"
+        },
+        {
+          "label": "Promociones",
+          "href": "/products?filter=sale"
+        },
+        {
+          "label": "Secciones",
+          "href": "/products"
+        }
       ],
       "company": [
-        { "label": "Nosotros", "href": "/about" },
-        { "label": "Contacto", "href": "/contact" },
-        { "label": "Empleos", "href": "/careers" },
-        { "label": "Prensa", "href": "/press" }
+        {
+          "label": "Nosotros",
+          "href": "/about"
+        },
+        {
+          "label": "Contacto",
+          "href": "/contact"
+        },
+        {
+          "label": "Empleos",
+          "href": "/careers"
+        },
+        {
+          "label": "Prensa",
+          "href": "/press"
+        }
       ],
       "support": [
-        { "label": "Centro de Ayuda", "href": "/help" },
-        { "label": "Información de Envío", "href": "/shipping" },
-        { "label": "Devoluciones", "href": "/returns" },
-        { "label": "Guía de Tallas", "href": "/size-guide" }
+        {
+          "label": "Centro de Ayuda",
+          "href": "/help"
+        },
+        {
+          "label": "Devoluciones",
+          "href": "/returns"
+        },
+        {
+          "label": "Guía de Tallas",
+          "href": "/size-guide"
+        }
       ],
       "legal": [
-        { "label": "Política de Privacidad", "href": "/privacy" },
-        { "label": "Términos de Servicio", "href": "/terms" },
-        { "label": "Política de Cookies", "href": "/cookies" }
+        {
+          "label": "Política de Privacidad",
+          "href": "/privacy"
+        },
+        {
+          "label": "Términos de Servicio",
+          "href": "/terms"
+        },
+        {
+          "label": "Política de Cookies",
+          "href": "/cookies"
+        }
       ]
     },
     "newsletter": {
@@ -107,44 +149,41 @@
   },
   "checkout": {
     "steps": [
-      { "id": "shipping", "label": "Envío", "icon": "Truck" },
-      { "id": "payment", "label": "Pago", "icon": "CreditCard" },
-      { "id": "review", "label": "Revisar", "icon": "FileCheck" }
-    ],
-    "shippingMethods": [
       {
-        "id": "standard",
-        "name": "Envío Estándar",
-        "description": "5-7 días hábiles",
-        "price": 5.99,
-        "estimatedDays": "5-7"
+        "id": "payment",
+        "label": "Pago",
+        "icon": "CreditCard"
       },
       {
-        "id": "express",
-        "name": "Envío Express",
-        "description": "2-3 días hábiles",
-        "price": 12.99,
-        "estimatedDays": "2-3"
-      },
-      {
-        "id": "overnight",
-        "name": "Envío Nocturno",
-        "description": "Siguiente día hábil",
-        "price": 24.99,
-        "estimatedDays": "1"
+        "id": "review",
+        "label": "Revisar",
+        "icon": "FileCheck"
       }
     ],
+    "shippingMethods": [],
     "paymentMethods": [
-      { "id": "credit_card", "name": "Tarjeta de Crédito", "icon": "CreditCard" },
-      { "id": "paypal", "name": "PayPal", "icon": "Wallet" },
-      { "id": "apple_pay", "name": "Apple Pay", "icon": "Apple" }
+      {
+        "id": "credit_card",
+        "name": "Tarjeta de Crédito",
+        "icon": "CreditCard"
+      },
+      {
+        "id": "paypal",
+        "name": "PayPal",
+        "icon": "Wallet"
+      },
+      {
+        "id": "apple_pay",
+        "name": "Apple Pay",
+        "icon": "Apple"
+      }
     ]
   },
   "messages": {
-    "cartEmpty": "Tu carrito está vacío",
-    "cartEmptyDescription": "Empieza a comprar para agregar productos a tu carrito",
-    "productAdded": "Producto agregado al carrito",
-    "productRemoved": "Producto eliminado del carrito",
+    "cartEmpty": "Tu pedido está vacío",
+    "cartEmptyDescription": "Elige platos deliciosos del menú",
+    "productAdded": "Plato agregado al pedido",
+    "productRemoved": "Plato eliminado del pedido",
     "checkoutSuccess": "¡Pedido realizado con éxito!",
     "checkoutSuccessDescription": "Recibirás un correo de confirmación en breve",
     "outOfStock": "Este producto está agotado actualmente",

@@ -105,13 +105,13 @@ export function CategoryModal({ isOpen, onClose, category }: CategoryModalProps)
                                 <TextField
                                     name="name"
                                     label="Nombre de la Categoría"
-                                    placeholder="Ej: Electrónica"
+                                    placeholder="Ej: Hamburguesas"
                                     required
                                 />
                                 <TextField
                                     name="slug"
                                     label="Slug (URL)"
-                                    placeholder="ej-electronica"
+                                    placeholder="ej-hamburguesas"
                                     required
                                 />
                                 <TextAreaField

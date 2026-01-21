@@ -20,6 +20,7 @@ interface SelectFieldProps {
     required?: boolean;
     disabled?: boolean;
     id?: string;
+    onChange?: (value: string) => void; // Add onChange prop
     className?: string; // Add className prop
 }
 
@@ -30,6 +31,7 @@ export function SelectField({
     placeholder = "Seleccionar...",
     required,
     disabled,
+    onChange, // Destructure onChange
     ...props
 }: SelectFieldProps) {
     const [field, meta] = useField(props.name);
@@ -86,6 +88,9 @@ export function SelectField({
 
     const handleSelect = (value: string) => {
         setFieldValue(field.name, value);
+        if (onChange) {
+            onChange(value);
+        }
         setIsOpen(false);
         setSearchQuery("");
     };
@@ -131,7 +136,7 @@ export function SelectField({
 
                 {/* Dropdown Menu */}
                 {isOpen && (
-                    <div className="absolute z-50 mt-2 w-full min-w-[200px] overflow-hidden rounded-xl border bg-popover text-popover-foreground shadow-lg animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 slide-in-from-top-2">
+                    <div className="absolute z-[9999] mt-2 w-full min-w-[200px] overflow-hidden rounded-xl border bg-popover text-popover-foreground shadow-lg animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 slide-in-from-top-2">
                         {/* Search Input */}
                         <div className="flex items-center border-b px-3 pb-2 pt-3">
                             <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />

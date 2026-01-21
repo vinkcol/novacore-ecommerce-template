@@ -12,7 +12,7 @@ export interface ShippingInfo {
   state: string;
   zipCode: string;
   country: string;
-  priorityShipping?: boolean;
+
 }
 
 export interface PaymentInfo {
@@ -21,6 +21,8 @@ export interface PaymentInfo {
   cardName?: string;
   expiryDate?: string;
   cvv?: string;
+  cashAmount?: number;
+
 }
 
 export interface ShippingMethod {
@@ -42,7 +44,8 @@ export interface Order {
   }[];
   shipping: ShippingInfo;
   payment: PaymentInfo;
-  shippingMethod: ShippingMethod;
+  shippingMethod?: ShippingMethod;
+
   subtotal: number;
   tax: number;
   shippingCost: number;
@@ -57,12 +60,9 @@ export interface CheckoutState {
   currentStep: CheckoutStep;
   shippingInfo: Partial<ShippingInfo>;
   paymentInfo: Partial<PaymentInfo>;
-  selectedShippingMethod: ShippingMethod | null;
-  shippingCost: number | null;
-  shippingLabel: string | null;
-  shippingPromise: { min: number; max: number } | null;
-  isCODAvailable: boolean;
+
   orderStatus: "idle" | "submitting" | "success" | "error";
+
   order: Order | null;
   error: string | null;
 }

@@ -43,12 +43,7 @@ export function calculateTax(subtotal: number, taxRate: number = 0.08): number {
   return subtotal * taxRate;
 }
 
-export function calculateShipping(
-  subtotal: number,
-  freeShippingThreshold: number = 50
-): number {
-  return subtotal >= freeShippingThreshold ? 0 : 5.99;
-}
+
 
 export function debounce<T extends (...args: unknown[]) => unknown>(
   func: T,

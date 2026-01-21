@@ -20,13 +20,12 @@ import {
 } from "@/features/checkout/redux/checkoutSelectors";
 import {
   setShippingInfo,
-  setShippingMethod,
 } from "@/features/checkout/redux/checkoutSlice";
 import { submitOrder } from "@/features/checkout/redux/checkoutThunks";
 import { useState } from "react";
-import shopContent from "@/data/shop-content.json";
 
 export default function CheckoutPage() {
+
   const router = useRouter();
   const dispatch = useAppDispatch();
   const items = useAppSelector(selectCartItems);
@@ -45,7 +44,7 @@ export default function CheckoutPage() {
     country: shippingInfo.country || "USA",
   });
 
-  const { shippingMethods } = shopContent.checkout;
+
 
   useEffect(() => {
     if (items.length === 0 && orderStatus !== "success") {
@@ -53,9 +52,8 @@ export default function CheckoutPage() {
     }
   }, [items.length, orderStatus, router]);
 
-  useEffect(() => {
-    dispatch(setShippingMethod(shippingMethods[0]));
-  }, [dispatch, shippingMethods]);
+  // Shipping method selection removed
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

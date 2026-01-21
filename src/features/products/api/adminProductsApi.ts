@@ -58,6 +58,11 @@ export async function createAdminProductApi(data: Partial<Product>): Promise<Pro
             isNew: data.isNew ?? true,
             isFeatured: data.isFeatured ?? false,
             isSale: data.isSale ?? false,
+            // Restaurant specific fields
+            prepTimeMinutes: data.prepTimeMinutes ?? 0,
+            spicyLevel: data.spicyLevel ?? "none",
+            allowNotes: data.allowNotes ?? true,
+            extras: data.extras || [],
             // Ensure inStock is a proper boolean
             inStock: data.inStock === true || (data.inStock as any) === "true" || (data.inStock as any) === 1,
             createdAt: new Date().toISOString(),

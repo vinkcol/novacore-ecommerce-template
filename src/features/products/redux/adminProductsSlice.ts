@@ -16,6 +16,9 @@ interface AdminProductsState {
     deleteSuccess: boolean;
     deleteError: string | null;
     selectedProduct: Product | null;
+    bulkCreating: boolean;
+    bulkCreateSuccess: boolean;
+    bulkCreateError: string | null;
 }
 
 const initialState: AdminProductsState = {
@@ -33,6 +36,9 @@ const initialState: AdminProductsState = {
     deleteSuccess: false,
     deleteError: null,
     selectedProduct: null,
+    bulkCreating: false,
+    bulkCreateSuccess: false,
+    bulkCreateError: null,
 };
 
 const adminProductsSlice = createSlice({
@@ -101,6 +107,21 @@ const adminProductsSlice = createSlice({
             state.deleting = false;
             state.deleteError = action.payload;
         },
+        // Bulk Create
+        bulkCreateProductsStart: (state, _action: PayloadAction<Partial<Product>[]>) => {
+            state.bulkCreating = true;
+            state.bulkCreateSuccess = false;
+            state.bulkCreateError = null;
+        },
+        bulkCreateProductsSuccess: (state, action: PayloadAction<Product[]>) => {
+            state.items = [...action.payload, ...state.items];
+            state.bulkCreating = false;
+            state.bulkCreateSuccess = true;
+        },
+        bulkCreateProductsFailure: (state, action: PayloadAction<string>) => {
+            state.bulkCreating = false;
+            state.bulkCreateError = action.payload;
+        },
         // Selection
         setSelectedProduct: (state, action: PayloadAction<Product | null>) => {
             state.selectedProduct = action.payload;
@@ -115,6 +136,9 @@ const adminProductsSlice = createSlice({
             state.deleting = false;
             state.deleteSuccess = false;
             state.deleteError = null;
+            state.bulkCreating = false;
+            state.bulkCreateSuccess = false;
+            state.bulkCreateError = null;
         },
     },
 });
@@ -132,6 +156,9 @@ export const {
     deleteProductStart,
     deleteProductSuccess,
     deleteProductFailure,
+    bulkCreateProductsStart,
+    bulkCreateProductsSuccess,
+    bulkCreateProductsFailure,
     setSelectedProduct,
     resetCreateStatus,
 } = adminProductsSlice.actions;

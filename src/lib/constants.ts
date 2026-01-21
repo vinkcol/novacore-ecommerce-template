@@ -1,7 +1,6 @@
-export const APP_NAME = "Vink Shop";
-export const TAX_RATE = 0.08; // 8% tax
-export const FREE_SHIPPING_THRESHOLD = 50;
-export const DEFAULT_SHIPPING_COST = 5.99;
+export const APP_NAME = "Foodie";
+export const TAX_RATE = 0; // Taxes are included in price or not applied for COP
+
 export const CURRENCY = "COP";
 export const LOCALE = "es-CO";
 
@@ -19,4 +18,10 @@ export const BREAKPOINTS = {
   LG: 1024,
   XL: 1280,
   "2XL": 1536,
+} as const;
+
+export const FALLBACK_IMAGES = {
+  product: '/placeholder-product.png',
+  logo: '/identity/logo.png',
+  user: '/placeholder-user.png',
 } as const;

@@ -36,9 +36,17 @@ export const checkoutValidationSchema = Yup.object().shape({
     email: Yup.string()
         .email("Email inválido")
         .optional(),
-    commitment: Yup.boolean()
-        .oneOf([true], "Debe comprometerse al pago"),
-    priorityShipping: Yup.boolean(),
+    paymentMethod: Yup.string()
+        .required("Selecciona un método de pago"),
+    cashAmount: Yup.number().when("paymentMethod", {
+        is: (val: string) => val === "cash",
+        then: (schema) => schema
+            .required("Indica con cuánto vas a pagar")
+            .positive("El monto debe ser positivo")
+            .typeError("Debe ser un número"),
+        otherwise: (schema) => schema.optional(),
+    }),
+
 });
 
 export type CheckoutFormValues = Yup.InferType<typeof checkoutValidationSchema>;
@@ -54,6 +62,7 @@ export const initialCheckoutValues: CheckoutFormValues = {
     locality: "",
     landmark: "",
     email: "",
-    commitment: false,
-    priorityShipping: false,
+    paymentMethod: "",
+    cashAmount: undefined,
+
 };

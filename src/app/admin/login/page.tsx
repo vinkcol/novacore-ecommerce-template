@@ -6,10 +6,15 @@ import * as Yup from "yup";
 import Logo from "@/components/atoms/Logo/Logo";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { TextField } from "@/components/atoms/Form";
+import { TextField, PasswordField } from "@/components/atoms/Form";
 import { useRouter } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/useToast";
+
+import { useAuth } from "@/features/auth/context/AuthContext";
+import { FirebaseError } from "firebase/app";
+import { useSelector } from "react-redux";
+import { selectConfiguration } from "@/features/configuration/redux/configurationSelectors";
 
 const LoginSchema = Yup.object().shape({
     email: Yup.string().email("Email inválido").required("Requerido"),
@@ -19,6 +24,10 @@ const LoginSchema = Yup.object().shape({
 export default function LoginPage() {
     const router = useRouter();
     const toast = useToast();
+    const { login } = useAuth();
+    const config = useSelector(selectConfiguration);
+
+    const storeName = config?.name || "Admin Panel";
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50/50 p-4">
@@ -28,10 +37,10 @@ export default function LoginPage() {
                         <Logo />
                     </div>
                     <h1 className="text-2xl font-bold tracking-tight text-foreground">
-                        Admin Panel
+                        {storeName}
                     </h1>
                     <p className="text-sm text-muted-foreground px-6">
-                        Ingresa tus credenciales para administrar la tienda
+                        Ingresa tus credenciales para administrar {config?.name ? `tu ${config.name}` : "la tienda"}
                     </p>
                 </CardHeader>
 
@@ -40,14 +49,28 @@ export default function LoginPage() {
                         initialValues={{ email: "", password: "" }}
                         validationSchema={LoginSchema}
                         onSubmit={async (values, { setSubmitting }) => {
-                            // Mock login for now
-                            await new Promise(resolve => setTimeout(resolve, 1500));
-
-                            if (values.email === "admin@vink.com" && values.password === "admin") {
+                            try {
+                                await login(values.email, values.password);
                                 toast.success("Bienvenido de nuevo");
                                 router.push("/admin/dashboard");
-                            } else {
-                                toast.error("Credenciales incorrectas");
+                            } catch (error) {
+                                console.error("Login error:", error);
+                                if (error instanceof FirebaseError) {
+                                    switch (error.code) {
+                                        case "auth/user-not-found":
+                                        case "auth/wrong-password":
+                                        case "auth/invalid-credential":
+                                            toast.error("Credenciales incorrectas");
+                                            break;
+                                        case "auth/too-many-requests":
+                                            toast.error("Demasiados intentos. Intenta más tarde.");
+                                            break;
+                                        default:
+                                            toast.error("Ocurrió un error al iniciar sesión");
+                                    }
+                                } else {
+                                    toast.error("Error inesperado");
+                                }
                                 setSubmitting(false);
                             }
                         }}
@@ -57,15 +80,14 @@ export default function LoginPage() {
                                 <TextField
                                     name="email"
                                     label="Correo Electrónico"
-                                    placeholder="admin@vink.com"
+                                    placeholder="ejemplo@correo.com"
                                     autoComplete="email"
                                 />
 
                                 <div className="pt-2">
-                                    <TextField
+                                    <PasswordField
                                         name="password"
                                         label="Contraseña"
-                                        type="password"
                                         placeholder="••••••••"
                                         autoComplete="current-password"
                                     />
@@ -94,7 +116,7 @@ export default function LoginPage() {
             </Card>
 
             <div className="fixed bottom-6 text-xs text-muted-foreground/50">
-                © 2026 Vink Shop. Panel Administrativo.
+                © {new Date().getFullYear()} {config?.name || "Vink Shop"}. Panel Administrativo.
             </div>
         </div>
     );
