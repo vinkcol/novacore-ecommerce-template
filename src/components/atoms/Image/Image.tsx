@@ -7,6 +7,22 @@ import { FALLBACK_IMAGES } from "@/lib/constants";
 
 const MAX_RETRIES = 2;
 
+/**
+ * Checks if the URL is from Firebase Storage.
+ * Firebase Storage URLs should skip Next.js optimization on Netlify
+ * to avoid 412 Precondition Failed errors.
+ */
+function isFirebaseStorageUrl(url: string): boolean {
+  if (typeof url !== "string") return false;
+  const isFirebase =
+    url.toLowerCase().includes("firebasestorage.googleapis.com") ||
+    url.toLowerCase().includes("storage.googleapis.com");
+
+  if (isFirebase && process.env.NODE_ENV === "production") {
+    // console.log("[ImageAtom] Detected Firebase URL, disabling optimization:", url);
+  }
+  return isFirebase;
+}
 
 interface ImageProps {
   src: string;
@@ -19,6 +35,8 @@ interface ImageProps {
   objectFit?: "contain" | "cover" | "fill" | "none" | "scale-down";
   fallbackSrc?: string;
   sizes?: string;
+  /** Force unoptimized mode (bypass Next.js image optimization) */
+  unoptimized?: boolean;
 }
 
 export function Image({
@@ -32,9 +50,13 @@ export function Image({
   objectFit = "cover",
   fallbackSrc = FALLBACK_IMAGES.product,
   sizes,
+  unoptimized: unoptimizedProp,
 }: ImageProps) {
-
   const [imgSrc, setImgSrc] = useState(src || fallbackSrc);
+
+  // Auto-detect Firebase Storage URLs and skip optimization to avoid 412 errors on Netlify
+  const shouldSkipOptimization =
+    unoptimizedProp || isFirebaseStorageUrl(imgSrc);
   const [hasError, setHasError] = useState(false);
   const [retryCount, setRetryCount] = useState(0);
   const [isRetrying, setIsRetrying] = useState(false);
@@ -78,18 +100,13 @@ export function Image({
     setIsLoading(false);
   };
 
-  const Wrapper = fill ? "div" : "div";
-  // For 'fill' usage, the parent is usually the container. 
-  // But to overlay the skeleton, we need a common parent if we want to be strictly inside.
-  // Actually, 'fill' images render absolute.
-  // We can render the skeleton as absolute covering the same area.
-
   const commonProps = {
     src: imgSrc,
     alt: alt,
     onError: handleError,
     onLoad: handleLoad,
     priority: priority,
+    unoptimized: shouldSkipOptimization,
     className: cn(
       "transition-opacity duration-300",
       isLoading ? "opacity-0" : "opacity-100",

@@ -17,7 +17,12 @@ export function CartItem({ item, onQuantityChange, onRemove }: CartItemProps) {
   return (
     <div className="flex gap-4 border-b pb-4 last:border-0">
       <div className="relative h-20 w-20 flex-shrink-0 overflow-hidden rounded-md">
-        <Image src={item.image || "/placeholder-product.png"} alt={item.name} fill />
+        <Image
+          src={item.image || "/placeholder-product.png"}
+          alt={item.name}
+          fill
+          unoptimized={item.image?.includes("firebase") || item.image?.includes("storage")}
+        />
       </div>
 
 

@@ -10,7 +10,7 @@ import { Save, Loader2, Store, Palette, Facebook, Instagram, Twitter, Linkedin, 
 import dynamic from 'next/dynamic';
 import locations from "@/data/colombia.location.json";
 import localities from "@/data/bogota.localities.json";
-import { uploadImage } from "@/lib/firebase/upload";
+import { uploadImage } from "@/lib/cloudinary/upload";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useToast } from "@/hooks/useToast";

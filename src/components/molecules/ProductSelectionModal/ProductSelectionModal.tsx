@@ -59,6 +59,7 @@ export function ProductSelectionModal({
                         src={product.images && product.images.length > 0 ? product.images[0] : "/placeholder-product.png"}
                         alt={product.name}
                         fill
+                        unoptimized={product.images && product.images.length > 0 && (product.images[0].includes("firebase") || product.images[0].includes("storage"))}
                         className="object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />

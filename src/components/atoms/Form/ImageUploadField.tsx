@@ -5,7 +5,8 @@ import { useField, useFormikContext } from "formik";
 import { Upload, X, Image as ImageIcon, Loader2, Plus } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FormFieldWrapper } from "./FormFieldWrapper";
-import { uploadImage } from "@/lib/firebase/upload";
+import { uploadImage } from "@/lib/cloudinary/upload";
+
 import { useToast } from "@/hooks/useToast";
 
 interface ImageUploadFieldProps {

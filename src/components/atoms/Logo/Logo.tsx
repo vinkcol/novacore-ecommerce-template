@@ -2,6 +2,19 @@ import React, { useMemo } from "react";
 import Image from "next/image";
 import { useCommerceConfig } from "@/hooks/useCommerceConfig";
 
+/**
+ * Checks if the URL is from Firebase Storage.
+ * Firebase Storage URLs should skip Next.js optimization on Netlify
+ * to avoid 412 Precondition Failed errors.
+ */
+function isFirebaseStorageUrl(url: string | undefined): boolean {
+  if (typeof url !== "string") return false;
+  return (
+    url.toLowerCase().includes("firebasestorage.googleapis.com") ||
+    url.toLowerCase().includes("storage.googleapis.com")
+  );
+}
+
 const Logo = () => {
   const { config } = useCommerceConfig();
 
@@ -9,6 +22,12 @@ const Logo = () => {
   const logoSrc = useMemo(() => {
     return config?.logoUrl;
   }, [config?.logoUrl]);
+
+  // Skip optimization for Firebase Storage URLs to avoid 412 errors on Netlify
+  const shouldSkipOptimization = useMemo(
+    () => isFirebaseStorageUrl(logoSrc),
+    [logoSrc]
+  );
 
   // Memoize store name
   const storeName = useMemo(() => {
@@ -40,6 +59,7 @@ const Logo = () => {
         fill
         className="object-contain"
         priority
+        unoptimized={shouldSkipOptimization}
       />
     </div>
   );

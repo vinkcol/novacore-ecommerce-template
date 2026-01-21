@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import { selectConfiguration, selectConfigurationUpdating } from "@/features/configuration/redux/configurationSelectors";
 import { updateConfigurationStart } from "@/features/configuration/redux/configurationSlice";
-import { uploadImage } from "@/lib/firebase/upload";
+import { uploadImage } from "@/lib/cloudinary/upload";
 import { useToast } from "@/hooks/useToast";
 import { Input } from "@/components/ui/input";
 

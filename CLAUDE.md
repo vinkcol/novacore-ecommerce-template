@@ -5,58 +5,51 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Build & Development Commands
 
 ```bash
-npm run dev      # Start development server (http://localhost:3000)
+npm run dev      # Start development server (http://localhost:3002)
 npm run build    # Production build
-npm run start    # Start production server
+npm run start    # Start production server (port 3002)
 npm run lint     # Run ESLint
 npm run format   # Format code with Prettier
 ```
 
 ## Architecture
 
-**Vink Shop** is a Next.js 15 e-commerce application using the App Router, TypeScript, Redux Toolkit, and Tailwind CSS.
+**Foodie** is a Next.js 15 e-commerce application using the App Router, TypeScript, Redux Toolkit with Redux Saga, and Tailwind CSS. Firebase provides the backend (Firestore, Auth, Storage).
 
 ### Project Structure
 
 The codebase follows **feature-based architecture** combined with **Atomic Design**:
 
-- **`src/features/`** - Domain modules (products, cart, checkout), each containing:
-  - `api/` - Data fetching functions
-  - `redux/` - Slice, selectors, and thunks
+- **`src/features/`** - Domain modules, each containing:
+  - `redux/` - Slice, selectors, sagas, and thunks
   - `types/` - TypeScript interfaces
+  - `components/` - Feature-specific components
+  - Features: admin, auth, cart, categories, checkout, collections, configuration, orders, products, reports
 
 - **`src/components/`** - Atomic Design hierarchy:
-  - `atoms/` - Basic building blocks (Image, Price)
-  - `molecules/` - Combinations (ProductCard, CartItem, SearchBar, QuantitySelector)
-  - `organisms/` - Complex sections (Header, Footer, ProductGrid, CartPanel)
-  - `templates/` - Page layouts (ContentLayout)
-  - `ui/` - Shadcn UI primitives (Button, Input, Card, Badge, Label)
+  - `atoms/` - Basic building blocks
+  - `molecules/` - Combinations (ProductCard, CartItem, SearchBar)
+  - `organisms/` - Complex sections (Header, Footer, ProductGrid)
+  - `templates/` - Page layouts
+  - `ui/` - Shadcn UI primitives
 
-- **`src/redux/`** - Store configuration with typed hooks (`useAppDispatch`, `useAppSelector`)
+- **`src/redux/`** - Store configuration with Redux Saga middleware (`rootSaga.ts`, `rootReducer.ts`)
 
-- **`src/app/`** - Next.js App Router pages (thin wrappers connecting templates to Redux)
+- **`src/lib/firebase/`** - Firebase configuration (Firestore, Auth, Storage)
 
-- **`src/data/`** - JSON data files (products.json, shop-content.json)
-
-### Path Aliases
-
-Configured in tsconfig.json:
-- `@/*` → `./src/*`
-- `@/components/*`, `@/features/*`, `@/redux/*`, `@/lib/*`, `@/hooks/*`, `@/types/*`, `@/data/*`
+- **`src/config/env.ts`** - Environment variables (Firebase config via `NEXT_PUBLIC_FIREBASE_*`)
 
 ### Key Patterns
 
-- **Redux State**: Three slices - `products`, `cart`, `checkout` (see `src/redux/rootReducer.ts`)
-- **Cart Persistence**: Cart items saved to localStorage (`vink-cart` key)
-- **Styling**: Tailwind with CSS variables for theming (HSL color system), dark mode support via class strategy
-- **Forms**: React Hook Form with Zod validation
-- **Utilities**: `cn()` for className merging (clsx + tailwind-merge) in `src/lib/utils.ts`
+- **Redux + Saga**: Slices for state, Sagas for async side effects. Use typed hooks: `useAppDispatch`, `useAppSelector`
+- **Firebase Singleton**: `src/lib/firebase/config.ts` exports `db`, `auth`, `storage`
+- **Styling**: Tailwind with CSS variables (HSL), dark mode via class strategy
+- **Forms**: React Hook Form + Zod, or Formik + Yup
+- **Utilities**: `cn()` for className merging, `formatPrice()` for COP currency in `src/lib/utils.ts`
+- **Constants**: App-wide constants in `src/lib/constants.ts` (CURRENCY, LOCALE, ROUTES)
 
 ### Code Style
 
-- Double quotes for strings
-- Semicolons required
-- ES5 trailing commas
-- 2-space indentation
-- 80 character print width
+- Double quotes, semicolons required
+- ES5 trailing commas, 2-space indentation, 80 char width
 - Tailwind classes auto-sorted by prettier-plugin-tailwindcss

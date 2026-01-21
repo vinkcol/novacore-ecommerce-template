@@ -74,6 +74,7 @@ export function ProductCard({
             src={product.images && product.images.length > 0 ? product.images[0] : "/placeholder-product.png"}
             alt={product.name}
             fill
+            unoptimized={product.images && product.images.length > 0 && (product.images[0].includes("firebase") || product.images[0].includes("storage"))}
             className="object-cover transition-transform duration-500 group-hover:scale-110"
           />
 
