@@ -156,8 +156,8 @@ export function ConfigurationForm() {
 
         if (logoFile) {
             try {
-                // Determine path or filename logic if needed, but 'store-logos' is good
-                const downloadUrl = await uploadImage(logoFile, 'store-logos');
+                // Upload to foodie/[shop-slug]/brand/logo
+                const downloadUrl = await uploadImage(logoFile, 'brand', 'logo');
                 finalValues.logoUrl = downloadUrl;
             } catch (error) {
                 console.error("Upload failed", error);

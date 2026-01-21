@@ -96,7 +96,8 @@ export default function HomePage() {
   const { hero } = shopContent.homepage;
   const { config } = useCommerceConfig(); // Fetch dynamic config
 
-  const isLoading = productsLoading === 'pending' || collectionsLoading;
+  // Include 'idle' state as loading since fetch hasn't started yet
+  const isLoading = productsLoading === 'idle' || productsLoading === 'pending' || collectionsLoading;
 
   return (
     <ContentLayout>

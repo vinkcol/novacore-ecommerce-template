@@ -2,9 +2,10 @@
  * Uploads a file to Cloudinary via our Next.js API route.
  * @param file The file to upload
  * @param folder The subfolder path (will be prefixed by NEXT_PUBLIC_SHOP_SLUG on server)
+ * @param publicId Optional fixed filename (e.g., 'logo' for brand logos)
  * @returns Promise that resolves to the download URL
  */
-export async function uploadImage(file: File, folder: string = 'uploads'): Promise<string> {
+export async function uploadImage(file: File, folder: string = 'uploads', publicId?: string): Promise<string> {
     // Compress/Optimize? 
     // Cloudinary does auto-optimization on delivery (f_auto, q_auto).
     // We can skip client-side compression to simplify, or keep it if bandwidth is a concern.
@@ -13,6 +14,9 @@ export async function uploadImage(file: File, folder: string = 'uploads'): Promi
     const formData = new FormData();
     formData.append("file", file);
     formData.append("folder", folder);
+    if (publicId) {
+        formData.append("publicId", publicId);
+    }
 
     const response = await fetch("/api/upload", {
         method: "POST",

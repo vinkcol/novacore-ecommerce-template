@@ -26,6 +26,7 @@ import {
 import { fetchCategoriesStart } from "@/features/categories/redux/categoriesSlice";
 import { selectCategories } from "@/features/categories/redux/categoriesSelectors";
 import { VariantManager } from "./variants/VariantManager";
+import { slugify } from "@/lib/utils/slugify";
 
 const productValidationSchema = Yup.object().shape({
     name: Yup.string().required("El nombre es obligatorio"),
@@ -358,6 +359,7 @@ export function ProductForm({ initialProduct }: ProductFormProps) {
                                         label="Fotos del Producto"
                                         maxImages={5}
                                         required
+                                        uploadPath={`products/${values.name ? slugify(values.name) : 'unnamed'}`}
                                     />
 
                                     <div className="pt-4 p-4 bg-primary/5 rounded-2xl border border-primary/10 mt-4">

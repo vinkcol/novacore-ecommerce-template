@@ -6,6 +6,7 @@ export async function POST(req: NextRequest) {
         const formData = await req.formData();
         const file = formData.get("file") as File;
         const folder = formData.get("folder") as string || "uploads";
+        const publicId = formData.get("publicId") as string | null;
 
         if (!file) {
             return NextResponse.json({ error: "No file provided" }, { status: 400 });
@@ -17,15 +18,23 @@ export async function POST(req: NextRequest) {
         const buffer = Buffer.from(bytes);
 
         const shopSlug = process.env.NEXT_PUBLIC_SHOP_SLUG || "default-shop";
-        // Construct path: foodie-store/products/filename
-        const fullFolder = `${shopSlug}/${folder}`;
+        // Construct path: foodie/[shop-slug]/[folder]
+        const fullFolder = `foodie/${shopSlug}/${folder}`;
+
+        const uploadOptions: any = {
+            folder: fullFolder,
+            resource_type: "auto", // Auto-detect image or video
+        };
+
+        // If publicId is provided, use it as the filename
+        if (publicId) {
+            uploadOptions.public_id = publicId;
+            uploadOptions.overwrite = true; // Allow overwriting existing files with same publicId
+        }
 
         const result = await new Promise<any>((resolve, reject) => {
             const uploadStream = cloudinary.uploader.upload_stream(
-                {
-                    folder: fullFolder,
-                    resource_type: "auto", // Auto-detect image or video
-                },
+                uploadOptions,
                 (error, result) => {
                     if (error) reject(error);
                     else resolve(result);
