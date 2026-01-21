@@ -60,11 +60,11 @@ export const useToast = () => {
     };
 
     const promise = (
-        promise: Promise<any>,
+        promise: Promise<unknown>,
         messages: {
             loading: string;
-            success: string | ((data: any) => string);
-            error: string | ((error: any) => string);
+            success: string | ((data: unknown) => string);
+            error: string | ((error: unknown) => string);
         }
     ) => {
         return sonnerToast.promise(promise, {

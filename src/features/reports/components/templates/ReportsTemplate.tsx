@@ -9,6 +9,7 @@ import { TopProductsChart } from "../charts/TopProductsChart";
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import { fetchOrdersRequest } from "../../../orders/redux/ordersSlice";
 import { selectOrders } from "../../../orders/redux/ordersSelectors";
+import { Order } from "../../../orders/types";
 
 export function ReportsTemplate() {
     const dispatch = useAppDispatch();
@@ -29,7 +30,7 @@ export function ReportsTemplate() {
     // Filtered orders based on date range
     const filteredOrders = useMemo(() => {
         if (!orders) return [];
-        const ordersArray = orders as any[];
+        const ordersArray = orders as Order[];
         if (!Array.isArray(ordersArray)) return [];
         return ordersArray.filter(order => {
             const orderDate = new Date(order.createdAt).toISOString().split('T')[0];

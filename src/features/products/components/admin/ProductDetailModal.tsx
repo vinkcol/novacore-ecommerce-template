@@ -4,6 +4,8 @@ import React from "react";
 import { X, Package, Tag, Layers, Database, Calendar } from "lucide-react";
 import { Product } from "../../types/product.types";
 import { Badge } from "@/components/ui/badge";
+import { Image } from "@/components/atoms/Image";
+import { LucideIcon } from "lucide-react";
 
 interface ProductDetailModalProps {
     isOpen: boolean;
@@ -25,10 +27,12 @@ export function ProductDetailModal({ isOpen, onClose, product }: ProductDetailMo
             >
                 {/* Header Image/Banner */}
                 <div className="relative h-48 sm:h-64 bg-muted">
-                    <img
+                    <Image
                         src={product.images[0]}
                         alt={product.name}
-                        className="w-full h-full object-cover"
+                        fill
+                        unoptimized={product.images[0].includes("firebase") || product.images[0].includes("storage")}
+                        className="object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                     <button
@@ -95,7 +99,7 @@ export function ProductDetailModal({ isOpen, onClose, product }: ProductDetailMo
     );
 }
 
-function StatCard({ icon: Icon, label, value }: { icon: any, label: string, value: string }) {
+function StatCard({ icon: Icon, label, value }: { icon: LucideIcon, label: string, value: string }) {
     return (
         <div className="bg-muted/30 border border-muted p-4 rounded-3xl">
             <div className="flex items-center gap-2 text-muted-foreground mb-1">

@@ -347,7 +347,7 @@ export function AdminOrdersTable() {
                                     </td>
                                     <td className="px-6 py-4">
                                         <Badge
-                                            variant={getStatusVariant(order.status) as any}
+                                            variant={getStatusVariant(order.status) as "default" | "destructive" | "outline" | "secondary" | "success" | "warning"}
                                             className="rounded-full px-3 py-0.5 text-[10px] font-bold uppercase"
                                         >
                                             {getStatusLabel(order.status)}

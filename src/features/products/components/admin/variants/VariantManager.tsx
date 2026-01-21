@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { useFormikContext, FieldArray } from "formik";
 import { Plus, Trash2, Camera, ChevronRight, Settings2, Sparkles } from "lucide-react";
 import { TextField, NumberField, CurrencyField } from "@/components/atoms/Form";
+import { Image } from "@/components/atoms/Image";
 import { Product, ProductVariant, ProductAttribute } from "../../../types/product.types";
 import { Button } from "@/components/ui/button";
 
@@ -203,8 +204,14 @@ export function VariantManager() {
                                                 <div className="relative h-14 w-14 rounded-2xl bg-background border-2 border-dashed border-muted-foreground/20 overflow-hidden group/thumb transition-all hover:border-primary/40">
                                                     {variant.images && variant.images.length > 0 ? (
                                                         <>
-                                                            <img src={variant.images[0]} alt="" className="h-full w-full object-cover transition-transform group-hover/thumb:scale-110" />
-                                                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/thumb:opacity-100 flex flex-col items-center justify-center transition-opacity gap-1">
+                                                            <Image
+                                                                src={variant.images[0]}
+                                                                alt={variant.name}
+                                                                fill
+                                                                unoptimized={variant.images[0].includes("firebase") || variant.images[0].includes("storage")}
+                                                                className="object-cover transition-transform group-hover/thumb:scale-110"
+                                                            />
+                                                            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover/thumb:opacity-100 flex flex-col items-center justify-center transition-opacity z-10 gap-1">
                                                                 <span className="text-[10px] font-bold text-white leading-none">{variant.images.length}</span>
                                                                 <Camera size={12} className="text-white" />
                                                             </div>

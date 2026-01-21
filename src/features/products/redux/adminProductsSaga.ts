@@ -1,4 +1,5 @@
 import { takeLatest, call, put } from "redux-saga/effects";
+import { SagaIterator } from "redux-saga";
 import {
     fetchAdminProductsApi,
     createAdminProductApi,
@@ -25,47 +26,51 @@ import {
 import { Product } from "../types/product.types";
 import { PayloadAction } from "@reduxjs/toolkit";
 
-function* handleFetchProducts(): Generator<any, void, any> {
+function* handleFetchProducts(): SagaIterator {
     try {
         const products: Product[] = yield call(fetchAdminProductsApi);
         yield put(fetchProductsSuccess(products));
-    } catch (error: any) {
-        yield put(fetchProductsFailure(error.message || "Error al cargar productos"));
+    } catch (error: unknown) {
+        const err = error as Error;
+        yield put(fetchProductsFailure(err.message || "Error al cargar productos"));
     }
 }
 
-function* handleCreateProduct(action: PayloadAction<Partial<Product>>): Generator<any, void, any> {
+function* handleCreateProduct(action: PayloadAction<Partial<Product>>): SagaIterator {
     try {
         console.log("SAGA: Starting handleCreateProduct with payload:", action.payload);
         const newProduct: Product = yield call(createAdminProductApi, action.payload);
         console.log("SAGA: API returned new product:", newProduct);
         yield put(createProductSuccess(newProduct));
         console.log("SAGA: Dispatched createProductSuccess");
-    } catch (error: any) {
+    } catch (error: unknown) {
+        const err = error as Error;
         console.error("SAGA: Error in handleCreateProduct:", error);
-        yield put(createProductFailure(error.message || "Error al crear el producto"));
+        yield put(createProductFailure(err.message || "Error al crear el producto"));
     }
 }
 
-function* handleUpdateProduct(action: PayloadAction<{ id: string; data: Partial<Product> }>): Generator<any, void, any> {
+function* handleUpdateProduct(action: PayloadAction<{ id: string; data: Partial<Product> }>): SagaIterator {
     try {
         const updatedProduct: Product = yield call(updateAdminProductApi, action.payload.id, action.payload.data);
         yield put(updateProductSuccess(updatedProduct));
-    } catch (error: any) {
-        yield put(updateProductFailure(error.message || "Error al actualizar el producto"));
+    } catch (error: unknown) {
+        const err = error as Error;
+        yield put(updateProductFailure(err.message || "Error al actualizar el producto"));
     }
 }
 
-function* handleDeleteProduct(action: PayloadAction<string>): Generator<any, void, any> {
+function* handleDeleteProduct(action: PayloadAction<string>): SagaIterator {
     try {
         yield call(deleteAdminProductApi, action.payload);
         yield put(deleteProductSuccess(action.payload));
-    } catch (error: any) {
-        yield put(deleteProductFailure(error.message || "Error al eliminar el producto"));
+    } catch (error: unknown) {
+        const err = error as Error;
+        yield put(deleteProductFailure(err.message || "Error al eliminar el producto"));
     }
 }
 
-function* handleBulkCreateProducts(action: PayloadAction<Partial<Product>[]>): Generator<any, void, any> {
+function* handleBulkCreateProducts(action: PayloadAction<Partial<Product>[]>): SagaIterator {
     try {
         const productsToCreate = action.payload;
         const createdProducts: Product[] = [];
@@ -76,8 +81,9 @@ function* handleBulkCreateProducts(action: PayloadAction<Partial<Product>[]>): G
         }
 
         yield put(bulkCreateProductsSuccess(createdProducts));
-    } catch (error: any) {
-        yield put(bulkCreateProductsFailure(error.message || "Error en la carga masiva"));
+    } catch (error: unknown) {
+        const err = error as Error;
+        yield put(bulkCreateProductsFailure(err.message || "Error en la carga masiva"));
     }
 }
 
